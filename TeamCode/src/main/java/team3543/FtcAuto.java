@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Titan Robotics Club (http://www.titanrobotics.com)
+ * Copyright (c) 2017 Titan Robotics Club (http://www.titanrobotics.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,20 +51,8 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
         BLUE_ALLIANCE
     }   //enum Alliance
 
-    enum ParkOption
-    {
-        DO_NOTHING,
-        PARK_CORNER,
-        PARK_CENTER
-    }   //enum ParkOption
-
     private enum Strategy
     {
-        AUTO_100_1,
-        AUTO_100_2,
-        AUTO_40_NEAR,
-        AUTO_40_FAR,
-        AUTO_40D_FAR,
         DISTANCE_DRIVE,
         TIMED_DRIVE,
         DO_NOTHING
@@ -78,10 +66,7 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
     private int matchNumber = 0;
     private Alliance alliance = Alliance.RED_ALLIANCE;
     private double delay = 0.0;
-    private int numParticles = 2;
-    private ParkOption parkOption = ParkOption.PARK_CORNER;
-    private Strategy strategy = Strategy.AUTO_100_1;
-    private int beaconButtons = 2;
+    private Strategy strategy = Strategy.DO_NOTHING;
     private double driveDistance = 0.0;
     private double driveTime = 0.0;
     private double drivePower = 0.0;
@@ -106,26 +91,6 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
         //
         switch (strategy)
         {
-            case AUTO_100_1:
-                autoCommand = new CmdAuto100(robot, alliance, delay, numParticles, parkOption, beaconButtons, true);
-                break;
-
-            case AUTO_100_2:
-                autoCommand = new CmdAuto100(robot, alliance, delay, numParticles, parkOption, beaconButtons, false);
-                break;
-
-            case AUTO_40_NEAR:
-                autoCommand = new CmdAuto40(robot, alliance, delay, numParticles, parkOption, true);
-                break;
-
-            case AUTO_40_FAR:
-                autoCommand = new CmdAuto40(robot, alliance, delay, numParticles, parkOption, false);
-                break;
-
-            case AUTO_40D_FAR:
-                autoCommand = new CmdAuto40D(robot, alliance, delay, numParticles, parkOption);
-                break;
-
             case DISTANCE_DRIVE:
                 autoCommand = new CmdPidDrive(robot, delay, 0.0, driveDistance*12.0, 0.0);
                 break;
@@ -220,24 +185,19 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
         FtcChoiceMenu<MatchType> matchTypeMenu = new FtcChoiceMenu<>("Match type:", null, this);
         FtcValueMenu matchNumberMenu = new FtcValueMenu(
                 "Match number:", matchTypeMenu, this, 1.0, 50.0, 1.0, 1.0, "%.0f");
-        FtcChoiceMenu<Alliance> allianceMenu = new FtcChoiceMenu<>("Alliance:", matchTypeMenu, this);
+        FtcChoiceMenu<Alliance> allianceMenu = new FtcChoiceMenu<>("Alliance:", matchNumberMenu, this);
         FtcValueMenu delayMenu = new FtcValueMenu("Delay time:", allianceMenu, this, 0.0, 30.0, 1.0, 0.0, " %.0f sec");
-        FtcValueMenu numParticlesMenu = new FtcValueMenu(
-                "Shoot particles:", delayMenu, this, 0.0, 2.0, 1.0, 2.0, " %.0f");
-        FtcChoiceMenu<ParkOption> parkOptionMenu = new FtcChoiceMenu<>("Park options:", numParticlesMenu, this);
-        FtcChoiceMenu<Strategy> strategyMenu = new FtcChoiceMenu<>("Strategies:", parkOptionMenu, this);
-        FtcValueMenu beaconButtonsMenu = new FtcValueMenu(
-                "Push beacon buttons:", strategyMenu, this, 0.0, 2.0, 1.0, 2.0, " %.0f");
+        FtcChoiceMenu<Strategy> strategyMenu = new FtcChoiceMenu<>("Strategies:", delayMenu, this);
         FtcValueMenu driveDistanceMenu = new FtcValueMenu(
                 "Distance:", strategyMenu, this, -12.0, 12.0, 0.5, 4.0, " %.0f ft");
         FtcValueMenu driveTimeMenu = new FtcValueMenu(
                 "Drive time:", strategyMenu, this, 0.0, 30.0, 1.0, 5.0, " %.0f sec");
         FtcValueMenu drivePowerMenu = new FtcValueMenu(
-                "Drive power:", driveTimeMenu, this, -1.0, 1.0, 0.1, 0.5, " %.1f");
+                "Drive power:", strategyMenu, this, -1.0, 1.0, 0.1, 0.5, " %.1f");
 
         matchNumberMenu.setChildMenu(allianceMenu);
-        delayMenu.setChildMenu(numParticlesMenu);
-        numParticlesMenu.setChildMenu(parkOptionMenu);
+        delayMenu.setChildMenu(strategyMenu);
+        driveDistanceMenu.setChildMenu(drivePowerMenu);
         driveTimeMenu.setChildMenu(drivePowerMenu);
 
         //
@@ -251,15 +211,6 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
         allianceMenu.addChoice("Red", Alliance.RED_ALLIANCE, true, delayMenu);
         allianceMenu.addChoice("Blue", Alliance.BLUE_ALLIANCE, false, delayMenu);
 
-        parkOptionMenu.addChoice("Do nothing", ParkOption.DO_NOTHING, true, strategyMenu);
-        parkOptionMenu.addChoice("Park center", ParkOption.PARK_CENTER, false, strategyMenu);
-        parkOptionMenu.addChoice("Park corner", ParkOption.PARK_CORNER, false, strategyMenu);
-
-        strategyMenu.addChoice("Auto 100pt 1", Strategy.AUTO_100_1, true, beaconButtonsMenu);
-        strategyMenu.addChoice("Auto 100pt 2", Strategy.AUTO_100_2, false, beaconButtonsMenu);
-        strategyMenu.addChoice("Auto 40pt near", Strategy.AUTO_40_NEAR, false);
-        strategyMenu.addChoice("Auto 40pt far", Strategy.AUTO_40_FAR, false);
-        strategyMenu.addChoice("Auto DF far", Strategy.AUTO_40D_FAR, false);
         strategyMenu.addChoice("Distance Drive", Strategy.DISTANCE_DRIVE, false, driveDistanceMenu);
         strategyMenu.addChoice("Timed Drive", Strategy.TIMED_DRIVE, false, driveTimeMenu);
         strategyMenu.addChoice("Do nothing", Strategy.DO_NOTHING, false);
@@ -274,10 +225,7 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
         matchNumber = (int)matchNumberMenu.getCurrentValue();
         alliance = allianceMenu.getCurrentChoiceObject();
         delay = delayMenu.getCurrentValue();
-        numParticles = (int)numParticlesMenu.getCurrentValue();
-        parkOption = parkOptionMenu.getCurrentChoiceObject();
         strategy = strategyMenu.getCurrentChoiceObject();
-        beaconButtons = (int)beaconButtonsMenu.getCurrentValue();
         driveDistance = driveDistanceMenu.getCurrentValue();
         driveTime = driveTimeMenu.getCurrentValue();
         drivePower = drivePowerMenu.getCurrentValue();
@@ -288,8 +236,6 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
                                       matchType.toString(), matchType == MatchType.PRACTICE? "": "_" + matchNumber);
         robot.dashboard.displayPrintf(2, "Auto Strategy: %s", strategyMenu.getCurrentChoiceText());
         robot.dashboard.displayPrintf(3, "Alliance=%s,Delay=%.0f sec", alliance.toString(), delay);
-        robot.dashboard.displayPrintf(4, "NumParticles=%d,ParkOption=%s", numParticles, parkOption.toString());
-        robot.dashboard.displayPrintf(5, "Auto100: BeaconButtons=%d", beaconButtons);
         robot.dashboard.displayPrintf(6, "Drive: distance=%.0f ft,Time=%.0f,Power=%.1f",
                                       driveDistance, driveTime, drivePower);
     }   //doMenus

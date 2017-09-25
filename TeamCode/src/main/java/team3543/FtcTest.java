@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Titan Robotics Club (http://www.titanrobotics.com)
+ * Copyright (c) 2017 Titan Robotics Club (http://www.titanrobotics.com)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,6 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
         Y_TIMED_DRIVE,
         X_DISTANCE_DRIVE,
         Y_DISTANCE_DRIVE,
-        RANGE_DRIVE,
         GYRO_TURN
     }   //enum Test
 
@@ -67,14 +66,12 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
     private Test test = Test.SENSORS_TEST;
     private double driveTime = 0.0;
     private double driveDistance = 0.0;
-    private double rangeDistance = 0.0;
     private double turnDegrees = 0.0;
 
     private CmdTimedDrive timedDriveCommand = null;
     private CmdPidDrive pidDriveCommand = null;
 
     private int motorIndex = 0;
-    private double ballGatePos = RobotInfo.BALLGATE_DOWN_POSITION;
     private double buttonPusherPos = 0.0;
 
     //
@@ -128,42 +125,6 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
     //
     // Overrides TrcRobot.RobotMode methods.
     //
-
-//    @Override
-//    public void startMode()
-//    {
-//        super.startMode();
-//        if (test == Test.SENSORS_TEST)
-//        {
-//            if (Robot.USE_COLOR_SENSOR)
-//            {
-//                robot.beaconColorSensor.setDeviceEnabled(true);
-//            }
-//
-//            if (Robot.USE_LINE_DETECTOR && !Robot.USE_ODS_LINE_DETECTOR)
-//            {
-//                robot.lineDetectionSensor.setDeviceEnabled(true);
-//            }
-//        }
-//    }   //startMode
-//
-//    @Override
-//    public void stopMode()
-//    {
-//        super.stopMode();
-//        if (test == Test.SENSORS_TEST)
-//        {
-//            if (Robot.USE_COLOR_SENSOR)
-//            {
-//                robot.beaconColorSensor.setDeviceEnabled(false);
-//            }
-//
-//            if (Robot.USE_LINE_DETECTOR && !Robot.USE_ODS_LINE_DETECTOR)
-//            {
-//                robot.lineDetectionSensor.setDeviceEnabled(false);
-//            }
-//        }
-//    }   //stopMode
 
     //
     // Must override TeleOp so it doesn't fight with us.
@@ -239,13 +200,6 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
                     }
                 }
                 break;
-
-            case RANGE_DRIVE:
-                if (Robot.USE_RANGE_SENSOR)
-                {
-                    doRangeDrive(rangeDistance);
-                }
-                break;
         }
     }   //runContinuous
 
@@ -299,7 +253,6 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
         testMenu.addChoice("Y Timed drive", Test.Y_TIMED_DRIVE, false, driveTimeMenu);
         testMenu.addChoice("X Distance drive", Test.X_DISTANCE_DRIVE, false, driveDistanceMenu);
         testMenu.addChoice("Y Distance drive", Test.Y_DISTANCE_DRIVE, false, driveDistanceMenu);
-        testMenu.addChoice("Range drive", Test.RANGE_DRIVE, false, rangeDistanceMenu);
         testMenu.addChoice("Degrees turn", Test.GYRO_TURN, false, turnDegreesMenu);
         //
         // Traverse menus.
@@ -311,7 +264,6 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
         test = testMenu.getCurrentChoiceObject();
         driveTime = driveTimeMenu.getCurrentValue();
         driveDistance = driveDistanceMenu.getCurrentValue();
-        rangeDistance = rangeDistanceMenu.getCurrentValue();
         turnDegrees = turnDegreesMenu.getCurrentValue();
         //
         // Show choices.
@@ -335,41 +287,9 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
                                 robot.leftFrontWheel.getPosition(), robot.rightFrontWheel.getPosition());
         dashboard.displayPrintf(4, LABEL_WIDTH, "RearEnc: ", "l=%.0f,r=%.0f",
                                 robot.leftRearWheel.getPosition(), robot.rightRearWheel.getPosition());
-        dashboard.displayPrintf(5, LABEL_WIDTH, "Shooter: ", "Pos=%.3f,touch=%s",
-                                robot.shooter.getPosition(), Boolean.toString(robot.shooter.isTouchActive()));
-        dashboard.displayPrintf(6, LABEL_WIDTH, "ServoPos: ", "BallGate=%.2f,Pusher=%.2f",
-                                ballGatePos, buttonPusherPos);
-        dashboard.displayPrintf(9, LABEL_WIDTH, "Gyro: ", "Rate=%.3f,Heading=%.1f",
+        dashboard.displayPrintf(5, LABEL_WIDTH, "Gyro: ", "Rate=%.3f,Heading=%.1f",
                                 robot.gyro.getZRotationRate().value,
                                 robot.gyro.getZHeading().value);
-
-        if (Robot.USE_COLOR_SENSOR)
-        {
-            dashboard.displayPrintf(10, LABEL_WIDTH, "Beacon: ", "RGBAH=[%d,%d,%d,%d,%x]",
-                                    robot.beaconColorSensor.sensor.red(), robot.beaconColorSensor.sensor.green(),
-                                    robot.beaconColorSensor.sensor.blue(),
-                                    robot.beaconColorSensor.sensor.alpha(), robot.beaconColorSensor.sensor.argb());
-        }
-
-        if (Robot.USE_LINE_DETECTOR)
-        {
-            if (Robot.USE_ODS_LINE_DETECTOR)
-            {
-                dashboard.displayPrintf(11, LABEL_WIDTH, "Line: ", "light=%.3f",
-                                        robot.odsLineDetector.sensor.getRawLightDetected());
-            }
-            else
-            {
-                dashboard.displayPrintf(11, LABEL_WIDTH, "Line: ", "argb=%d,white=%d",
-                                        robot.lineDetectionSensor.sensor.argb(),
-                                        robot.lineDetectionSensor.sensor.alpha());
-            }
-        }
-
-        if (Robot.USE_RANGE_SENSOR)
-        {
-            dashboard.displayPrintf(12, LABEL_WIDTH, "Range: ", "%.3f in", robot.getInput(robot.rangePidCtrl));
-        }
     }   //doSensorsTest
 
     /**
@@ -458,56 +378,6 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
         }
     }   //doMotorsTest
 
-    /**
-     * This method drives the robot to the specified distance to the wall using the Range Sensor. This test is
-     * designed for tuning PID constants for the Range Sensor. Run this test with a specific distance to the wall
-     * (e.g. 6 inches). At the end of the run, check the dashboard display to see how far the robot is from the wall
-     * and the corresponding error. Tuned the PID constants to make the error to go near zero (error should be less
-     * than tolerance).
-     *
-     * @param rangeDistance specifies the target distance in inches to the wall.
-     */
-    private void doRangeDrive(double rangeDistance)
-    {
-        dashboard.displayPrintf(9, "xPos=%.1f,yPos=%.1f,heading=%.1f",
-                                robot.getInput(robot.rangePidCtrl),
-                                robot.getInput(robot.encoderYPidCtrl),
-                                robot.getInput(robot.gyroPidCtrl));
-        robot.rangePidCtrl.displayPidInfo(10);
-        robot.encoderYPidCtrl.displayPidInfo(12);
-        robot.gyroPidCtrl.displayPidInfo(14);
-
-        if (sm.isReady())
-        {
-            State state = sm.getState();
-            switch (state)
-            {
-                case START:
-                    //
-                    // Drive the to the given wall distance.
-                    //
-                    robot.battery.setEnabled(true);
-                    robot.rangePidDrive.setTarget(rangeDistance, 0.0, 0.0, false, event);
-                    sm.waitForSingleEvent(event, State.DONE);
-                    break;
-
-                case DONE:
-                default:
-                    //
-                    // We are done.
-                    //
-                    robot.battery.setEnabled(false);
-                    sm.stop();
-                    break;
-            }
-        }
-
-        if (robot.rangePidDrive.isActive())
-        {
-            robot.rangePidCtrl.printPidInfo(robot.tracer);
-        }
-    }   //doRangeDrive
-
     //
     // Overrides FtcGamepad.ButtonHandler in FtcTeleOp.
     //
@@ -526,57 +396,15 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
             switch (button)
             {
                 case FtcGamepad.GAMEPAD_DPAD_UP:
-                    //
-                    // This is to calibrate the ball gate servo up position.
-                    //
-                    if (pressed)
-                    {
-                        ballGatePos += 0.01;
-                        if (ballGatePos > 1.0) ballGatePos = 1.0;
-                        robot.shooter.setBallGatePosition(ballGatePos);
-                    }
-                    processed = true;
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_DOWN:
-                    //
-                    // This is to calibrate the ball gate servo down position.
-                    //
-                    if (pressed)
-                    {
-                        ballGatePos -= 0.01;
-                        if (ballGatePos < 0.0) ballGatePos = 0.0;
-                        robot.shooter.setBallGatePosition(ballGatePos);
-                    }
-                    processed = true;
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_LEFT:
-                    //
-                    // This is to calibrate the button pusher servo retract position.
-                    //
-                    if (pressed)
-                    {
-                        buttonPusherPos -= 0.05;
-                        if (buttonPusherPos < 0.0) buttonPusherPos = 0.0;
-                        robot.leftButtonPusher.setPosition(buttonPusherPos);
-                        robot.rightButtonPusher.setPosition(buttonPusherPos);
-                    }
-                    processed = true;
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_RIGHT:
-                    //
-                    // This is to calibrate the button pusher servo extend position.
-                    //
-                    if (pressed)
-                    {
-                        buttonPusherPos += 0.05;
-                        if (buttonPusherPos > 1.0) buttonPusherPos = 1.0;
-                        robot.leftButtonPusher.setPosition(buttonPusherPos);
-                        robot.rightButtonPusher.setPosition(buttonPusherPos);
-                    }
-                    processed = true;
                     break;
             }
         }
