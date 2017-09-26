@@ -22,7 +22,11 @@
 
 package team3543;
 
+import android.speech.tts.TextToSpeech;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import ftclib.FtcChoiceMenu;
 import ftclib.FtcGamepad;
@@ -45,7 +49,8 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
         Y_TIMED_DRIVE,
         X_DISTANCE_DRIVE,
         Y_DISTANCE_DRIVE,
-        GYRO_TURN
+        GYRO_TURN,
+        VISION_TEST
     }   //enum Test
 
     private enum State
@@ -72,7 +77,9 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
     private CmdPidDrive pidDriveCommand = null;
 
     private int motorIndex = 0;
-    private double buttonPusherPos = 0.0;
+
+    private VuforiaVision vuforiaVision = null;
+    private RelicRecoveryVuMark prevVuMark = null;
 
     //
     // Implements FtcOpMode interface.
@@ -117,6 +124,12 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
             case GYRO_TURN:
                 pidDriveCommand = new CmdPidDrive(robot, 0.0, 0.0, 0.0, turnDegrees);
                 break;
+
+            case VISION_TEST:
+                int cameraViewId = hardwareMap.appContext.getResources().getIdentifier(
+                        "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+                vuforiaVision = new VuforiaVision(robot, cameraViewId);
+                break;
         }
 
         sm.start(State.START);
@@ -125,6 +138,26 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
     //
     // Overrides TrcRobot.RobotMode methods.
     //
+
+    @Override
+    public void startMode()
+    {
+        super.startMode();
+        if (vuforiaVision != null)
+        {
+            vuforiaVision.setEnabled(true);
+        }
+    }   //startMode
+
+    @Override
+    public void stopMode()
+    {
+        super.stopMode();
+        if (vuforiaVision != null)
+        {
+            vuforiaVision.setEnabled(false);
+        }
+    }   //stopMode
 
     //
     // Must override TeleOp so it doesn't fight with us.
@@ -138,8 +171,32 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
         switch (test)
         {
             case SENSORS_TEST:
+            case VISION_TEST:
                 super.runPeriodic(elapsedTime);
                 doSensorsTest();
+                if (vuforiaVision != null)
+                {
+                    vuforiaVision.getVuMarkPosition();
+                    vuforiaVision.getVuMarkOrientation();
+                    if (robot.textToSpeech != null)
+                    {
+                        RelicRecoveryVuMark vuMark = vuforiaVision.getVuMark();
+                        if (vuMark != prevVuMark)
+                        {
+                            String sentence;
+                            if (vuMark == RelicRecoveryVuMark.UNKNOWN)
+                            {
+                                sentence = String.format("%s is %s.", prevVuMark.toString(), "out of view");
+                            }
+                            else
+                            {
+                                sentence = String.format("%s is %s.", vuMark.toString(), "in view");
+                            }
+                            robot.textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
+                        }
+                        prevVuMark = vuMark;
+                    }
+                }
                 break;
 
             case MOTORS_TEST:
@@ -254,6 +311,7 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
         testMenu.addChoice("X Distance drive", Test.X_DISTANCE_DRIVE, false, driveDistanceMenu);
         testMenu.addChoice("Y Distance drive", Test.Y_DISTANCE_DRIVE, false, driveDistanceMenu);
         testMenu.addChoice("Degrees turn", Test.GYRO_TURN, false, turnDegreesMenu);
+        testMenu.addChoice("Vision test", Test.VISION_TEST, false);
         //
         // Traverse menus.
         //
