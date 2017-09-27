@@ -197,13 +197,13 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
 
         matchNumberMenu.setChildMenu(allianceMenu);
         delayMenu.setChildMenu(strategyMenu);
-        driveDistanceMenu.setChildMenu(drivePowerMenu);
+//        driveDistanceMenu.setChildMenu(drivePowerMenu);
         driveTimeMenu.setChildMenu(drivePowerMenu);
 
         //
         // Populate choice menus.
         //
-        matchTypeMenu.addChoice("Practice", MatchType.PRACTICE, true, allianceMenu);
+        matchTypeMenu.addChoice("Practice", MatchType.PRACTICE, true, matchNumberMenu);
         matchTypeMenu.addChoice("Qualification", MatchType.QUALIFICATION, false, matchNumberMenu);
         matchTypeMenu.addChoice("Semi-final", MatchType.SEMI_FINAL, false, matchNumberMenu);
         matchTypeMenu.addChoice("Final", MatchType.FINAL, false, matchNumberMenu);
