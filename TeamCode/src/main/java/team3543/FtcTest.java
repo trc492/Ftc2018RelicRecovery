@@ -196,6 +196,7 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
                             if (sentence != null)
                             {
                                 robot.textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
+                                robot.dashboard.displayPrintf(11, sentence);
                             }
                         }
                         prevVuMark = vuMark;
