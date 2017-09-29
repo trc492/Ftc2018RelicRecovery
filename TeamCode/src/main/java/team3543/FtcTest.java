@@ -183,16 +183,20 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
                         RelicRecoveryVuMark vuMark = vuforiaVision.getVuMark();
                         if (vuMark != prevVuMark)
                         {
-                            String sentence;
-                            if (vuMark == RelicRecoveryVuMark.UNKNOWN)
-                            {
-                                sentence = String.format("%s is %s.", prevVuMark.toString(), "out of view");
-                            }
-                            else
+                            String sentence = null;
+                            if (vuMark != RelicRecoveryVuMark.UNKNOWN)
                             {
                                 sentence = String.format("%s is %s.", vuMark.toString(), "in view");
                             }
-                            robot.textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
+                            else if (prevVuMark != null)
+                            {
+                                sentence = String.format("%s is %s.", prevVuMark.toString(), "out of view");
+                            }
+
+                            if (sentence != null)
+                            {
+                                robot.textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
+                            }
                         }
                         prevVuMark = vuMark;
                     }

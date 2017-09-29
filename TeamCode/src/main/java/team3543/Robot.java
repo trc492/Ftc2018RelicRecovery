@@ -29,6 +29,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
 
+import ftclib.FtcAnalogGyro;
 import ftclib.FtcAndroidTone;
 import ftclib.FtcDcMotor;
 import ftclib.FtcMRGyro;
@@ -46,6 +47,7 @@ import trclib.TrcUtil;
 
 public class Robot implements TrcPidController.PidInput
 {
+    private static final boolean USE_ANALOG_GYRO = true;
     private static final boolean USE_SPEECH = true;
 
     private static final String moduleName = "Robot";
@@ -102,8 +104,17 @@ public class Robot implements TrcPidController.PidInput
         //
         // Initialize sensors.
         //
-        gyro = new FtcMRGyro("gyroSensor");
-        ((FtcMRGyro)gyro).calibrate();
+        if (USE_ANALOG_GYRO)
+        {
+            gyro = new FtcAnalogGyro("analogGyro", RobotInfo.ANALOG_GYRO_VOLT_PER_DEG_PER_SEC);
+            ((FtcAnalogGyro)gyro).calibrate();
+            gyro.setScale(0, RobotInfo.ANALOG_GYRO_SCALE);
+        }
+        else
+        {
+            gyro = new FtcMRGyro("gyroSensor");
+            ((FtcMRGyro)gyro).calibrate();
+        }
 
         //
         // Initialize DriveBase.
