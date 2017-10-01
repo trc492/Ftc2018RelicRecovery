@@ -37,7 +37,7 @@ import trclib.TrcStateMachine;
 import trclib.TrcTimer;
 
 @TeleOp(name="Test", group="3543Test")
-public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepad.ButtonHandler
+public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
 {
     private static final String moduleName = "FtcTest";
 
@@ -137,60 +137,21 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
     //
 
     @Override
-    public void startMode()
-    {
-        super.startMode();
-    }   //startMode
-
-    @Override
-    public void stopMode()
-    {
-        super.stopMode();
-    }   //stopMode
-
-    //
-    // Must override TeleOp so it doesn't fight with us.
-    //
-    @Override
     public void runPeriodic(double elapsedTime)
     {
         //
-        // Allow TeleOp to run so we can control the robot in sensors test mode.
+        // Must override TeleOp so it doesn't fight with us.
         //
         switch (test)
         {
             case SENSORS_TEST:
             case VISION_TEST:
+                //
+                // Allow TeleOp to run so we can control the robot in sensors test mode.
+                //
                 super.runPeriodic(elapsedTime);
                 doSensorsTest();
-                if (robot.vuforiaVision != null)
-                {
-                    robot.vuforiaVision.getVuMarkPosition();
-                    robot.vuforiaVision.getVuMarkOrientation();
-                    RelicRecoveryVuMark vuMark = robot.vuforiaVision.getVuMark();
-                    if (vuMark != robot.prevVuMark)
-                    {
-                        String sentence = null;
-                        if (vuMark != RelicRecoveryVuMark.UNKNOWN)
-                        {
-                            sentence = String.format("%s is %s.", vuMark.toString(), "in view");
-                        }
-                        else if (robot.prevVuMark != null)
-                        {
-                            sentence = String.format("%s is %s.", robot.prevVuMark.toString(), "out of view");
-                        }
-
-                        if (sentence != null)
-                        {
-                            robot.dashboard.displayPrintf(11, sentence);
-                            if (robot.textToSpeech != null)
-                            {
-                                robot.textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
-                            }
-                        }
-                    }
-                    robot.prevVuMark = vuMark;
-                }
+                doVisionTest();
                 break;
 
             case MOTORS_TEST:
@@ -261,47 +222,19 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
         }
     }   //runContinuous
 
-    //
-    // Implements FtcMenu.MenuButtons interface.
-    //
-
-    @Override
-    public boolean isMenuUpButton()
-    {
-        return gamepad1.dpad_up;
-    }   //isMenuUpButton
-
-    @Override
-    public boolean isMenuDownButton()
-    {
-        return gamepad1.dpad_down;
-    }   //isMenuDownButton
-
-    @Override
-    public boolean isMenuEnterButton()
-    {
-        return gamepad1.a;
-    }   //isMenuEnterButton
-
-    @Override
-    public boolean isMenuBackButton()
-    {
-        return gamepad1.dpad_left;
-    }   //isMenuBackButton
-
     private void doMenus()
     {
         //
         // Create menus.
         //
-        FtcChoiceMenu<Test> testMenu = new FtcChoiceMenu<>("Tests:", null, this);
-        FtcValueMenu driveTimeMenu = new FtcValueMenu("Drive time:", testMenu, this, 1.0, 10.0, 1.0, 4.0, " %.0f sec");
+        FtcChoiceMenu<Test> testMenu = new FtcChoiceMenu<>("Tests:", null, robot);
+        FtcValueMenu driveTimeMenu = new FtcValueMenu("Drive time:", testMenu, robot, 1.0, 10.0, 1.0, 4.0, " %.0f sec");
         FtcValueMenu driveDistanceMenu = new FtcValueMenu(
-                "Drive distance:", testMenu, this, -10.0, 10.0, 0.5, 4.0, " %.1f ft");
+                "Drive distance:", testMenu, robot, -10.0, 10.0, 0.5, 4.0, " %.1f ft");
         FtcValueMenu rangeDistanceMenu = new FtcValueMenu(
-                "Range distance:", testMenu, this, 0.5, 12.0, 0.5, 6.0, " %.0f in");
+                "Range distance:", testMenu, robot, 0.5, 12.0, 0.5, 6.0, " %.0f in");
         FtcValueMenu turnDegreesMenu = new FtcValueMenu(
-                "Turn degrees:", testMenu, this, -360.0, 360.0, 5.0, 45.0, " %.0f deg");
+                "Turn degrees:", testMenu, robot, -360.0, 360.0, 5.0, 45.0, " %.0f deg");
         //
         // Populate menus.
         //
@@ -351,6 +284,38 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
                                 robot.gyro.getZRotationRate().value,
                                 robot.gyro.getZHeading().value);
     }   //doSensorsTest
+
+    private void doVisionTest()
+    {
+        if (robot.vuforiaVision != null)
+        {
+            robot.vuforiaVision.getVuMarkPosition();
+            robot.vuforiaVision.getVuMarkOrientation();
+            RelicRecoveryVuMark vuMark = robot.vuforiaVision.getVuMark();
+            if (vuMark != robot.prevVuMark)
+            {
+                String sentence = null;
+                if (vuMark != RelicRecoveryVuMark.UNKNOWN)
+                {
+                    sentence = String.format("%s is %s.", vuMark.toString(), "in view");
+                }
+                else if (robot.prevVuMark != null)
+                {
+                    sentence = String.format("%s is %s.", robot.prevVuMark.toString(), "out of view");
+                }
+
+                if (sentence != null)
+                {
+                    robot.dashboard.displayPrintf(11, sentence);
+                    if (robot.textToSpeech != null)
+                    {
+                        robot.textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                }
+            }
+            robot.prevVuMark = vuMark;
+        }
+    }   //doVisionTest
 
     /**
      * This method runs each of the four wheels in sequence for a fixed number of seconds. It is for diagnosing

@@ -33,7 +33,7 @@ import ftclib.FtcValueMenu;
 import trclib.TrcRobot;
 
 @Autonomous(name="Autonomous", group="3543Auto")
-public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
+public class FtcAuto extends FtcOpMode
 {
     private static final boolean USE_TRACELOG = true;
 
@@ -149,55 +149,26 @@ public class FtcAuto extends FtcOpMode implements FtcMenu.MenuButtons
         }
     }   //runContinuous
 
-    //
-    // Implements FtcMenu.MenuButtons interface.
-    //
-
-    @Override
-    public boolean isMenuUpButton()
-    {
-        return gamepad1.dpad_up;
-    }   //isMenuUpButton
-
-    @Override
-    public boolean isMenuDownButton()
-    {
-        return gamepad1.dpad_down;
-    }   //isMenuDownButton
-
-    @Override
-    public boolean isMenuEnterButton()
-    {
-        return gamepad1.a;
-    }   //isMenuEnterButton
-
-    @Override
-    public boolean isMenuBackButton()
-    {
-        return gamepad1.dpad_left;
-    }   //isMenuBackButton
-
     private void doMenus()
     {
         //
         // Create menus.
         //
-        FtcChoiceMenu<MatchType> matchTypeMenu = new FtcChoiceMenu<>("Match type:", null, this);
+        FtcChoiceMenu<MatchType> matchTypeMenu = new FtcChoiceMenu<>("Match type:", null, robot);
         FtcValueMenu matchNumberMenu = new FtcValueMenu(
-                "Match number:", matchTypeMenu, this, 1.0, 50.0, 1.0, 1.0, "%.0f");
-        FtcChoiceMenu<Alliance> allianceMenu = new FtcChoiceMenu<>("Alliance:", matchNumberMenu, this);
-        FtcValueMenu delayMenu = new FtcValueMenu("Delay time:", allianceMenu, this, 0.0, 30.0, 1.0, 0.0, " %.0f sec");
-        FtcChoiceMenu<Strategy> strategyMenu = new FtcChoiceMenu<>("Strategies:", delayMenu, this);
+                "Match number:", matchTypeMenu, robot, 1.0, 50.0, 1.0, 1.0, "%.0f");
+        FtcChoiceMenu<Alliance> allianceMenu = new FtcChoiceMenu<>("Alliance:", matchNumberMenu, robot);
+        FtcValueMenu delayMenu = new FtcValueMenu("Delay time:", allianceMenu, robot, 0.0, 30.0, 1.0, 0.0, " %.0f sec");
+        FtcChoiceMenu<Strategy> strategyMenu = new FtcChoiceMenu<>("Strategies:", delayMenu, robot);
         FtcValueMenu driveDistanceMenu = new FtcValueMenu(
-                "Distance:", strategyMenu, this, -12.0, 12.0, 0.5, 4.0, " %.0f ft");
+                "Distance:", strategyMenu, robot, -12.0, 12.0, 0.5, 4.0, " %.0f ft");
         FtcValueMenu driveTimeMenu = new FtcValueMenu(
-                "Drive time:", strategyMenu, this, 0.0, 30.0, 1.0, 5.0, " %.0f sec");
+                "Drive time:", strategyMenu, robot, 0.0, 30.0, 1.0, 5.0, " %.0f sec");
         FtcValueMenu drivePowerMenu = new FtcValueMenu(
-                "Drive power:", strategyMenu, this, -1.0, 1.0, 0.1, 0.5, " %.1f");
+                "Drive power:", strategyMenu, robot, -1.0, 1.0, 0.1, 0.5, " %.1f");
 
         matchNumberMenu.setChildMenu(allianceMenu);
         delayMenu.setChildMenu(strategyMenu);
-//        driveDistanceMenu.setChildMenu(drivePowerMenu);
         driveTimeMenu.setChildMenu(drivePowerMenu);
 
         //

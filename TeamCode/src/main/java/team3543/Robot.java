@@ -34,6 +34,7 @@ import ftclib.FtcAnalogGyro;
 import ftclib.FtcAndroidTone;
 import ftclib.FtcDcMotor;
 import ftclib.FtcMRGyro;
+import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
 import ftclib.FtcRobotBattery;
 import hallib.HalDashboard;
@@ -46,7 +47,7 @@ import trclib.TrcPidDrive;
 import trclib.TrcRobot;
 import trclib.TrcUtil;
 
-public class Robot implements TrcPidController.PidInput
+public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 {
     private static final boolean USE_ANALOG_GYRO = true;
     private static final boolean USE_SPEECH = true;
@@ -55,6 +56,7 @@ public class Robot implements TrcPidController.PidInput
     //
     // Global objects.
     //
+    public FtcOpMode opMode;
     public HalDashboard dashboard;
     public TrcDbgTrace tracer;
     //
@@ -97,12 +99,12 @@ public class Robot implements TrcPidController.PidInput
         //
         // Initialize global objects.
         //
-        HardwareMap hardwareMap = FtcOpMode.getInstance().hardwareMap;
+        opMode = FtcOpMode.getInstance();
         dashboard = HalDashboard.getInstance();
-        FtcRobotControllerActivity activity = (FtcRobotControllerActivity)hardwareMap.appContext;
-        hardwareMap.logDevices();
-        dashboard.setTextView((TextView)activity.findViewById(R.id.textOpMode));
         tracer = FtcOpMode.getGlobalTracer();
+        opMode.hardwareMap.logDevices();
+        FtcRobotControllerActivity activity = (FtcRobotControllerActivity)opMode.hardwareMap.appContext;
+        dashboard.setTextView((TextView)activity.findViewById(R.id.textOpMode));
         //
         // Text To Speech.
         //
@@ -125,8 +127,8 @@ public class Robot implements TrcPidController.PidInput
             ((FtcMRGyro)gyro).calibrate();
         }
 
-        int cameraViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        int cameraViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
         vuforiaVision = new VuforiaVision(this, cameraViewId);
         //
         // Initialize DriveBase.
@@ -296,6 +298,34 @@ public class Robot implements TrcPidController.PidInput
 
         return input;
     }   //getInput
+
+    //
+    // Implements FtcMenu.MenuButtons interface.
+    //
+
+    @Override
+    public boolean isMenuUpButton()
+    {
+        return opMode.gamepad1.dpad_up;
+    }   //isMenuUpButton
+
+    @Override
+    public boolean isMenuDownButton()
+    {
+        return opMode.gamepad1.dpad_down;
+    }   //isMenuDownButton
+
+    @Override
+    public boolean isMenuEnterButton()
+    {
+        return opMode.gamepad1.a;
+    }   //isMenuEnterButton
+
+    @Override
+    public boolean isMenuBackButton()
+    {
+        return opMode.gamepad1.dpad_left;
+    }   //isMenuBackButton
 
     private void setDrivePID(double xDistance, double yDistance, double heading)
     {
