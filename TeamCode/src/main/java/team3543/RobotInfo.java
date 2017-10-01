@@ -94,4 +94,11 @@ class RobotInfo
 
     static final double PIDDRIVE_STALL_TIMEOUT          = 0.25;     //in msec.
 
+    static final double VISION_KP                       = 0.2;
+    static final double VISION_KI                       = 0.0;
+    static final double VISION_KD                       = 0.0;
+    static final double VISION_KF                       = 0.0;
+    static final double VISION_TOLERANCE                = 1.0;
+    static final double VISION_SETTLING                 = 0.2;
+
 }   //class RobotInfo

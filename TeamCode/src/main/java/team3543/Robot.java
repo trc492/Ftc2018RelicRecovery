@@ -28,6 +28,8 @@ import android.widget.TextView;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import ftclib.FtcAnalogGyro;
 import ftclib.FtcAndroidTone;
@@ -65,6 +67,9 @@ public class Robot implements TrcPidController.PidInput
     //
     TrcGyro gyro = null;
     double targetHeading = 0.0;
+
+    public VuforiaVision vuforiaVision = null;
+
     //
     // DriveBase subsystem.
     //
@@ -79,6 +84,10 @@ public class Robot implements TrcPidController.PidInput
     TrcPidController encoderYPidCtrl = null;
     TrcPidController gyroPidCtrl = null;
     TrcPidDrive pidDrive = null;
+
+    TrcPidController visionPidCtrl = null;
+    TrcPidDrive visionDrive = null;
+
     //
     // Other subsystems.
     //
@@ -116,6 +125,9 @@ public class Robot implements TrcPidController.PidInput
             ((FtcMRGyro)gyro).calibrate();
         }
 
+        int cameraViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        vuforiaVision = new VuforiaVision(this, cameraViewId);
         //
         // Initialize DriveBase.
         //
@@ -166,6 +178,16 @@ public class Robot implements TrcPidController.PidInput
         pidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
         pidDrive.setBeep(androidTone);
 
+        visionPidCtrl = new TrcPidController(
+                "visionPidCtrl",
+                RobotInfo.VISION_KP, RobotInfo.VISION_KI, RobotInfo.VISION_KD, RobotInfo.VISION_KF,
+                RobotInfo.VISION_TOLERANCE, RobotInfo.VISION_SETTLING,
+                this);
+
+        visionDrive = new TrcPidDrive("visionDrive", driveBase, null, visionPidCtrl, null);
+        visionDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
+        visionDrive.setBeep(androidTone);
+
         //
         // Initialize other subsystems.
         //
@@ -192,6 +214,11 @@ public class Robot implements TrcPidController.PidInput
         // Since our gyro is analog, we need to enable its integrator.
         //
         gyro.setEnabled(true);
+
+        if (vuforiaVision != null)
+        {
+            vuforiaVision.setEnabled(true);
+        }
         //
         // Reset all X, Y and heading values.
         //
@@ -201,6 +228,10 @@ public class Robot implements TrcPidController.PidInput
 
     void stopMode(TrcRobot.RunMode runMode)
     {
+        if (vuforiaVision != null)
+        {
+            vuforiaVision.setEnabled(false);
+        }
         //
         // Disable the gyro integrator.
         //
@@ -233,6 +264,13 @@ public class Robot implements TrcPidController.PidInput
         else if (pidCtrl == gyroPidCtrl)
         {
             input = driveBase.getHeading();
+        }
+        else if (pidCtrl == visionPidCtrl)
+        {
+            if (vuforiaVision.getVuMark() != RelicRecoveryVuMark.UNKNOWN)
+            {
+                input = vuforiaVision.getVuMarkPosition().get(0)/RobotInfo.MM_PER_INCH;
+            }
         }
 
         return input;
