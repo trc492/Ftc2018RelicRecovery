@@ -28,7 +28,6 @@ import android.widget.TextView;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import ftclib.FtcAnalogGyro;
@@ -68,7 +67,8 @@ public class Robot implements TrcPidController.PidInput
     TrcGyro gyro = null;
     double targetHeading = 0.0;
 
-    public VuforiaVision vuforiaVision = null;
+    VuforiaVision vuforiaVision = null;
+    RelicRecoveryVuMark prevVuMark = null;
 
     //
     // DriveBase subsystem.
@@ -267,9 +267,30 @@ public class Robot implements TrcPidController.PidInput
         }
         else if (pidCtrl == visionPidCtrl)
         {
-            if (vuforiaVision.getVuMark() != RelicRecoveryVuMark.UNKNOWN)
+            RelicRecoveryVuMark vuMark = vuforiaVision.getVuMark();
+
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN)
             {
                 input = vuforiaVision.getVuMarkPosition().get(0)/RobotInfo.MM_PER_INCH;
+            }
+
+            if (textToSpeech != null && vuMark != prevVuMark)
+            {
+                String sentence = null;
+
+                if (vuMark != RelicRecoveryVuMark.UNKNOWN)
+                {
+                    sentence = String.format("%s is %s.", vuMark.toString(), "in view");
+                }
+                else if (prevVuMark != null)
+                {
+                    sentence = String.format("%s is %s.", prevVuMark.toString(), "out of view");
+                }
+
+                if (sentence != null)
+                {
+                    textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
+                }
             }
         }
 

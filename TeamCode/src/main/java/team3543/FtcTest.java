@@ -80,8 +80,6 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
 
     private int motorIndex = 0;
 
-    private RelicRecoveryVuMark prevVuMark = null;
-
     //
     // Implements FtcOpMode interface.
     //
@@ -170,16 +168,16 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
                     robot.vuforiaVision.getVuMarkPosition();
                     robot.vuforiaVision.getVuMarkOrientation();
                     RelicRecoveryVuMark vuMark = robot.vuforiaVision.getVuMark();
-                    if (vuMark != prevVuMark)
+                    if (vuMark != robot.prevVuMark)
                     {
                         String sentence = null;
                         if (vuMark != RelicRecoveryVuMark.UNKNOWN)
                         {
                             sentence = String.format("%s is %s.", vuMark.toString(), "in view");
                         }
-                        else if (prevVuMark != null)
+                        else if (robot.prevVuMark != null)
                         {
-                            sentence = String.format("%s is %s.", prevVuMark.toString(), "out of view");
+                            sentence = String.format("%s is %s.", robot.prevVuMark.toString(), "out of view");
                         }
 
                         if (sentence != null)
@@ -191,7 +189,7 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
                             }
                         }
                     }
-                    prevVuMark = vuMark;
+                    robot.prevVuMark = vuMark;
                 }
                 break;
 
@@ -257,7 +255,7 @@ public class FtcTest extends FtcTeleOp implements FtcMenu.MenuButtons, FtcGamepa
             case VISION_DRIVE:
                 if (!visionDriveCommand.cmdPeriodic(elapsedTime))
                 {
-
+                    // Do we need to do anything?
                 }
                 break;
         }
