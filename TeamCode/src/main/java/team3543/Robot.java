@@ -25,8 +25,6 @@ package team3543;
 import android.speech.tts.TextToSpeech;
 import android.widget.TextView;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
