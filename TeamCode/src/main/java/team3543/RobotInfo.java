@@ -94,7 +94,16 @@ class RobotInfo
 
     static final double PIDDRIVE_STALL_TIMEOUT          = 0.25;     //in msec.
 
-    static final double VISION_KP                       = 0.2;
+    /**
+     * @author TRC Programming Team, Elaine Z., Victor D.
+     *
+     * === VARIABLE VISION_KP CHANGELOG BELOW ===
+     * Tune 1: 1.0
+     * Tune 4: Useless stuff here
+     * Tune 5: 0.0125 (Best of Thursday 10/5/2017, 20:53:16)
+     * === END VARIABLE VISION_KP CHANGELOG.. ===
+     */
+    static final double VISION_KP                       = 0.0125;
     static final double VISION_KI                       = 0.0;
     static final double VISION_KD                       = 0.0;
     static final double VISION_KF                       = 0.0;

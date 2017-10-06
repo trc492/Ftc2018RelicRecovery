@@ -183,6 +183,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
                 RobotInfo.VISION_KP, RobotInfo.VISION_KI, RobotInfo.VISION_KD, RobotInfo.VISION_KF,
                 RobotInfo.VISION_TOLERANCE, RobotInfo.VISION_SETTLING,
                 this);
+        visionPidCtrl.setAbsoluteSetPoint(true);
 
         visionDrive = new TrcPidDrive("visionDrive", driveBase, null, visionPidCtrl, null);
         visionDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);

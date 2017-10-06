@@ -27,6 +27,8 @@ import trclib.TrcStateMachine;
 
 class CmdVisionDrive implements TrcRobot.RobotCommand
 {
+    private static final boolean debugVisionPid = true;
+
     private enum State
     {
         DO_VISION_DRIVE
@@ -71,7 +73,7 @@ class CmdVisionDrive implements TrcRobot.RobotCommand
             switch (state)
             {
                 case DO_VISION_DRIVE:
-                    //robot.setPIDDriveTarget(xDistance, yDistance, heading, false, event);
+                    robot.visionDrive.setTarget(12.0, 0.0, 0.0, true, null);
                     break;
 
                 default:
@@ -81,6 +83,18 @@ class CmdVisionDrive implements TrcRobot.RobotCommand
                     done = true;
                     sm.stop();
                     break;
+            }
+        }
+
+        if (robot.visionDrive.isActive() && debugVisionPid)
+        {
+            robot.tracer.traceInfo("Battery", "Voltage=%5.2fV (%5.2fV)",
+                    robot.battery.getVoltage(), robot.battery.getLowestVoltage());
+
+            if (debugVisionPid)
+            {
+                robot.visionPidCtrl.printPidInfo(robot.tracer);
+                robot.visionPidCtrl.displayPidInfo(10);
             }
         }
 
