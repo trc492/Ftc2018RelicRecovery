@@ -198,6 +198,10 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         // Initialize other subsystems.
         //
         glyphElevator = new GlyphElevator();
+        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+        {
+            glyphElevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
+        }
 
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
