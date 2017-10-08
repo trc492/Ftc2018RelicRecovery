@@ -29,7 +29,7 @@ package trclib;
  * its limited range of movement and will slow down and finally stop when lower or upper limit has been reached. It
  * also provides methods to move the actuator to a specified position and hold it there under load if necessary.
  */
-public class TrcLinearActuator implements TrcDigitalTrigger.TriggerHandler
+public class TrcLinearActuator implements TrcDigitalTrigger.TriggerHandler, TrcPidController.PidInput
 {
     private static final String moduleName = "TrcLinearActuator";
     private static final boolean debugEnabled = false;
@@ -352,5 +352,29 @@ public class TrcLinearActuator implements TrcDigitalTrigger.TriggerHandler
             dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API);
         }
     }   //triggerEvent
+
+    //
+    // Implements TrcPidController.PidInput.
+    //
+
+    /**
+     * This method is called by the PID controller to get the current height of the elevator.
+     *
+     * @param pidCtrl specifies the PID controller who is inquiring.
+     *
+     * @return current elevator height.
+     */
+    @Override
+    public double getInput(TrcPidController pidCtrl)
+    {
+        double value = 0.0;
+
+        if (pidCtrl == this.pidCtrl)
+        {
+            value = getPosition();
+        }
+
+        return value;
+    }   //getInput
 
 }   //class TrcLinearActuator

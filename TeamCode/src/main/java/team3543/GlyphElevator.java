@@ -27,7 +27,7 @@ import ftclib.FtcTouchSensor;
 import trclib.TrcLinearActuator;
 import trclib.TrcPidController;
 
-public class GlyphElevator extends TrcLinearActuator implements TrcPidController.PidInput
+public class GlyphElevator extends TrcLinearActuator
 {
     private FtcTouchSensor lowerLimitSwitch;
     private FtcDcMotor motor;
@@ -51,29 +51,5 @@ public class GlyphElevator extends TrcLinearActuator implements TrcPidController
         setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT);
         setPositionRange(RobotInfo.ELEVATOR_MIN_HEIGHT, RobotInfo.ELEVATOR_MAX_HEIGHT);
     }   //GlyphElevator
-
-    //
-    // Implements TrcPidController.PidInput.
-    //
-
-    /**
-     * This method is called by the PID controller to get the current height of the elevator.
-     *
-     * @param pidCtrl specifies the PID controller who is inquiring.
-     *
-     * @return current elevator height.
-     */
-    @Override
-    public double getInput(TrcPidController pidCtrl)
-    {
-        double value = 0.0;
-
-        if (pidCtrl == this.pidCtrl)
-        {
-            value = getPosition();
-        }
-
-        return value;
-    }   //getInput
 
 }   //class GlyphElevator
