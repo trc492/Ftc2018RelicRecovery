@@ -26,18 +26,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 class RobotInfo
 {
+    static final float MM_PER_INCH                      = 25.4f;
     //
     // DriveBase subsystem.
     //
-    static final float MM_PER_INCH                      = 25.4f;
-
     static final DcMotor.RunMode DRIVE_MOTOR_MODE       = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
     static final double TURN_POWER_LIMIT                = 0.5;
 
-    //
-    // INCHES_PER_COUNT: 0.0132166817227156
-    // 12/06/2016: 0.2, 0.0, 0.0 [< 8] 0.2, 0.0, 0.0 (No speed control)
-    //
     static final double ENCODER_X_KP                    = 0.2;
     static final double ENCODER_X_KI                    = 0.0;
     static final double ENCODER_X_KD                    = 0.0;
@@ -50,12 +45,7 @@ class RobotInfo
     static final double ENCODER_SMALL_X_KP              = 0.2;
     static final double ENCODER_SMALL_X_KI              = 0.0;
     static final double ENCODER_SMALL_X_KD              = 0.0;
-    //
-    // INCHES_PER_COUNT: 0.01667
-    // 12/06/2016: 0.045, 0.0, 0.0045 (No speed control)
-    // 12/22/2016: 0.046, 0.0, 0.0046 (No speed control)
-    // 01/09/2017: 0.02, 0.0, 0.0022 [< 8] 0.045, 0.0, 0.001 (No speed control)
-    //
+
     static final double ENCODER_Y_KP                    = 0.02;
     static final double ENCODER_Y_KI                    = 0.0;
     static final double ENCODER_Y_KD                    = 0.0022;
@@ -68,16 +58,7 @@ class RobotInfo
     static final double ENCODER_SMALL_Y_KP              = 0.045;
     static final double ENCODER_SMALL_Y_KI              = 0.0;
     static final double ENCODER_SMALL_Y_KD              = 0.001;
-    //
-    // Accurate PID but slow (with speed control ON): 0.02, 0.0, 0.0028
-    // Faster PID but may oscillate (with speed control ON): 0.022, 0.0, 0.0046 (limit to half power for mid-range)
-    // 12/06/2016: 0.021, 0.0, 0.0021; [< 15] 0.024, 0.0, 0.002;    (No speed control, 0.75 power limit)
-    // 12/07/2016: 0.021, 0.0, 0.0021; [< 15] 0.023, 0.0, 0.0023;   (No speed control, 0.75 power limit)
-    // 12/07/2016: 0.02,  0.0, 0.0022; [< 15] 0.024, 0.0, 0.0024;   (No speed control, 0.75 power limit)
-    // 12/08/2016: 0.02,  0.0, 0.0022; [< 15] 0.055, 0.0, 0.011;    (No speed control, 0.75 power limit)
-    // 12/10/2016: 0.022, 0.0, 0.0024; [< 15] 0.028, 0.0, 0.0;      (No speed control, 0.75 power limit)
-    // 01/09/2017: 0.024, 0.0, 0.024; [< 15] 0.03, 0.0, 0.001;        (No speed control, 0.75 power limit)
-    //
+
     static final double ANALOG_GYRO_SCALE               = 1.0136;
     static final double ANALOG_GYRO_VOLT_PER_DEG_PER_SEC= 0.007;
     static final double GYRO_KP                         = 0.024;
@@ -109,5 +90,31 @@ class RobotInfo
     static final double VISION_KF                       = 0.0;
     static final double VISION_TOLERANCE                = 1.0;
     static final double VISION_SETTLING                 = 0.2;
+
+    //
+    // GlyphGrabber subsystem.
+    //
+    static final double GLYPH_GRABBER_OPEN              = 0.2;
+    static final double GLYPH_GRABBER_CLOSE             = 0.8;
+
+    //
+    // JewelBar subsystem.
+    //
+    static final double JEWEL_BAR_EXTENDED              = 0.8;
+    static final double JEWEL_BAR_RETRACTED             = 0.2;
+
+    //
+    // GlyphElevator subsystem.
+    //
+    static final double ELEVATOR_INCHES_PER_COUNT       = 1.0;
+    static final double ELEVATOR_KP                     = 0.5;
+    static final double ELEVATOR_KI                     = 0.0;
+    static final double ELEVATOR_KD                     = 0.0;
+    static final double ELEVATOR_KF                     = 0.0;
+    static final double ELEVATOR_TOLERANCE              = 0.2;
+    static final double ELEVATOR_SETTLING               = 0.2;
+    static final double ELEVATOR_MIN_HEIGHT             = 0.0;
+    static final double ELEVATOR_MAX_HEIGHT             = 30.0;
+    static final double ELEVATOR_CAL_POWER              = 0.3;
 
 }   //class RobotInfo

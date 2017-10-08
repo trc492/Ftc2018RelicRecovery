@@ -48,6 +48,8 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
     private boolean invertedDrive = false;
     private DriveMode driveMode = DriveMode.MECANUM_MODE;
 
+    private boolean glyphGrabberClose = false;
+
     //
     // Implements FtcOpMode abstract method.
     //
@@ -174,6 +176,18 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
 
                 case FtcGamepad.GAMEPAD_Y:
+                    if (pressed)
+                    {
+                        glyphGrabberClose = !glyphGrabberClose;
+                        if (glyphGrabberClose)
+                        {
+                            robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
+                        }
+                        else
+                        {
+                            robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+                        }
+                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_LBUMPER:

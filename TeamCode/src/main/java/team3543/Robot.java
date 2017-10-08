@@ -35,6 +35,7 @@ import ftclib.FtcMRGyro;
 import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
 import ftclib.FtcRobotBattery;
+import ftclib.FtcServo;
 import hallib.HalDashboard;
 import trclib.TrcDbgTrace;
 import trclib.TrcDriveBase;
@@ -91,6 +92,10 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     //
     // Other subsystems.
     //
+    GlyphElevator glyphElevator = null;
+    GlyphGrabber glyphGrabber = null;
+    FtcServo leftJewelBar = null;
+    FtcServo rightJewelBar = null;
 
     public Robot(TrcRobot.RunMode runMode)
     {
@@ -192,6 +197,15 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
         // Initialize other subsystems.
         //
+        glyphElevator = new GlyphElevator();
+
+        glyphGrabber = new GlyphGrabber("glyphGrabber");
+        glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+
+        leftJewelBar = new FtcServo("leftJewelBar");
+        rightJewelBar = new FtcServo("rightJewelBar");
+        leftJewelBar.setPosition(RobotInfo.JEWEL_BAR_RETRACTED);
+        rightJewelBar.setPosition(RobotInfo.JEWEL_BAR_RETRACTED);
 
         //
         // Wait for gyro calibration to complete if not already.
