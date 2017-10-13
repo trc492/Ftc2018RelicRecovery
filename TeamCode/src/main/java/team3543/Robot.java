@@ -163,19 +163,19 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
         encoderXPidCtrl = new TrcPidController(
                 "encoderXPidCtrl",
-                RobotInfo.ENCODER_X_KP, RobotInfo.ENCODER_X_KI, RobotInfo.ENCODER_X_KD, RobotInfo.ENCODER_X_KF,
-                RobotInfo.ENCODER_X_TOLERANCE, RobotInfo.ENCODER_X_SETTLING,
-                this);
+                new TrcPidController.PidCoefficients(
+                        RobotInfo.ENCODER_X_KP, RobotInfo.ENCODER_X_KI, RobotInfo.ENCODER_X_KD),
+                RobotInfo.ENCODER_X_TOLERANCE, this);
         encoderYPidCtrl = new TrcPidController(
                 "encoderYPidCtrl",
-                RobotInfo.ENCODER_Y_KP, RobotInfo.ENCODER_Y_KI, RobotInfo.ENCODER_Y_KD, RobotInfo.ENCODER_Y_KF,
-                RobotInfo.ENCODER_Y_TOLERANCE, RobotInfo.ENCODER_Y_SETTLING,
-                this);
+                new TrcPidController.PidCoefficients(
+                        RobotInfo.ENCODER_Y_KP, RobotInfo.ENCODER_Y_KI, RobotInfo.ENCODER_Y_KD),
+                RobotInfo.ENCODER_Y_TOLERANCE, this);
         gyroPidCtrl = new TrcPidController(
                 "gyroPidCtrl",
-                RobotInfo.GYRO_KP, RobotInfo.GYRO_KI, RobotInfo.GYRO_KD, RobotInfo.GYRO_KF,
-                RobotInfo.GYRO_TOLERANCE, RobotInfo.GYRO_SETTLING,
-                this);
+                new TrcPidController.PidCoefficients(
+                        RobotInfo.GYRO_KP, RobotInfo.GYRO_KI, RobotInfo.GYRO_KD),
+                RobotInfo.GYRO_TOLERANCE, this);
         gyroPidCtrl.setAbsoluteSetPoint(true);
         gyroPidCtrl.setOutputRange(-RobotInfo.TURN_POWER_LIMIT, RobotInfo.TURN_POWER_LIMIT);
 
@@ -185,9 +185,9 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 
         visionPidCtrl = new TrcPidController(
                 "visionPidCtrl",
-                RobotInfo.VISION_KP, RobotInfo.VISION_KI, RobotInfo.VISION_KD, RobotInfo.VISION_KF,
-                RobotInfo.VISION_TOLERANCE, RobotInfo.VISION_SETTLING,
-                this);
+                new TrcPidController.PidCoefficients(
+                        RobotInfo.VISION_KP, RobotInfo.VISION_KI, RobotInfo.VISION_KD),
+                RobotInfo.VISION_TOLERANCE, this);
         visionPidCtrl.setAbsoluteSetPoint(true);
 
         visionDrive = new TrcPidDrive("visionDrive", driveBase, null, visionPidCtrl, null);
@@ -360,15 +360,18 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
             //
             // Small X movement, use stronger X PID to overcome friction.
             //
-            encoderXPidCtrl.setPID(
-                    RobotInfo.ENCODER_SMALL_X_KP, RobotInfo.ENCODER_SMALL_X_KI, RobotInfo.ENCODER_SMALL_X_KD, 0.0);
+            encoderXPidCtrl.setPidCoefficients(
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.ENCODER_SMALL_X_KP, RobotInfo.ENCODER_SMALL_X_KI, RobotInfo.ENCODER_SMALL_X_KD));
         }
         else
         {
             //
             // Use normal X PID.
             //
-            encoderXPidCtrl.setPID(RobotInfo.ENCODER_X_KP, RobotInfo.ENCODER_X_KI, RobotInfo.ENCODER_X_KD, 0.0);
+            encoderXPidCtrl.setPidCoefficients(
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.ENCODER_X_KP, RobotInfo.ENCODER_X_KI, RobotInfo.ENCODER_X_KD));
         }
 
         if (yDistance != 0.0 && yDistance < RobotInfo.SMALL_Y_THRESHOLD)
@@ -376,15 +379,18 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
             //
             // Small Y movement, use stronger Y PID to overcome friction.
             //
-            encoderYPidCtrl.setPID(
-                    RobotInfo.ENCODER_SMALL_Y_KP, RobotInfo.ENCODER_SMALL_Y_KI, RobotInfo.ENCODER_SMALL_Y_KD, 0.0);
+            encoderYPidCtrl.setPidCoefficients(
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.ENCODER_SMALL_Y_KP, RobotInfo.ENCODER_SMALL_Y_KI, RobotInfo.ENCODER_SMALL_Y_KD));
         }
         else
         {
             //
             // Use normal Y PID.
             //
-            encoderYPidCtrl.setPID(RobotInfo.ENCODER_Y_KP, RobotInfo.ENCODER_Y_KI, RobotInfo.ENCODER_Y_KD, 0.0);
+            encoderYPidCtrl.setPidCoefficients(
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.ENCODER_Y_KP, RobotInfo.ENCODER_Y_KI, RobotInfo.ENCODER_Y_KD));
         }
 
         if (degrees != 0.0 && degrees < RobotInfo.SMALL_TURN_THRESHOLD)
@@ -392,15 +398,18 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
             //
             // Small turn, use stronger turn PID to overcome friction.
             //
-            gyroPidCtrl.setPID(
-                    RobotInfo.GYRO_SMALL_TURN_KP, RobotInfo.GYRO_SMALL_TURN_KI, RobotInfo.GYRO_SMALL_TURN_KD, 0.0);
+            gyroPidCtrl.setPidCoefficients(
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.GYRO_SMALL_TURN_KP, RobotInfo.GYRO_SMALL_TURN_KI, RobotInfo.GYRO_SMALL_TURN_KD));
         }
         else
         {
             //
             // Use normal Y PID.
             //
-            gyroPidCtrl.setPID(RobotInfo.GYRO_KP, RobotInfo.GYRO_KI, RobotInfo.GYRO_KD, 0.0);
+            gyroPidCtrl.setPidCoefficients(
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.GYRO_KP, RobotInfo.GYRO_KI, RobotInfo.GYRO_KD));
         }
     }   //setDrivePID
 

@@ -43,9 +43,9 @@ public class GlyphElevator extends TrcLinearActuator
         motor = new FtcDcMotor("elevatorMotor", lowerLimitSwitch);
         pidCtrl = new TrcPidController(
                 "elevatorPidCtrl",
-                RobotInfo.ELEVATOR_KP, RobotInfo.ELEVATOR_KI, RobotInfo.ELEVATOR_KD, RobotInfo.ELEVATOR_KF,
-                RobotInfo.ELEVATOR_TOLERANCE, RobotInfo.ELEVATOR_SETTLING,
-                this);
+                new TrcPidController.PidCoefficients(
+                        RobotInfo.ELEVATOR_KP, RobotInfo.ELEVATOR_KI, RobotInfo.ELEVATOR_KD),
+                RobotInfo.ELEVATOR_TOLERANCE, this);
         pidCtrl.setAbsoluteSetPoint(true);
         initialize(motor, lowerLimitSwitch, pidCtrl);
         setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT);

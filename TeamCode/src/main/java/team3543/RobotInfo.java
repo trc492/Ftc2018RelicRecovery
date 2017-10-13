@@ -36,9 +36,7 @@ class RobotInfo
     static final double ENCODER_X_KP                    = 0.2;
     static final double ENCODER_X_KI                    = 0.0;
     static final double ENCODER_X_KD                    = 0.0;
-    static final double ENCODER_X_KF                    = 0.0;
     static final double ENCODER_X_TOLERANCE             = 2.0;
-    static final double ENCODER_X_SETTLING              = 0.2;
     static final double ENCODER_X_INCHES_PER_COUNT      = 0.0132166817227156;
 
     static final double SMALL_X_THRESHOLD               = 8.0;
@@ -49,9 +47,7 @@ class RobotInfo
     static final double ENCODER_Y_KP                    = 0.02;
     static final double ENCODER_Y_KI                    = 0.0;
     static final double ENCODER_Y_KD                    = 0.0022;
-    static final double ENCODER_Y_KF                    = 0.0;
     static final double ENCODER_Y_TOLERANCE             = 2.0;
-    static final double ENCODER_Y_SETTLING              = 0.2;
     static final double ENCODER_Y_INCHES_PER_COUNT      = 0.01667;
 
     static final double SMALL_Y_THRESHOLD               = 8.0;
@@ -64,9 +60,7 @@ class RobotInfo
     static final double GYRO_KP                         = 0.024;
     static final double GYRO_KI                         = 0.0;
     static final double GYRO_KD                         = 0.0024;
-    static final double GYRO_KF                         = 0.0;
     static final double GYRO_TOLERANCE                  = 2.0;
-    static final double GYRO_SETTLING                   = 0.2;
 
     static final double SMALL_TURN_THRESHOLD            = 15.0;
     static final double GYRO_SMALL_TURN_KP              = 0.03;
@@ -87,9 +81,7 @@ class RobotInfo
     static final double VISION_KP                       = 0.0125;
     static final double VISION_KI                       = 0.0;
     static final double VISION_KD                       = 0.0;
-    static final double VISION_KF                       = 0.0;
     static final double VISION_TOLERANCE                = 1.0;
-    static final double VISION_SETTLING                 = 0.2;
 
     //
     // GlyphGrabber subsystem.
@@ -110,9 +102,7 @@ class RobotInfo
     static final double ELEVATOR_KP                     = 0.5;
     static final double ELEVATOR_KI                     = 0.0;
     static final double ELEVATOR_KD                     = 0.0;
-    static final double ELEVATOR_KF                     = 0.0;
     static final double ELEVATOR_TOLERANCE              = 0.2;
-    static final double ELEVATOR_SETTLING               = 0.2;
     static final double ELEVATOR_MIN_HEIGHT             = 0.0;
     static final double ELEVATOR_MAX_HEIGHT             = 30.0;
     static final double ELEVATOR_CAL_POWER              = 0.3;
