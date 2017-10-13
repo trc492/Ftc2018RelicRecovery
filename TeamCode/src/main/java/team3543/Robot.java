@@ -94,8 +94,8 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     //
     GlyphElevator glyphElevator = null;
     GlyphGrabber glyphGrabber = null;
-    FtcServo leftJewelBar = null;
-    FtcServo rightJewelBar = null;
+    FtcServo leftJewelArm = null;
+    FtcServo rightJewelArm = null;
     RelicArm relicArm = null;
 
     public Robot(TrcRobot.RunMode runMode)
@@ -207,10 +207,10 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
 
-        leftJewelBar = new FtcServo("leftJewelBar");
-        rightJewelBar = new FtcServo("rightJewelBar");
-        leftJewelBar.setPosition(RobotInfo.JEWEL_BAR_RETRACTED);
-        rightJewelBar.setPosition(RobotInfo.JEWEL_BAR_RETRACTED);
+        leftJewelArm = new FtcServo("leftJewelArm");
+        rightJewelArm = new FtcServo("rightJewelArm");
+        leftJewelArm.setPosition(RobotInfo.JEWEL_ARM_RETRACTED);
+        rightJewelArm.setPosition(RobotInfo.JEWEL_ARM_RETRACTED);
         relicArm = new RelicArm();
 
         //
