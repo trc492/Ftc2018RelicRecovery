@@ -96,6 +96,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     GlyphGrabber glyphGrabber = null;
     FtcServo leftJewelBar = null;
     FtcServo rightJewelBar = null;
+    RelicArm relicArm = null;
 
     public Robot(TrcRobot.RunMode runMode)
     {
@@ -210,6 +211,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         rightJewelBar = new FtcServo("rightJewelBar");
         leftJewelBar.setPosition(RobotInfo.JEWEL_BAR_RETRACTED);
         rightJewelBar.setPosition(RobotInfo.JEWEL_BAR_RETRACTED);
+        relicArm = new RelicArm();
 
         //
         // Wait for gyro calibration to complete if not already.

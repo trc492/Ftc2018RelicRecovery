@@ -107,4 +107,21 @@ class RobotInfo
     static final double ELEVATOR_MAX_HEIGHT             = 30.0;
     static final double ELEVATOR_CAL_POWER              = 0.3;
 
+    //
+    // RelicArm subsystem.
+    //
+    static final double EXTENDER_INCHES_PER_COUNT       = 1.0;
+    static final double EXTENDER_KP                     = 0.5;
+    static final double EXTENDER_KI                     = 0.0;
+    static final double EXTENDER_KD                     = 0.0;
+    static final double EXTENDER_TOLERANCE              = 0.2;
+    static final double EXTENDER_MIN_POSITION           = 0.0;
+    static final double EXTENDER_MAX_POSITION           = 30.0;
+    static final double EXTENDER_CAL_POWER              = 0.3;
+
+    static final double RELIC_GRABBER_OPEN              = 0.2;
+    static final double RELIC_GRABBER_CLOSE             = 0.8;
+    static final double RELIC_ELBOW_DOWN_POWER          = 0.3;
+    static final double RELIC_ELBOW_UP_POWER            = 0.8;
+
 }   //class RobotInfo
