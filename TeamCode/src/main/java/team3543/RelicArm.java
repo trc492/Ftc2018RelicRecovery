@@ -25,15 +25,13 @@ package team3543;
 import ftclib.FtcDcMotor;
 import ftclib.FtcServo;
 import ftclib.FtcTouchSensor;
-import trclib.TrcLinearActuator;
-import trclib.TrcPidController;
+import trclib.TrcEnhancedServo;
 
 public class RelicArm
 {
     private FtcTouchSensor extenderLowerLimitSwitch;
-    private FtcDcMotor extenderMotor;
-    private TrcPidController extenderPidCtrl;
-    public TrcLinearActuator extender;
+    private FtcServo extenderServo;
+    public TrcEnhancedServo extender;
     public FtcServo grabber;
     private FtcTouchSensor elbowLowerLimitSwitch;
     private FtcTouchSensor elbowUpperLimitSwitch;
@@ -45,17 +43,8 @@ public class RelicArm
     public RelicArm()
     {
         extenderLowerLimitSwitch = new FtcTouchSensor("extenderLowerLimit");
-        extenderMotor = new FtcDcMotor("extenderMotor", extenderLowerLimitSwitch);
-        extender = new TrcLinearActuator("extender");
-        extenderPidCtrl = new TrcPidController(
-                "extenderPidCtrl",
-                new TrcPidController.PidCoefficients(
-                        RobotInfo.EXTENDER_KP, RobotInfo.EXTENDER_KI, RobotInfo.EXTENDER_KD),
-                RobotInfo.EXTENDER_TOLERANCE, extender);
-        extenderPidCtrl.setAbsoluteSetPoint(true);
-        extender.initialize(extenderMotor, extenderLowerLimitSwitch, extenderPidCtrl);
-        extender.setPositionScale(RobotInfo.EXTENDER_INCHES_PER_COUNT);
-        extender.setPositionRange(RobotInfo.EXTENDER_MIN_POSITION, RobotInfo.EXTENDER_MAX_POSITION);
+        extenderServo = new FtcServo("extenderServo");
+        extender = new TrcEnhancedServo("extender", extenderServo, extenderLowerLimitSwitch, null);
 
         grabber = new FtcServo("relicGrabber");
         grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
