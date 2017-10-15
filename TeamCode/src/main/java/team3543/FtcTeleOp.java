@@ -125,8 +125,8 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                                 robot.driveBase.getXPosition(), robot.driveBase.getYPosition(),
                                 robot.driveBase.getHeading());
 
-        robot.glyphElevator.setPower(operatorGamepad.getRightStickY(true));
-        robot.relicArm.extender.setPower(operatorGamepad.getLeftStickY(true));
+//        robot.glyphElevator.setPower(operatorGamepad.getRightStickY(true));
+//        robot.relicArm.extender.setPower(operatorGamepad.getLeftStickY(true));
     }   //runPeriodic
 
     //
@@ -180,6 +180,7 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     if (pressed)
                     {
                         relicGrabberClose = !relicGrabberClose;
+                        robot.dashboard.displayPrintf(10, "relicGrabber: %s", relicGrabberClose? "close": "open");
                         if (relicGrabberClose)
                         {
                             robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);

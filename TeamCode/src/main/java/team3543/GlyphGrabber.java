@@ -36,7 +36,7 @@ public class GlyphGrabber
     {
         this.instanceName = instanceName;
         glyphLeftServo = new FtcServo("glyphLeftServo");
-        glyphRightServo = new FtcServo("glphyRightServo");
+        glyphRightServo = new FtcServo("glyphRightServo");
         grabber = new TrcEnhancedServo("glyphGrabber", glyphLeftServo, glyphRightServo);
         glyphLeftServo.setInverted(true);
         glyphRightServo.setInverted(false);

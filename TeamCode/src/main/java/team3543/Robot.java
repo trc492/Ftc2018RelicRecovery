@@ -92,7 +92,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     //
     // Other subsystems.
     //
-    GlyphElevator glyphElevator = null;
+//    GlyphElevator glyphElevator = null;
     GlyphGrabber glyphGrabber = null;
     FtcServo leftJewelArm = null;
     FtcServo rightJewelArm = null;
@@ -198,11 +198,11 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
         // Initialize other subsystems.
         //
-        glyphElevator = new GlyphElevator();
-        if (runMode == TrcRobot.RunMode.AUTO_MODE)
-        {
-            glyphElevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
-        }
+//        glyphElevator = new GlyphElevator();
+//        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+//        {
+//            glyphElevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
+//        }
 
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);

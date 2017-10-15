@@ -42,16 +42,16 @@ public class RelicArm
      */
     public RelicArm()
     {
-        extenderLowerLimitSwitch = new FtcTouchSensor("extenderLowerLimit");
-        extenderServo = new FtcServo("extenderServo");
-        extender = new TrcEnhancedServo("extender", extenderServo, extenderLowerLimitSwitch, null);
+//        extenderLowerLimitSwitch = new FtcTouchSensor("extenderLowerLimit");
+//        extenderServo = new FtcServo("extenderServo");
+//        extender = new TrcEnhancedServo("extender", extenderServo, extenderLowerLimitSwitch, null);
 
         grabber = new FtcServo("relicGrabber");
         grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
 
-        elbowLowerLimitSwitch = new FtcTouchSensor("elbowLowerLimit");
-        elbowUpperLimitSwitch = new FtcTouchSensor("elbowUpperLimit");
-        elbow = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
+//        elbowLowerLimitSwitch = new FtcTouchSensor("elbowLowerLimit");
+//        elbowUpperLimitSwitch = new FtcTouchSensor("elbowUpperLimit");
+//        elbow = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
     }   //RelicArm
 
 }   //class RelicArm
