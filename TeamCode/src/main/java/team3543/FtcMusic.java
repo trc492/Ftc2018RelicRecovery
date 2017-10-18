@@ -138,7 +138,7 @@ public class FtcMusic extends FtcOpMode
     private FtcAndroidTone androidTone;
     private TrcSong starWars = new TrcSong("StarWars", starWarsSections, starWarsSequence);
     private TrcSong lesMiserables = new TrcSong("LesMiserables", lesMiserablesSections, lesMiserablesSequence);
-    private TrcSong dankestMemes = new TrcSong("LookAtMe", memesMashup, memesMashupSequence);
+    private TrcSong dankestMemes = new TrcSong("DankMemes", memesMashup, memesMashupSequence);
     private TrcSongPlayer songPlayer;
     private TrcStateMachine sm;
     private TrcEvent event = null;
