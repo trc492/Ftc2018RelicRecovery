@@ -116,12 +116,15 @@ public class FtcMusic extends FtcOpMode
 
     private static final String[] memesMashup =
             {
-                    // section 1
                     "1:F#4.1,F#4.1,"
                             + "G4.4,F#4.4,C4.1,G4.4,B3.1,G4.4,F#4.4,C4.1,"
                             + "G4.4,B3.4",
+                    // "Trolo" excerpt
+                    // WIP
+                    "2:E4.4,G4.4,A4.4,C5.4,B4.8,B4.8,G4.6,A4.8,A4.8,F4.6,"
+                            + "G4.8,C4.6,D4.6,E4.6,F4.6,E4.6"
             };
-    private static final String memesMashupSequence = "1";
+    private static final String memesMashupSequence = "1,2";
 
     private enum State
     {
