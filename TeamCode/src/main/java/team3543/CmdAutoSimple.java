@@ -27,7 +27,7 @@ import trclib.TrcRobot;
 import trclib.TrcStateMachine;
 import trclib.TrcTimer;
 
-class CmdSimpleAuto implements TrcRobot.RobotCommand
+class CmdAutoSimple implements TrcRobot.RobotCommand
 {
     private static final boolean debugXPid = false;
     private static final boolean debugYPid = false;
@@ -45,7 +45,7 @@ class CmdSimpleAuto implements TrcRobot.RobotCommand
         DONE
     }   //enum State
 
-    private static final String moduleName = "CmdSimpleAuto";
+    private static final String moduleName = "CmdAutoSimple";
 
     private Robot robot;
     private double delay;
@@ -53,7 +53,7 @@ class CmdSimpleAuto implements TrcRobot.RobotCommand
     private TrcTimer timer;
     private TrcStateMachine<State> sm;
 
-    CmdSimpleAuto(Robot robot, double delay)
+    CmdAutoSimple(Robot robot, double delay)
     {
         this.robot = robot;
         this.delay = delay;
@@ -61,7 +61,7 @@ class CmdSimpleAuto implements TrcRobot.RobotCommand
         timer = new TrcTimer(moduleName);
         sm = new TrcStateMachine<>(moduleName);
         sm.start(State.DO_DELAY);
-    }   //CmdSimpleAuto
+    }   //CmdAutoSimple
 
     //
     // Implements the TrcRobot.RobotCommand interface.
@@ -102,7 +102,6 @@ class CmdSimpleAuto implements TrcRobot.RobotCommand
                     robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
                     robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MID_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.DRIVE_OFF_PLATFORM);
-
                     break;
 
                 case DRIVE_OFF_PLATFORM:
@@ -147,4 +146,4 @@ class CmdSimpleAuto implements TrcRobot.RobotCommand
         return done;
     }   //cmdPeriodic
 
-}   //class CmdSimpleAuto
+}   //class CmdAutoSimple
