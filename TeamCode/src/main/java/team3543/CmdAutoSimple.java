@@ -115,15 +115,18 @@ class CmdAutoSimple implements TrcRobot.RobotCommand
                     robot.setPIDDriveTarget(15.0, 0.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
                 case MOVE_FORWARD:
+                    // Move forward
                     robot.targetHeading = 0.0;
                     robot.setPIDDriveTarget(0.0, 30.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);
                     break;
                 case SET_DOWN_GLYPH:
+                    // lower the elevator
                     robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MIN_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.RELEASE_GLYPH);
                     break;
                 case RELEASE_GLYPH:
+                    // open the glyphgrabber servos
                     robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
                     sm.waitForSingleEvent(event, State.DONE);
                     break;
