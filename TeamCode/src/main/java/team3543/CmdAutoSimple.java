@@ -39,7 +39,7 @@ class CmdAutoSimple implements TrcRobot.RobotCommand
         GRAB_LIFT_GLYPH,
         DRIVE_OFF_PLATFORM,
         CRAB_SIDEWAYS,
-        MOVE_FORWARD,
+        MOVE_FORWARD, // 3-4ft
         SET_DOWN_GLYPH,
         RELEASE_GLYPH,
         DONE
@@ -109,7 +109,24 @@ class CmdAutoSimple implements TrcRobot.RobotCommand
                     robot.setPIDDriveTarget(0.0, 30.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.CRAB_SIDEWAYS);
                     break;
-
+                case CRAB_SIDEWAYS:
+                    // ...
+                    robot.targetHeading = 0.0;
+                    robot.setPIDDriveTarget(15.0, 0.0, robot.targetHeading, false, event);
+                    sm.waitForSingleEvent(event, State.MOVE_FORWARD);
+                case MOVE_FORWARD:
+                    robot.targetHeading = 0.0;
+                    robot.setPIDDriveTarget(0.0, 30.0, robot.targetHeading, false, event);
+                    sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);
+                    break;
+                case SET_DOWN_GLYPH:
+                    robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MIN_HEIGHT, event, 2.0);
+                    sm.waitForSingleEvent(event, State.RELEASE_GLYPH);
+                    break;
+                case RELEASE_GLYPH:
+                    robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+                    sm.waitForSingleEvent(event, State.DONE);
+                    break;
                 case DONE:
                 default:
                     //
