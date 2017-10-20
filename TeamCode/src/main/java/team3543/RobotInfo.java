@@ -105,6 +105,7 @@ class RobotInfo
     static final double ELEVATOR_TOLERANCE              = 0.2;
     static final double ELEVATOR_MIN_HEIGHT             = 0.0;
     static final double ELEVATOR_MAX_HEIGHT             = 30.0;
+    static final double ELEVATOR_MID_HEIGHT             = 10.0;
     static final double ELEVATOR_CAL_POWER              = 0.3;
 
     //

@@ -92,7 +92,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     //
     // Other subsystems.
     //
-//    GlyphElevator glyphElevator = null;
+    GlyphElevator glyphElevator = null;
     GlyphGrabber glyphGrabber = null;
     FtcServo leftJewelArm = null;
     FtcServo rightJewelArm = null;
