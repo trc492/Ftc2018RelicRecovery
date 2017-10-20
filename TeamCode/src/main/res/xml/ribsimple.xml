@@ -20,13 +20,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
-<Robot type="FirstInspires-FTC" name="Rev Hub">
-    <LynxUsbDevice name="Expansion Hub Portal 1" serialNumber="DQ1NV38L" parentModuleAddress="2">
-        <LynxModule name="Expansion Hub 2" port="2">
-            <DigitalDevice name="touchSensor" port="1" />
-            <LynxColorSensor name="colorRangeSensor" port="0" bus="3" />
-            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
-            <I2cDeviceSynch name="pixyCam" port="0" bus="2" />
-        </LynxModule>
-    </LynxUsbDevice>
+<Robot type="FirstInspires-FTC" name="RIBSimpleRobot">
+    <MotorController name="Motor Controller 1" serialNumber="AH03ETQH">
+        <Motor name="lfWheel" port="1" />
+        <Motor name="lrWheel" port="2" />
+    </MotorController>
+    <MotorController name="Motor Controller 2" serialNumber="AH03ETUV">
+        <Motor name="rfWheel" port="1" />
+        <Motor name="rrWheel" port="2" />
+    </MotorController>
+    <MotorController name="Motor Controller 3" serialNumber="AH03ETU9">
+    </MotorController>
+    <MotorController name="Motor Controller 4" serialNumber="AH03ETUA">
+    </MotorController>
+    <ServoController name="Servo Controller 1" serialNumber="AI049L9E">
+    </ServoController>
+    <ServoController name="Servo Controller 2" serialNumber="AI049LVZ">
+    </ServoController>
+    <DeviceInterfaceModule name="Device Interface Module 1" serialNumber="AI02RLBT">
+    </DeviceInterfaceModule>
 </Robot>

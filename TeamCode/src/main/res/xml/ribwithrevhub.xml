@@ -20,11 +20,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
-<Robot type="FirstInspires-FTC" name="RIB with Reb Hub">
+<Robot type="FirstInspires-FTC" name="RIB with Rev Hub">
     <MotorController name="Motor Controller 1" serialNumber="AH03ETQH">
         <NeveRest40Gearmotor name="leftFrontWheel" port="1" />
         <NeveRest40Gearmotor name="rightFrontWheel" port="2" />
     </MotorController>
+    <MotorController name="Motor Controller 2" serialNumber="AH03ETUV">
+        <NeveRest40Gearmotor name="leftRearWheel" port="1" />
+        <NeveRest40Gearmotor name="rightRearWheel" port="2" />
+    </MotorController>
+    <MotorController name="Motor Controller 3" serialNumber="AH03ETU9">
+    </MotorController>
+    <MotorController name="Motor Controller 4" serialNumber="AH03ETUA">
+    </MotorController>
+    <ServoController name="Servo Controller 1" serialNumber="AI049L9E">
+        <Servo name="" port="1" />
+    </ServoController>
+    <DeviceInterfaceModule name="Device Interface Module 1" serialNumber="AI02RLBT">
+    </DeviceInterfaceModule>
     <LynxUsbDevice name="Expansion Hub Portal 1" serialNumber="DQ1NV38L" parentModuleAddress="2">
         <LynxModule name="Expansion Hub 2" port="2">
             <RevRoboticsHDHexMotor name="motor0" port="0" />
@@ -34,17 +47,4 @@ SOFTWARE.
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
         </LynxModule>
     </LynxUsbDevice>
-    <MotorController name="Motor Controller 0" serialNumber="AH03ETUA">
-    </MotorController>
-    <MotorController name="Motor Controller 2" serialNumber="AH03ETU9">
-    </MotorController>
-    <DeviceInterfaceModule name="Device Interface Module 1" serialNumber="AI02RLBT">
-    </DeviceInterfaceModule>
-    <ServoController name="Servo Controller 1" serialNumber="AI049L9E">
-        <Servo name="" port="1" />
-    </ServoController>
-    <MotorController name="Motor Controller 3" serialNumber="AH03ETUV">
-        <NeveRest40Gearmotor name="leftRearWheel" port="1" />
-        <NeveRest40Gearmotor name="rightRearWheel" port="2" />
-    </MotorController>
 </Robot>
