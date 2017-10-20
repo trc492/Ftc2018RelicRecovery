@@ -112,12 +112,12 @@ class CmdAutoSimple implements TrcRobot.RobotCommand
                 case CRAB_SIDEWAYS:
                     // ...
                     robot.targetHeading = 0.0;
-                    robot.setPIDDriveTarget(15.0, 0.0, robot.targetHeading, false, event);
+                    robot.setPIDDriveTarget(1.5, 0.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
                 case MOVE_FORWARD:
                     // Move forward
                     robot.targetHeading = 0.0;
-                    robot.setPIDDriveTarget(0.0, 30.0, robot.targetHeading, false, event);
+                    robot.setPIDDriveTarget(0.0, 4.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);
                     break;
                 case SET_DOWN_GLYPH:
