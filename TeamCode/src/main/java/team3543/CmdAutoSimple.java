@@ -114,6 +114,7 @@ class CmdAutoSimple implements TrcRobot.RobotCommand
                     robot.targetHeading = 0.0;
                     robot.setPIDDriveTarget(1.5, 0.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
+                    break;
                 case MOVE_FORWARD:
                     // Move forward
                     robot.targetHeading = 0.0;
