@@ -103,9 +103,9 @@ class RobotInfo
     static final double ELEVATOR_KI                     = 0.0;
     static final double ELEVATOR_KD                     = 0.0;
     static final double ELEVATOR_TOLERANCE              = 0.2;
-    static final double ELEVATOR_MIN_HEIGHT             = 7.5;
-    static final double ELEVATOR_MAX_HEIGHT             = 24.0;
-    static final double ELEVATOR_MID_HEIGHT             = 15.5;
+    static final double ELEVATOR_MIN_HEIGHT             = 7.5;  //
+    static final double ELEVATOR_MAX_HEIGHT             = 24.0; // Needs more calibration! Modified as of 10/20/17 21:16
+    static final double ELEVATOR_MID_HEIGHT             = 15.5; //
     static final double ELEVATOR_CAL_POWER              = 0.3;
 
     //
