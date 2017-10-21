@@ -125,8 +125,8 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                                 robot.driveBase.getXPosition(), robot.driveBase.getYPosition(),
                                 robot.driveBase.getHeading());
 
+        robot.relicArm.extender.setPower(operatorGamepad.getLeftStickY(true));
 //        robot.glyphElevator.setPower(operatorGamepad.getRightStickY(true));
-//        robot.relicArm.extender.setPower(operatorGamepad.getLeftStickY(true));
     }   //runPeriodic
 
     //

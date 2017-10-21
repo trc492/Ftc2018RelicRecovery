@@ -23,18 +23,18 @@
 package team3543;
 
 import ftclib.FtcDcMotor;
+import ftclib.FtcDigitalInput;
 import ftclib.FtcServo;
-import ftclib.FtcTouchSensor;
 import trclib.TrcEnhancedServo;
 
 public class RelicArm
 {
-    private FtcTouchSensor extenderLowerLimitSwitch;
+    private FtcDigitalInput extenderLowerLimitSwitch;
     private FtcServo extenderServo;
     public TrcEnhancedServo extender;
     public FtcServo grabber;
-    private FtcTouchSensor elbowLowerLimitSwitch;
-    private FtcTouchSensor elbowUpperLimitSwitch;
+    private FtcDigitalInput elbowLowerLimitSwitch;
+    private FtcDigitalInput elbowUpperLimitSwitch;
     public FtcDcMotor elbow;
 
     /**
@@ -42,15 +42,16 @@ public class RelicArm
      */
     public RelicArm()
     {
-//        extenderLowerLimitSwitch = new FtcTouchSensor("extenderLowerLimit");
-//        extenderServo = new FtcServo("extenderServo");
-//        extender = new TrcEnhancedServo("extender", extenderServo, extenderLowerLimitSwitch, null);
+        extenderLowerLimitSwitch = new FtcDigitalInput("extenderLowerLimit");
+        extenderServo = new FtcServo("extenderServo");
+        extenderServo.setInverted(true);
+        extender = new TrcEnhancedServo("extender", extenderServo, extenderLowerLimitSwitch, null);
 
         grabber = new FtcServo("relicGrabber");
         grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
 
-//        elbowLowerLimitSwitch = new FtcTouchSensor("elbowLowerLimit");
-//        elbowUpperLimitSwitch = new FtcTouchSensor("elbowUpperLimit");
+//        elbowLowerLimitSwitch = new FtcDigitalInput("elbowLowerLimit");
+//        elbowUpperLimitSwitch = new FtcDigitalInput("elbowUpperLimit");
 //        elbow = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
     }   //RelicArm
 
