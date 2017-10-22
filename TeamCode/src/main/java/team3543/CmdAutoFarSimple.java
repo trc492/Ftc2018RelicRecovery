@@ -27,7 +27,7 @@ import trclib.TrcRobot;
 import trclib.TrcStateMachine;
 import trclib.TrcTimer;
 
-class CmdAutoSimple implements TrcRobot.RobotCommand
+class CmdAutoFarSimple implements TrcRobot.RobotCommand
 {
     private static final boolean debugXPid = false;
     private static final boolean debugYPid = false;
@@ -37,31 +37,35 @@ class CmdAutoSimple implements TrcRobot.RobotCommand
     {
         DO_DELAY,
         GRAB_LIFT_GLYPH,
-        DRIVE_OFF_PLATFORM,
-        CRAB_SIDEWAYS,
-        MOVE_FORWARD, // 3-4ft
+        DRIVE_OFF_PLATFORM,// 3ft
+        TURN_TO_CRYPTOBOX, //
+        MOVE_FORWARD,
         SET_DOWN_GLYPH,
         RELEASE_GLYPH,
         DONE
     }   //enum State
 
-    private static final String moduleName = "CmdAutoSimple";
+    private static final String moduleName = "CmdAutoFarSimple";
 
     private Robot robot;
     private double delay;
+    private FtcAuto.Alliance alliance;
+
     private TrcEvent event;
     private TrcTimer timer;
     private TrcStateMachine<State> sm;
 
-    CmdAutoSimple(Robot robot, double delay)
+    CmdAutoFarSimple(Robot robot, double delay, FtcAuto.Alliance alliance)
     {
         this.robot = robot;
         this.delay = delay;
+        this.alliance = alliance;
+
         event = new TrcEvent(moduleName);
         timer = new TrcTimer(moduleName);
         sm = new TrcStateMachine<>(moduleName);
         sm.start(State.DO_DELAY);
-    }   //CmdAutoSimple
+    }   //CmdAutoFarSimple
 
     //
     // Implements the TrcRobot.RobotCommand interface.
@@ -106,33 +110,34 @@ class CmdAutoSimple implements TrcRobot.RobotCommand
 
                 case DRIVE_OFF_PLATFORM:
                     robot.targetHeading = 0.0;
-                    robot.setPIDDriveTarget(0.0, 30.0, robot.targetHeading, false, event);
-                    sm.waitForSingleEvent(event, State.CRAB_SIDEWAYS);
+                    robot.setPIDDriveTarget(0.0, 36.0, robot.targetHeading, false, event);
+                    sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     break;
-                case CRAB_SIDEWAYS:
+
+                case TURN_TO_CRYPTOBOX:
                     // ...
-                    robot.targetHeading = 0.0;
-                    robot.setPIDDriveTarget(1.5, 0.0, robot.targetHeading, false, event);
+                    robot.targetHeading = alliance == FtcAuto.Alliance.RED_ALLIANCE ? 90.0 : -90.0;
+                    robot.setPIDDriveTarget(0.0, 0.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
                     break;
+
                 case MOVE_FORWARD:
                     // Move forward
-                    robot.targetHeading = 0.0;
-                    robot.setPIDDriveTarget(0.0, 4.0, robot.targetHeading, false, event);
+                    robot.setPIDDriveTarget(0.0, 12.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);
                     break;
+
                 case SET_DOWN_GLYPH:
                     // lower the elevator
                     robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MIN_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.RELEASE_GLYPH);
                     break;
+
                 case RELEASE_GLYPH:
-                    // open the glyphgrabber servos
-                    robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
-                    sm.waitForSingleEvent(event, State.DONE);
-                    break;
                 case DONE:
                 default:
+                    // open the glyphgrabber servos
+                    robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
                     //
                     // We are done.
                     //
@@ -167,4 +172,4 @@ class CmdAutoSimple implements TrcRobot.RobotCommand
         return done;
     }   //cmdPeriodic
 
-}   //class CmdAutoSimple
+}   //class CmdAutoFarSimple

@@ -94,8 +94,8 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     //
     GlyphElevator glyphElevator = null;
     GlyphGrabber glyphGrabber = null;
-    FtcServo leftJewelArm = null;
-    FtcServo rightJewelArm = null;
+    JewelArm leftJewelArm = null;
+    JewelArm rightJewelArm = null;
     RelicArm relicArm = null;
 
     public Robot(TrcRobot.RunMode runMode)
@@ -147,8 +147,10 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         leftRearWheel.motor.setMode(RobotInfo.DRIVE_MOTOR_MODE);
         rightRearWheel.motor.setMode(RobotInfo.DRIVE_MOTOR_MODE);
 
-        leftFrontWheel.setInverted(true);
-        leftRearWheel.setInverted(true);
+        leftFrontWheel.setInverted(false);
+        leftRearWheel.setInverted(false);
+        rightFrontWheel.setInverted(true);
+        rightRearWheel.setInverted(true);
 
         driveBase = new TrcDriveBase(leftFrontWheel, leftRearWheel, rightFrontWheel, rightRearWheel, gyro);
         driveBase.setXPositionScale(RobotInfo.ENCODER_X_INCHES_PER_COUNT);
@@ -207,10 +209,12 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
 
-        leftJewelArm = new FtcServo("leftJewelArm");
-        rightJewelArm = new FtcServo("rightJewelArm");
-        leftJewelArm.setPosition(RobotInfo.JEWEL_ARM_RETRACTED);
-        rightJewelArm.setPosition(RobotInfo.JEWEL_ARM_RETRACTED);
+        leftJewelArm = new JewelArm("leftJewelArm");
+        rightJewelArm = new JewelArm("rightJewelArm");
+        leftJewelArm.setExtended(false);
+        leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+        rightJewelArm.setExtended(false);
+        rightJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
         relicArm = new RelicArm();
 
         //

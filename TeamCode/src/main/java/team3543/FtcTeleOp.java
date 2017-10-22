@@ -52,6 +52,15 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
     private boolean relicGrabberClose = false;
 
     //
+    // jewelArmState
+    // 0 = backwards
+    // 1 = neutral
+    // 2 = forward
+    //
+    private int leftJewelArmState = 1;
+    private int rightJewelArmState = 1;
+
+    //
     // Implements FtcOpMode abstract method.
     //
 
@@ -208,25 +217,11 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
 
                 case FtcGamepad.GAMEPAD_LBUMPER:
-                    if (pressed)
-                    {
-                        robot.leftJewelArm.setPosition(RobotInfo.JEWEL_ARM_EXTENDED);
-                    }
-                    else
-                    {
-                        robot.leftJewelArm.setPosition(RobotInfo.JEWEL_ARM_RETRACTED);
-                    }
+                    robot.leftJewelArm.setExtended(pressed);
                     break;
 
                 case FtcGamepad.GAMEPAD_RBUMPER:
-                    if (pressed)
-                    {
-                        robot.rightJewelArm.setPosition(RobotInfo.JEWEL_ARM_EXTENDED);
-                    }
-                    else
-                    {
-                        robot.rightJewelArm.setPosition(RobotInfo.JEWEL_ARM_RETRACTED);
-                    }
+                    robot.rightJewelArm.setExtended(pressed);
                     break;
 
                 case FtcGamepad.GAMEPAD_BACK:
@@ -250,9 +245,42 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_LEFT:
+                    if (pressed)
+                    {
+                        leftJewelArmState = (leftJewelArmState + 1) % 3;
+                        switch(leftJewelArmState)
+                        {
+                            case 0:
+                                robot.leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
+                                break;
+                            case 1:
+                                robot.leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+                                break;
+                            case 2:
+                                robot.leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
+                                break;
+                        }
+
+                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_RIGHT:
+                    if (pressed)
+                    {
+                        rightJewelArmState = (rightJewelArmState + 1) % 3;
+                        switch(rightJewelArmState)
+                        {
+                            case 0:
+                                robot.rightJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
+                                break;
+                            case 1:
+                                robot.rightJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+                                break;
+                            case 2:
+                                robot.rightJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
+                                break;
+                        }
+                    }
                     break;
             }
         }
