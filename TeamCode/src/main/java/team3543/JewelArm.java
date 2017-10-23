@@ -36,9 +36,9 @@ public class JewelArm
     public JewelArm(String instanceName)
     {
         this.instanceName = instanceName;
-        verticalServo = new FtcServo("verticalServo");
+        verticalServo = new FtcServo(instanceName + "VerticalServo");
         // verticalServo.setInverted(true);
-        horizontalServo = new FtcServo("horizontalServo");
+        horizontalServo = new FtcServo(instanceName + "HorizontalServo");
         // horizontalServo.setInverted(true);
     }   //JewelArm
 

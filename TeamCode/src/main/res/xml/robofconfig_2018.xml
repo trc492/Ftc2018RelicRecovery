@@ -23,6 +23,12 @@ SOFTWARE.
 <Robot type="FirstInspires-FTC" name="RobotConfig2018">
     <MotorController name="Motor Controller 1" serialNumber="AL00VV7G">
     </MotorController>
+    <MotorController name="Motor Controller 2" serialNumber="AL00VWRU">
+    </MotorController>
+    <ServoController name="Servo Controller 1" serialNumber="AI049LVZ">
+        <Servo name="relicGrabber" port="0" />
+        <Servo name="extenderServo" port="1" />
+    </ServoController>
     <LynxUsbDevice name="Expansion Hub Portal 1" serialNumber="DQ1NV38L" parentModuleAddress="2">
         <LynxModule name="Expansion Hub 2" port="2">
             <NeveRest40Gearmotor name="leftRearWheel" port="0" />
@@ -31,10 +37,10 @@ SOFTWARE.
             <NeveRest40Gearmotor name="rightFrontWheel" port="3" />
             <Servo name="glyphLeftServo" port="0" />
             <Servo name="glyphRightServo" port="1" />
-            <Servo name="leftJewelArm" port="2" />
-            <Servo name="rightJewelArm" port="3" />
-            <Servo name="relicGrabber" port="4" />
-            <ContinuousRotationServo name="extenderServo" port="5" />
+            <Servo name="leftJewelArmVerticalServo" port="2" />
+            <Servo name="leftJewelArmHorizontalServo" port="3" />
+            <Servo name="rightJewelArmVerticalServo" port="4" />
+            <Servo name="rightJewelArmHorizontalServo" port="5" />
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
             <I2cDeviceSynch name="pixyCam" port="0" bus="2" />
         </LynxModule>
