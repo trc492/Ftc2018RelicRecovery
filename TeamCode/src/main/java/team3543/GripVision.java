@@ -46,13 +46,12 @@ public class GripVision extends TrcOpenCvDetector<Rect[]>
 
     private static final int NUM_IMAGE_BUFFERS = 2;
 
-    private static final double[] RED_JEWEL_HUE = {0.0, 100.0};
-    private static final double[] BLUE_JEWEL_HUE = {40.0, 160.0};
+    private static final double[] RED_TARGET_HUE = {0.0, 100.0};
+    private static final double[] BLUE_TARGET_HUE = {40.0, 160.0};
 
-    private GripPipelineJewel gripRedJewel = null;
-    private GripPipelineJewel gripBlueJewel = null;
-    private volatile Rect[] jewelRects = null;
-    private volatile Mat currImage = null;
+    private GripPipeline gripRedTarget = null;
+    private GripPipeline gripBlueTarget = null;
+    private volatile Rect[] targetRects = null;
     private boolean videoOutEnabled = false;
 
     public GripVision(final String instanceName, HalVideoSource videoSource)
@@ -64,35 +63,10 @@ public class GripVision extends TrcOpenCvDetector<Rect[]>
             dbgTrace = new TrcDbgTrace(moduleName, tracingEnabled, traceLevel, msgLevel);
         }
 
-        gripRedJewel = new GripPipelineJewel("RedJewel", RED_JEWEL_HUE);
-        gripBlueJewel = new GripPipelineJewel("BlueJewel", BLUE_JEWEL_HUE);
-        jewelRects = new Rect[2];
+        gripRedTarget = new GripPipeline("RedTarget", RED_TARGET_HUE);
+        gripBlueTarget = new GripPipeline("BlueTarget", BLUE_TARGET_HUE);
+        targetRects = new Rect[2];
     }   //GripVision
-
-    /**
-     * This method update the video stream with the detected targets overlay on the image as rectangles.
-     *
-     * @param color specifies the color of the rectangle outline overlay onto the detected targets.
-     * @param thickness specifies the thickness of the rectangle outline.
-     */
-    public void putFrame(Scalar color, int thickness)
-    {
-        if (currImage != null)
-        {
-//            drawRectangles(currImage, objectRects, color, thickness);
-        }
-    }   //putFrame
-
-    /**
-     * This method update the video stream with the detected targets overlay on the image as rectangles.
-     */
-    public void putFrame()
-    {
-        if (currImage != null)
-        {
-//            drawRectangles(currImage, objectRects, new Scalar(0, 255, 0), 0);
-        }
-    }   //putFrame
 
     /**
      * This method enables/disables the video out stream.
@@ -112,23 +86,37 @@ public class GripVision extends TrcOpenCvDetector<Rect[]>
         videoOutEnabled = enabled;
     }   //setVideoOutEnabled
 
-//    public void setEnabled(boolean eanabled)
-//    {
-//
-//    }
-
-    public void getJewelRects(Rect[] rects)
+    public void retrieveTargetRects(Rect[] rects)
     {
-        synchronized (this.jewelRects)
+        synchronized (targetRects)
         {
-            rects[0] = jewelRects[0];
-            jewelRects[0] = null;
-            rects[1] = jewelRects[1];
-            jewelRects[1] = null;
+            rects[0] = targetRects[0];
+            targetRects[0] = null;
+            rects[1] = targetRects[1];
+            targetRects[1] = null;
         }
-    }   //getJewelRects
+    }   //retrieveTargetRects
 
-    private Rect getTargetRect(GripPipelineJewel pipeline, Mat image)
+    /**
+     * This method update the video stream with the detected targets overlay on the image as rectangles.
+     *
+     * @param color specifies the color of the rectangle outline overlay onto the detected targets.
+     * @param thickness specifies the thickness of the rectangle outline.
+     */
+    private void putFrame(Mat image, Scalar color, int thickness)
+    {
+        drawRectangles(image, targetRects, color, thickness);
+    }   //putFrame
+
+    /**
+     * This method update the video stream with the detected targets overlay on the image as rectangles.
+     */
+    private void putFrame(Mat image)
+    {
+        drawRectangles(image, targetRects, new Scalar(0, 255, 0), 0);
+    }   //putFrame
+
+    private Rect getTargetRect(GripPipeline pipeline, Mat image)
     {
         Rect targetRect = null;
         MatOfKeyPoint detectedTargets;
@@ -160,26 +148,24 @@ public class GripVision extends TrcOpenCvDetector<Rect[]>
      *        preallocated buffer required).
      * @return detected objects, null if none detected.
      */
-//    @Override
+    @Override
     public Rect[] detectObjects(Mat image, Rect[] buffers)
     {
         //
-        // Process the image to detect the jewels we are looking for and put them into jewelRects.
+        // Process the image to detect the targets we are looking for and put them into targetRects.
         //
-        gripRedJewel.process(image);
-        gripBlueJewel.process(image);
-        synchronized (jewelRects)
+        synchronized (targetRects)
         {
-            jewelRects[0] = getTargetRect(gripRedJewel, image);
-            jewelRects[1] = getTargetRect(gripBlueJewel, image);
+            targetRects[0] = getTargetRect(gripRedTarget, image);
+            targetRects[1] = getTargetRect(gripBlueTarget, image);
         }
 
         if (videoOutEnabled)
         {
-//            putFrame();
+            putFrame(image);
         }
 
-        return jewelRects;
+        return targetRects;
     }   //detectObjects
 
 }   //class GripVision

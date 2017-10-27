@@ -50,6 +50,8 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 {
     private static final boolean USE_ANALOG_GYRO = true;
     private static final boolean USE_SPEECH = true;
+    private static final boolean USE_VUFORIA = true;
+    private static final boolean USE_GRIPVISION = true;
 
     private static final String moduleName = "Robot";
     //
@@ -70,6 +72,8 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 
     VuforiaVision vuforiaVision = null;
     RelicRecoveryVuMark prevVuMark = null;
+    GripVision gripVision = null;
+
 
     //
     // DriveBase subsystem.
@@ -131,9 +135,21 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
             ((FtcMRGyro)gyro).calibrate();
         }
 
-        int cameraViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
-                "cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
-        vuforiaVision = new VuforiaVision(this, cameraViewId);
+        //
+        // Initialize vision subsystems.
+        //
+        if (USE_VUFORIA)
+        {
+            int cameraViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
+                    "cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
+            vuforiaVision = new VuforiaVision(this, cameraViewId);
+
+            if (USE_GRIPVISION)
+            {
+                gripVision = new GripVision("gripVision", vuforiaVision.vuforia);
+                gripVision.setVideoOutEnabled(true);
+            }
+        }
         //
         // Initialize DriveBase.
         //
@@ -244,6 +260,11 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         {
             vuforiaVision.setEnabled(true);
         }
+
+        if (gripVision != null)
+        {
+            gripVision.setEnabled(true);
+        }
         //
         // Reset all X, Y and heading values.
         //
@@ -253,6 +274,11 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 
     void stopMode(TrcRobot.RunMode runMode)
     {
+        if (gripVision != null)
+        {
+            gripVision.setEnabled(false);
+        }
+
         if (vuforiaVision != null)
         {
             vuforiaVision.setEnabled(false);

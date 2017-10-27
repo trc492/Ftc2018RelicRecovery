@@ -36,8 +36,12 @@ import ftclib.FtcVuforia;
 
 public class VuforiaVision
 {
+    private static final int IMAGE_WIDTH = 640;
+    private static final int IMAGE_HEIGHT = 480;
+    private static final int FRAME_QUEUE_CAPACITY = 2;
+
     private Robot robot;
-    private FtcVuforia vuforia;
+    public FtcVuforia vuforia;
 
     public VuforiaVision(Robot robot, int cameraViewId)
     {
@@ -52,6 +56,7 @@ public class VuforiaVision
         this.robot = robot;
         vuforia = new FtcVuforia(VUFORIA_LICENSE_KEY, cameraViewId, CAMERA_DIR, TRACKABLES_FILE, 1);
         vuforia.setTargetInfo(0, "relicVuMarkTemplate");
+        vuforia.configVideoSource(IMAGE_WIDTH, IMAGE_HEIGHT, FRAME_QUEUE_CAPACITY);
     }   //VuforiaVision
 
     public void setEnabled(boolean enabled)

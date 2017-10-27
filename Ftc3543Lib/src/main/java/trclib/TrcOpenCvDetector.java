@@ -23,8 +23,10 @@
 package trclib;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 import hallib.HalVideoSource;
 
@@ -34,7 +36,7 @@ import hallib.HalVideoSource;
  *
  * @param <O> specifies the type of the detected objects.
  */
-public abstract class TrcOpenCvDetector<O> //implements TrcVisionTask.VisionProcessor<Mat, O>
+public abstract class TrcOpenCvDetector<O> implements TrcVisionTask.VisionProcessor<Mat, O>
 {
     private static final String moduleName = "TrcOpenCvDetector";
     private static final boolean debugEnabled = false;
@@ -78,7 +80,7 @@ public abstract class TrcOpenCvDetector<O> //implements TrcVisionTask.VisionProc
 
         if (USE_VISIONTASK)
         {
-//            visionTask = new TrcVisionTask<>(instanceName, this, imageBuffers, detectedObjectBuffers);
+            visionTask = new TrcVisionTask<>(instanceName, this, imageBuffers, detectedObjectBuffers);
         }
     }   //TrcOpenCvDetector
 
@@ -167,26 +169,25 @@ public abstract class TrcOpenCvDetector<O> //implements TrcVisionTask.VisionProc
      */
     public void drawRectangles(Mat image, Rect[] detectedObjectRects, Scalar color, int thickness)
     {
-        throw new IllegalArgumentException("Should not come here");
-//        //
-//        // Overlay a rectangle on each detected object.
-//        //
-//        synchronized (image)
-//        {
-//            if (detectedObjectRects != null)
-//            {
-//                for (Rect r: detectedObjectRects)
-//                {
-//                    //
-//                    // Draw a rectangle around the detected object.
-//                    //
-//                    Imgproc.rectangle(
-//                        image, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), color, thickness);
-//                }
-//            }
-//
-//            videoSource.putFrame(image);
-//        }
+        //
+        // Overlay a rectangle on each detected object.
+        //
+        synchronized (image)
+        {
+            if (detectedObjectRects != null)
+            {
+                for (Rect r: detectedObjectRects)
+                {
+                    //
+                    // Draw a rectangle around the detected object.
+                    //
+                    Imgproc.rectangle(
+                        image, new Point(r.x, r.y), new Point(r.x + r.width, r.y + r.height), color, thickness);
+                }
+            }
+
+            videoSource.putFrame(image);
+        }
     }   //drawRectangles
 
     //
@@ -199,18 +200,17 @@ public abstract class TrcOpenCvDetector<O> //implements TrcVisionTask.VisionProc
      * @param image specifies the frame buffer to hold the captured image.
      * @return true if frame is successfully captured, false otherwise.
      */
-//    @Override
+    @Override
     public boolean grabFrame(Mat image)
     {
         boolean success = false;
 
-        throw new IllegalArgumentException("Should not come here");
-//        synchronized (image)
-//        {
-//            success = videoSource.getFrame(image);
-//        }
-//
-//        return success;
+        synchronized (image)
+        {
+            success = videoSource.getFrame(image);
+        }
+
+        return success;
     }   //grabFrame
 
 }   //class TrcOpenCvDetector

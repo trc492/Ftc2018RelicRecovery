@@ -30,6 +30,19 @@ package hallib;
  */
 public interface HalVideoSource<O>
 {
+    /**
+     * This method takes a snapshot of the video frame.
+     *
+     * @param frame specifies the frame buffer to hold the video snapshot.
+     * @return true if successful, false otherwise.
+     */
     boolean getFrame(O frame);
+
+    /**
+     * This method displays a frame buffer to the display surface.
+     *
+     * @param frame specifies the video frame to be displayed.
+     */
     void putFrame(O frame);
+
 }   //interface HalVideoSource
