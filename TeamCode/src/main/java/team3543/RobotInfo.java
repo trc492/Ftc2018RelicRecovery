@@ -125,7 +125,7 @@ class RobotInfo
 
     static final double RELIC_GRABBER_OPEN              = 0.2;
     static final double RELIC_GRABBER_CLOSE             = 0.8;
-    static final double RELIC_ELBOW_DOWN_POWER          = 0.3;
+    static final double RELIC_ELBOW_DOWN_POWER          = -0.8;
     static final double RELIC_ELBOW_UP_POWER            = 0.8;
 
 

@@ -134,7 +134,7 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                                 robot.driveBase.getHeading());
 
         robot.relicArm.extender.setPower(operatorGamepad.getLeftStickY(true));
-//        robot.glyphElevator.setPower(operatorGamepad.getRightStickY(true));
+        robot.glyphElevator.setPower(operatorGamepad.getRightStickY(true));
     }   //runPeriodic
 
     //
@@ -230,12 +230,20 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     {
                         robot.relicArm.elbow.setPower(RobotInfo.RELIC_ELBOW_UP_POWER);
                     }
+                    else
+                    {
+                        robot.relicArm.elbow.setPower(0.0);
+                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_DOWN:
                     if (pressed)
                     {
                         robot.relicArm.elbow.setPower(RobotInfo.RELIC_ELBOW_DOWN_POWER);
+                    }
+                    else
+                    {
+                        robot.relicArm.elbow.setPower(0.0);
                     }
                     break;
 

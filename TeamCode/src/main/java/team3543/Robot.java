@@ -127,7 +127,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
         if (USE_IMU)
         {
-            imu = new FtcRevImu("imu");
+            imu = new FtcRevImu("imu2");
             gyro = imu.gyro;
         }
         else
@@ -226,6 +226,8 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+
+        glyphElevator = new GlyphElevator();
 
         jewelArm = new JewelArm("jewelArm");
         jewelArm.setExtended(false);

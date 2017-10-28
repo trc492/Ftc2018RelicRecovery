@@ -21,17 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 <Robot type="FirstInspires-FTC" name="RobotConfig2018">
-    <!--
-    <MotorController name="Motor Controller 1" serialNumber="AL00VV7G">
-    </MotorController>
-    -->
-    <MotorController name="Motor Controller 2" serialNumber="AL00VWRU">
-        <Motor name="elevatorMotor" port="1" />
-        <Motor name="relicArmElbow" port="2" />
-    </MotorController>
-    <ServoController name="Servo Controller 1" serialNumber="AI049LVZ">
-    </ServoController>
-    <LynxUsbDevice name="Expansion Hub Portal 1" serialNumber="DQ1NV38L" parentModuleAddress="2">
+    <LynxUsbDevice name="Expansion Hub Portal 0" serialNumber="DQ1NV38L" parentModuleAddress="2">
         <LynxModule name="Expansion Hub 2" port="2">
             <NeveRest40Gearmotor name="leftRearWheel" port="0" />
             <NeveRest40Gearmotor name="rightRearWheel" port="1" />
@@ -49,8 +39,13 @@ SOFTWARE.
             <DigitalDevice name="elbowLowerLimit" port="2" />
             <DigitalDevice name="elbowUpperLimit" port="3" />
             <DigitalDevice name="elevatorLowerLimit" port="4" />
-            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+            <LynxEmbeddedIMU name="imu2" port="0" bus="0" />
             <I2cDeviceSynch name="pixyCam" port="0" bus="1" />
+        </LynxModule>
+        <LynxModule name="Expansion Hub 3" port="3">
+            <NeveRest40Gearmotor name="elevatorMotor" port="0" />
+            <NeveRest60Gearmotor name="relicArmElbow" port="1" />
+            <LynxEmbeddedIMU name="imu3" port="0" bus="0" />
         </LynxModule>
     </LynxUsbDevice>
 </Robot>

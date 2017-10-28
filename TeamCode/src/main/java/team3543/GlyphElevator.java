@@ -50,6 +50,7 @@ public class GlyphElevator extends TrcLinearActuator
         initialize(motor, lowerLimitSwitch, pidCtrl);
         setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT);
         setPositionRange(RobotInfo.ELEVATOR_MIN_HEIGHT, RobotInfo.ELEVATOR_MAX_HEIGHT);
+        setManualOverride(true);
     }   //GlyphElevator
 
 }   //class GlyphElevator
