@@ -34,6 +34,7 @@ import ftclib.FtcDcMotor;
 import ftclib.FtcMRGyro;
 import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
+import ftclib.FtcRevImu;
 import ftclib.FtcRobotBattery;
 import ftclib.FtcServo;
 import hallib.HalDashboard;
@@ -48,10 +49,11 @@ import trclib.TrcUtil;
 
 public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 {
-    private static final boolean USE_ANALOG_GYRO = true;
+    private static final boolean USE_IMU = true;
+    private static final boolean USE_ANALOG_GYRO = false;
     private static final boolean USE_SPEECH = true;
     private static final boolean USE_VUFORIA = true;
-    private static final boolean USE_GRIPVISION = true;
+    private static final boolean USE_GRIPVISION = false;
 
     private static final String moduleName = "Robot";
     //
@@ -67,6 +69,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     //
     // Sensors.
     //
+    FtcRevImu imu = null;
     TrcGyro gyro = null;
     double targetHeading = 0.0;
 
@@ -98,8 +101,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     //
     GlyphElevator glyphElevator = null;
     GlyphGrabber glyphGrabber = null;
-    JewelArm leftJewelArm = null;
-    JewelArm rightJewelArm = null;
+    JewelArm jewelArm = null;
     RelicArm relicArm = null;
 
     public Robot(TrcRobot.RunMode runMode)
@@ -123,16 +125,16 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
         // Initialize sensors.
         //
-        if (USE_ANALOG_GYRO)
+        if (USE_IMU)
+        {
+            imu = new FtcRevImu("imu");
+            gyro = imu.gyro;
+        }
+        else
         {
             gyro = new FtcAnalogGyro("analogGyro", RobotInfo.ANALOG_GYRO_VOLT_PER_DEG_PER_SEC);
             ((FtcAnalogGyro)gyro).calibrate();
             gyro.setScale(0, RobotInfo.ANALOG_GYRO_SCALE);
-        }
-        else
-        {
-            gyro = new FtcMRGyro("gyroSensor");
-            ((FtcMRGyro)gyro).calibrate();
         }
 
         //
@@ -225,20 +227,21 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
 
-        leftJewelArm = new JewelArm("leftJewelArm");
-        rightJewelArm = new JewelArm("rightJewelArm");
-        leftJewelArm.setExtended(false);
-        leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
-        rightJewelArm.setExtended(false);
-        rightJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+        jewelArm = new JewelArm("jewelArm");
+        jewelArm.setExtended(false);
+        jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+
         relicArm = new RelicArm();
 
-        //
-        // Wait for gyro calibration to complete if not already.
-        //
-        while (gyro.isCalibrating())
+        if (USE_ANALOG_GYRO)
         {
-            TrcUtil.sleep(10);
+            //
+            // Wait for gyro calibration to complete if not already.
+            //
+            while (gyro.isCalibrating())
+            {
+                TrcUtil.sleep(10);
+            }
         }
         //
         // Tell the driver initialization is complete.

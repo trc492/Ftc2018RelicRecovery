@@ -57,8 +57,7 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
     // 1 = neutral
     // 2 = forward
     //
-    private int leftJewelArmState = 1;
-    private int rightJewelArmState = 1;
+    private int jewelArmState = 1;
 
     //
     // Implements FtcOpMode abstract method.
@@ -217,11 +216,7 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
 
                 case FtcGamepad.GAMEPAD_LBUMPER:
-                    robot.leftJewelArm.setExtended(pressed);
-                    break;
-
-                case FtcGamepad.GAMEPAD_RBUMPER:
-                    robot.rightJewelArm.setExtended(pressed);
+                    robot.jewelArm.setExtended(pressed);
                     break;
 
                 case FtcGamepad.GAMEPAD_BACK:
@@ -247,17 +242,17 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                 case FtcGamepad.GAMEPAD_DPAD_LEFT:
                     if (pressed)
                     {
-                        leftJewelArmState = (leftJewelArmState + 1) % 3;
-                        switch(leftJewelArmState)
+                        jewelArmState = (jewelArmState + 1) % 3;
+                        switch(jewelArmState)
                         {
                             case 0:
-                                robot.leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
+                                robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
                                 break;
                             case 1:
-                                robot.leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+                                robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
                                 break;
                             case 2:
-                                robot.leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
+                                robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
                                 break;
                         }
 
@@ -265,22 +260,6 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_RIGHT:
-                    if (pressed)
-                    {
-                        rightJewelArmState = (rightJewelArmState + 1) % 3;
-                        switch(rightJewelArmState)
-                        {
-                            case 0:
-                                robot.rightJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
-                                break;
-                            case 1:
-                                robot.rightJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
-                                break;
-                            case 2:
-                                robot.rightJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
-                                break;
-                        }
-                    }
                     break;
             }
         }

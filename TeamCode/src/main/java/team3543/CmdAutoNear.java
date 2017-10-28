@@ -108,7 +108,7 @@ class CmdAutoNear implements TrcRobot.RobotCommand
                 //???
                 //PROFIT
                 case DEPLOY_JEWEL_ARM:
-                    robot.leftJewelArm.setExtended(true);
+                    robot.jewelArm.setExtended(true);
                     timer.set(0.3, event);
                     sm.waitForSingleEvent(event, State.DETECT_JEWEL);
                     break;
@@ -117,19 +117,19 @@ class CmdAutoNear implements TrcRobot.RobotCommand
                     break;
 
                 case WHACK_JEWEL:
-                    robot.leftJewelArm.setSweepPosition(jewelArmSweepPosition);
+                    robot.jewelArm.setSweepPosition(jewelArmSweepPosition);
                     timer.set(0.3, event);
                     sm.waitForSingleEvent(event, State.MOVE_JEWEL_ARM_UP);
                     break;
 
                 case MOVE_JEWEL_ARM_UP:
-                    robot.leftJewelArm.setExtended(false);
+                    robot.jewelArm.setExtended(false);
                     timer.set(0.3, event);
                     sm.waitForSingleEvent(event, State.RESET_JEWEL_ARM);
                     break;
 
                 case RESET_JEWEL_ARM:
-                    robot.leftJewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+                    robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
                     timer.set(0.3, event);
                     sm.waitForSingleEvent(event, State.DO_DELAY);
                     break;

@@ -30,6 +30,7 @@ import trclib.TrcEnhancedServo;
 public class RelicArm
 {
     private FtcDigitalInput extenderLowerLimitSwitch;
+    private FtcDigitalInput extenderUpperLimitSwitch;
     private FtcServo extenderServo;
     public TrcEnhancedServo extender;
     public FtcServo grabber;
@@ -43,16 +44,18 @@ public class RelicArm
     public RelicArm()
     {
         extenderLowerLimitSwitch = new FtcDigitalInput("extenderLowerLimit");
+        extenderUpperLimitSwitch = new FtcDigitalInput("extenderUpperLimit");
         extenderServo = new FtcServo("extenderServo");
         extenderServo.setInverted(true);
-        extender = new TrcEnhancedServo("extender", extenderServo, extenderLowerLimitSwitch, null);
+        extender = new TrcEnhancedServo(
+                "extender", extenderServo, extenderLowerLimitSwitch, extenderUpperLimitSwitch);
 
         grabber = new FtcServo("relicGrabber");
         grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
 
-//        elbowLowerLimitSwitch = new FtcDigitalInput("elbowLowerLimit");
-//        elbowUpperLimitSwitch = new FtcDigitalInput("elbowUpperLimit");
-//        elbow = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
+        elbowLowerLimitSwitch = new FtcDigitalInput("elbowLowerLimit");
+        elbowUpperLimitSwitch = new FtcDigitalInput("elbowUpperLimit");
+        elbow = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
     }   //RelicArm
 
 }   //class RelicArm

@@ -23,13 +23,13 @@
 package team3543;
 
 import ftclib.FtcDcMotor;
-import ftclib.FtcTouchSensor;
+import ftclib.FtcDigitalInput;
 import trclib.TrcLinearActuator;
 import trclib.TrcPidController;
 
 public class GlyphElevator extends TrcLinearActuator
 {
-    private FtcTouchSensor lowerLimitSwitch;
+    private FtcDigitalInput lowerLimitSwitch;
     private FtcDcMotor motor;
     private TrcPidController pidCtrl;
 
@@ -39,7 +39,7 @@ public class GlyphElevator extends TrcLinearActuator
     public GlyphElevator()
     {
         super("glyphElevator");
-        lowerLimitSwitch = new FtcTouchSensor("elevatorLowerLimit");
+        lowerLimitSwitch = new FtcDigitalInput("elevatorLowerLimit");
         motor = new FtcDcMotor("elevatorMotor", lowerLimitSwitch);
         pidCtrl = new TrcPidController(
                 "elevatorPidCtrl",
