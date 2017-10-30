@@ -42,12 +42,12 @@ import trclib.TrcGyro;
 import trclib.TrcUtil;
 
 /**
- * This class implements the REV Robotics IMU which is actually an Adafruit BNO055. It encapsulates two sub-classes:
+ * This class implements the BNO055 IMU which is actually an Adafruit BNO055. It encapsulates two sub-classes:
  * a 3-axis gyro and a 3-axis accelerometer.
  */
-public class FtcRevImu
+public class FtcBNO055Imu
 {
-    private static final String moduleName = "FtcRevImu";
+    private static final String moduleName = "FtcBNO055Imu";
     private static final boolean debugEnabled = false;
     private static final boolean tracingEnabled = false;
     private static final TrcDbgTrace.TraceLevel traceLevel = TrcDbgTrace.TraceLevel.API;
@@ -76,7 +76,7 @@ public class FtcRevImu
         public Gyro(String instanceName)
         {
             //
-            // REV IMU has a 3-axis gyro. The angular orientation data it returns is in Ordinal system.
+            // BNO055 IMU has a 3-axis gyro. The angular orientation data it returns is in Ordinal system.
             // So we need to convert it to Cartesian system.
             //
             super(instanceName, 3,
@@ -309,7 +309,7 @@ public class FtcRevImu
         public Accelerometer(String instanceName)
         {
             //
-            // REV IMU has a 3-axis accelerometer.
+            // BNO055 IMU has a 3-axis accelerometer.
             //
             super(instanceName, 3, ACCEL_HAS_X_AXIS | ACCEL_HAS_Y_AXIS | ACCEL_HAS_Z_AXIS, null);
         }   //Accelerometer
@@ -486,7 +486,7 @@ public class FtcRevImu
      * @param hardwareMap specifies the global hardware map.
      * @param instanceName specifies the instance name.
      */
-    public FtcRevImu(HardwareMap hardwareMap, String instanceName)
+    public FtcBNO055Imu(HardwareMap hardwareMap, String instanceName)
     {
         if (debugEnabled)
         {
@@ -524,16 +524,16 @@ public class FtcRevImu
         // Create the accelerometer object of the IMU.
         //
         accel = new Accelerometer(instanceName);
-    }   //FtcRevImu
+    }   //FtcBNO055Imu
 
     /**
      * Constructor: Creates an instance of the object.
      *
      * @param instanceName specifies the instance name.
      */
-    public FtcRevImu(String instanceName)
+    public FtcBNO055Imu(String instanceName)
     {
         this(FtcOpMode.getInstance().hardwareMap, instanceName);
-    }   //FtcRevImu
+    }   //FtcBNO055Imu
 
-}   //class FtcRevImu
+}   //class FtcBNO055Imu

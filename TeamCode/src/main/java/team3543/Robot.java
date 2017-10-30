@@ -30,10 +30,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import ftclib.FtcAnalogGyro;
 import ftclib.FtcAndroidTone;
+import ftclib.FtcBNO055Imu;
 import ftclib.FtcDcMotor;
 import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
-import ftclib.FtcRevImu;
 import ftclib.FtcRobotBattery;
 import hallib.HalDashboard;
 import trclib.TrcDbgTrace;
@@ -65,7 +65,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     //
     // Sensors.
     //
-    FtcRevImu imu = null;
+    FtcBNO055Imu imu = null;
     TrcGyro gyro = null;
     double targetHeading = 0.0;
     //
@@ -121,7 +121,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
         if (USE_IMU)
         {
-            imu = new FtcRevImu("imu2");
+            imu = new FtcBNO055Imu("imu2");
             gyro = imu.gyro;
         }
         else if (USE_ANALOG_GYRO)
