@@ -49,14 +49,7 @@ public class JewelArm
 
     public void setExtended(boolean extended)
     {
-        if (extended)
-        {
-            verticalServo.setPosition(RobotInfo.JEWEL_ARM_EXTENDED);
-        }
-        else
-        {
-            verticalServo.setPosition(RobotInfo.JEWEL_ARM_RETRACTED);
-        }
+        verticalServo.setPosition(extended? RobotInfo.JEWEL_ARM_EXTENDED: RobotInfo.JEWEL_ARM_RETRACTED);
     }
 
     public void setSweepPosition(double pos)

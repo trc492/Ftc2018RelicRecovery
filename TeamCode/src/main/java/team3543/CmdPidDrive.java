@@ -103,7 +103,7 @@ class CmdPidDrive implements TrcRobot.RobotCommand
                     //
                     // Drive the set distance and heading.
                     //
-                    robot.setPIDDriveTarget(xDistance, yDistance, heading, false, event);
+                    robot.pidDrive.setTarget(xDistance, yDistance, heading, false, event);
                     sm.waitForSingleEvent(event, State.DONE);
                     break;
 

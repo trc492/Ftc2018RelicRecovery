@@ -228,13 +228,18 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
         // Create menus.
         //
         FtcChoiceMenu<Test> testMenu = new FtcChoiceMenu<>("Tests:", null, robot);
-        FtcValueMenu driveTimeMenu = new FtcValueMenu("Drive time:", testMenu, robot, 1.0, 10.0, 1.0, 4.0, " %.0f sec");
+        FtcValueMenu driveTimeMenu = new FtcValueMenu(
+                "Drive time:", testMenu, robot, 1.0, 10.0, 1.0, 4.0,
+                " %.0f sec");
         FtcValueMenu driveDistanceMenu = new FtcValueMenu(
-                "Drive distance:", testMenu, robot, -10.0, 10.0, 0.5, 4.0, " %.1f ft");
+                "Drive distance:", testMenu, robot, -10.0, 10.0, 0.5, 4.0,
+                " %.1f ft");
         FtcValueMenu rangeDistanceMenu = new FtcValueMenu(
-                "Range distance:", testMenu, robot, 0.5, 12.0, 0.5, 6.0, " %.0f in");
+                "Range distance:", testMenu, robot, 0.5, 12.0, 0.5, 6.0,
+                " %.0f in");
         FtcValueMenu turnDegreesMenu = new FtcValueMenu(
-                "Turn degrees:", testMenu, robot, -360.0, 360.0, 5.0, 45.0, " %.0f deg");
+                "Turn degrees:", testMenu, robot, -360.0, 360.0, 5.0, 45.0,
+                " %.0f deg");
         //
         // Populate menus.
         //

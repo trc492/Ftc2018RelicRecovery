@@ -41,23 +41,12 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
     protected HalDashboard dashboard;
     protected Robot robot;
 
-    FtcGamepad driverGamepad;
-    private FtcGamepad operatorGamepad;
+    protected FtcGamepad driverGamepad;
+    protected FtcGamepad operatorGamepad;
 
     private double drivePowerScale = 1.0;
     private boolean invertedDrive = false;
     private DriveMode driveMode = DriveMode.MECANUM_MODE;
-
-    private boolean glyphGrabberClose = false;
-    private boolean relicGrabberClose = false;
-
-    //
-    // jewelArmState
-    // 0 = backwards
-    // 1 = neutral
-    // 2 = forward
-    //
-    private int jewelArmState = 1;
 
     //
     // Implements FtcOpMode abstract method.
@@ -89,13 +78,13 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
     {
         dashboard.clearDisplay();
         robot.startMode(TrcRobot.RunMode.TELEOP_MODE);
-        //
-        // There is an issue with the gamepad objects that may not be valid
-        // before waitForStart() is called. So we call the setGamepad method
-        // here to update their references in case they have changed.
-        //
-        driverGamepad.setGamepad(gamepad1);
-        operatorGamepad.setGamepad(gamepad2);
+//        //
+//        // There is an issue with the gamepad objects that may not be valid
+//        // before waitForStart() is called. So we call the setGamepad method
+//        // here to update their references in case they have changed.
+//        //
+//        driverGamepad.setGamepad(gamepad1);
+//        operatorGamepad.setGamepad(gamepad2);
     }   //startMode
 
     @Override
@@ -133,8 +122,9 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                                 robot.driveBase.getXPosition(), robot.driveBase.getYPosition(),
                                 robot.driveBase.getHeading());
 
-       // robot.relicArm.extender.setPower(operatorGamepad.getLeftStickY(true));
         robot.relicArm.elbow.setPower(operatorGamepad.getLeftStickY(true));
+        robot.relicArm.extender.setPower(
+                operatorGamepad.getRightTrigger(true) - operatorGamepad.getLeftTrigger(true));
         robot.glyphElevator.elevator.setPower(operatorGamepad.getRightStickY(true));
     }   //runPeriodic
 
@@ -181,50 +171,37 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
             switch (button)
             {
                 case FtcGamepad.GAMEPAD_A:
+                    if (pressed)
+                    {
+                        robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_B:
+                    if (pressed)
+                    {
+                        robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
+                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_X:
                     if (pressed)
                     {
-                        relicGrabberClose = !relicGrabberClose;
-                        robot.dashboard.displayPrintf(10, "relicGrabber: %s", relicGrabberClose? "close": "open");
-                        if (relicGrabberClose)
-                        {
-                            robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
-                        }
-                        else
-                        {
-                            robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_OPEN);
-                        }
+                        robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_OPEN);
                     }
                     break;
 
                 case FtcGamepad.GAMEPAD_Y:
                     if (pressed)
                     {
-                        glyphGrabberClose = !glyphGrabberClose;
-                        if (glyphGrabberClose)
-                        {
-                            robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
-                        }
-                        else
-                        {
-                            robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
-                        }
+                        robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
                     }
                     break;
 
                 case FtcGamepad.GAMEPAD_LBUMPER:
-                    robot.jewelArm.setExtended(pressed);
                     break;
 
-                case FtcGamepad.GAMEPAD_BACK:
-                    break;
-
-                case FtcGamepad.GAMEPAD_START:
+                case FtcGamepad.GAMEPAD_RBUMPER:
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_UP:
@@ -236,24 +213,37 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                 case FtcGamepad.GAMEPAD_DPAD_LEFT:
                     if (pressed)
                     {
-                        jewelArmState = (jewelArmState + 1) % 3;
-                        switch(jewelArmState)
-                        {
-                            case 0:
-                                robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
-                                break;
-                            case 1:
-                                robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
-                                break;
-                            case 2:
-                                robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
-                                break;
-                        }
-
+                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
+                    }
+                    else
+                    {
+                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
                     }
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_RIGHT:
+                    if (pressed)
+                    {
+                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
+                    }
+                    else
+                    {
+                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+                    }
+                    break;
+
+                case FtcGamepad.GAMEPAD_BACK:
+                    if (pressed)
+                    {
+                        robot.relicArm.elbow.zeroCalibrate(RobotInfo.RELIC_ELBOW_CAL_POWER);
+                    }
+                    break;
+
+                case FtcGamepad.GAMEPAD_START:
+                    if (pressed)
+                    {
+                        robot.glyphElevator.elevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
+                    }
                     break;
             }
         }

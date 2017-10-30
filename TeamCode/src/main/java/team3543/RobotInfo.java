@@ -40,10 +40,10 @@ class RobotInfo
     static final double ENCODER_X_TOLERANCE             = 2.0;
     static final double ENCODER_X_INCHES_PER_COUNT      = 0.0132166817227156;
 
-    static final double SMALL_X_THRESHOLD               = 8.0;
-    static final double ENCODER_SMALL_X_KP              = 0.2;
-    static final double ENCODER_SMALL_X_KI              = 0.0;
-    static final double ENCODER_SMALL_X_KD              = 0.0;
+//    static final double SMALL_X_THRESHOLD               = 8.0;
+//    static final double ENCODER_SMALL_X_KP              = 0.2;
+//    static final double ENCODER_SMALL_X_KI              = 0.0;
+//    static final double ENCODER_SMALL_X_KD              = 0.0;
 
     static final double ENCODER_Y_KP                    = 0.02;
     static final double ENCODER_Y_KI                    = 0.0;
@@ -63,10 +63,10 @@ class RobotInfo
     static final double GYRO_KD                         = 0.0024;
     static final double GYRO_TOLERANCE                  = 2.0;
 
-    static final double SMALL_TURN_THRESHOLD            = 15.0;
-    static final double GYRO_SMALL_TURN_KP              = 0.03;
-    static final double GYRO_SMALL_TURN_KI              = 0.0;
-    static final double GYRO_SMALL_TURN_KD              = 0.001;
+//    static final double SMALL_TURN_THRESHOLD            = 15.0;
+//    static final double GYRO_SMALL_TURN_KP              = 0.03;
+//    static final double GYRO_SMALL_TURN_KI              = 0.0;
+//    static final double GYRO_SMALL_TURN_KD              = 0.001;
 
     static final double PIDDRIVE_STALL_TIMEOUT          = 0.25;     //in msec.
 
@@ -122,6 +122,7 @@ class RobotInfo
     static final double RELIC_ELBOW_TOLERANCE           = 2.0;
     static final double RELIC_ELBOW_MIN_POS             = -40.0;
     static final double RELIC_ELBOW_MAX_POS             = 200.0;    //????
+    static final double RELIC_ELBOW_CAL_POWER           = 0.3;
     //
     // To counteract gravity, we need to add power compensation to the elbow motor.
     // We are using a NeveRest 60 motor. The performance spec of this motor is:

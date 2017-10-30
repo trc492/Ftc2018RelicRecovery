@@ -110,20 +110,20 @@ class CmdAutoFar implements TrcRobot.RobotCommand
 
                 case DRIVE_OFF_PLATFORM:
                     robot.targetHeading = 0.0;
-                    robot.setPIDDriveTarget(0.0, 36.0, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(0.0, 36.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     break;
 
                 case TURN_TO_CRYPTOBOX:
                     // ...
                     robot.targetHeading = alliance == FtcAuto.Alliance.RED_ALLIANCE ? 90.0 : -90.0;
-                    robot.setPIDDriveTarget(0.0, 0.0, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(0.0, 0.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
                     break;
 
                 case MOVE_FORWARD:
                     // Move forward
-                    robot.setPIDDriveTarget(0.0, 12.0, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(0.0, 12.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);
                     break;
 

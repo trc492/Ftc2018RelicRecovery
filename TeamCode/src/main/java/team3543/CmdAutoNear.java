@@ -157,7 +157,7 @@ class CmdAutoNear implements TrcRobot.RobotCommand
 
                 case DRIVE_OFF_PLATFORM:
                     robot.targetHeading = 0.0;
-                    robot.setPIDDriveTarget(0.0, 30.0, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(0.0, 30.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.CRAB_SIDEWAYS);
                     break;
 
@@ -165,14 +165,14 @@ class CmdAutoNear implements TrcRobot.RobotCommand
                     // ...
                     robot.targetHeading = 0.0;
                     double xDistance = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -15.0 : 15.0;
-                    robot.setPIDDriveTarget(xDistance, 0.0, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(xDistance, 0.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
                     break;
 
                 case MOVE_FORWARD:
                     // Move forward
                     robot.targetHeading = 0.0;
-                    robot.setPIDDriveTarget(0.0, 4.0, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(0.0, 4.0, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);
                     break;
 
