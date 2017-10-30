@@ -42,6 +42,7 @@ import trclib.TrcDbgTrace;
 import trclib.TrcDriveBase;
 import trclib.TrcEvent;
 import trclib.TrcGyro;
+import trclib.TrcLinearActuator;
 import trclib.TrcPidController;
 import trclib.TrcPidDrive;
 import trclib.TrcRobot;
@@ -149,7 +150,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
             if (USE_GRIPVISION)
             {
                 gripVision = new GripVision("gripVision", vuforiaVision.vuforia);
-                gripVision.setVideoOutEnabled(true);
+                gripVision.setVideoOutEnabled(false);
             }
         }
         //
@@ -218,16 +219,15 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
         // Initialize other subsystems.
         //
-//        glyphElevator = new GlyphElevator();
-//        if (runMode == TrcRobot.RunMode.AUTO_MODE)
-//        {
-//            glyphElevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
-//        }
+
+        glyphElevator = new GlyphElevator();
+        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+        {
+            glyphElevator.elevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
+        }
 
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
-
-        glyphElevator = new GlyphElevator();
 
         jewelArm = new JewelArm("jewelArm");
         jewelArm.setExtended(false);

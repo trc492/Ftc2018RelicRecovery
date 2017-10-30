@@ -151,7 +151,7 @@ class CmdAutoNear implements TrcRobot.RobotCommand
 
                 case GRAB_LIFT_GLYPH:
                     robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
-                    robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MID_HEIGHT, event, 2.0);
+                    robot.glyphElevator.elevator.setPosition(RobotInfo.ELEVATOR_MID_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.DRIVE_OFF_PLATFORM);
                     break;
 
@@ -178,7 +178,7 @@ class CmdAutoNear implements TrcRobot.RobotCommand
 
                 case SET_DOWN_GLYPH:
                     // lower the elevator
-                    robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MIN_HEIGHT, event, 2.0);
+                    robot.glyphElevator.elevator.setPosition(RobotInfo.ELEVATOR_MIN_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.RELEASE_GLYPH);
                     break;
 

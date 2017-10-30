@@ -26,23 +26,33 @@ import ftclib.FtcDcMotor;
 import ftclib.FtcDigitalInput;
 import ftclib.FtcServo;
 import trclib.TrcEnhancedServo;
+import trclib.TrcPidController;
+import trclib.TrcRotationalActuator;
 
-public class RelicArm
+public class RelicArm implements TrcPidController.PidInput, TrcRotationalActuator.PowerCompensation
 {
     private FtcDigitalInput extenderLowerLimitSwitch;
     private FtcDigitalInput extenderUpperLimitSwitch;
     private FtcServo extenderServo;
     public TrcEnhancedServo extender;
-    public FtcServo grabber;
     private FtcDigitalInput elbowLowerLimitSwitch;
     private FtcDigitalInput elbowUpperLimitSwitch;
-    public FtcDcMotor elbow;
+    private FtcDcMotor elbowMotor;
+    private TrcPidController elbowPidCtrl;
+    public TrcRotationalActuator elbow;
+    public FtcServo grabber;
 
     /**
      * Constructor: Create an instance of the object  .
      */
     public RelicArm()
     {
+        //
+        // Relic arm consists of three subsystems:
+        // - Extender
+        // - Elbow
+        // - Grabber
+        //
         extenderLowerLimitSwitch = new FtcDigitalInput("extenderLowerLimit");
         extenderUpperLimitSwitch = new FtcDigitalInput("extenderUpperLimit");
         extenderServo = new FtcServo("extenderServo");
@@ -50,12 +60,61 @@ public class RelicArm
         extender = new TrcEnhancedServo(
                 "extender", extenderServo, extenderLowerLimitSwitch, extenderUpperLimitSwitch);
 
-        grabber = new FtcServo("relicGrabber");
-        grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
-
         elbowLowerLimitSwitch = new FtcDigitalInput("elbowLowerLimit");
         elbowUpperLimitSwitch = new FtcDigitalInput("elbowUpperLimit");
-        elbow = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
+        elbowMotor = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
+        elbowPidCtrl = new TrcPidController(
+                "elbowPidCtrl",
+                new TrcPidController.PidCoefficients(
+                        RobotInfo.RELIC_ELBOW_KP, RobotInfo.RELIC_ELBOW_KI, RobotInfo.RELIC_ELBOW_KD),
+                RobotInfo.RELIC_ELBOW_TOLERANCE, this);
+        elbow = new TrcRotationalActuator(
+                "elbow", elbowMotor, elbowLowerLimitSwitch, elbowPidCtrl, this);
+        elbow.setPositionScale(RobotInfo.RELIC_ELBOW_DEGREES_PER_COUNT, RobotInfo.RELIC_ELBOW_POS_OFFSET);
+        elbow.setPositionRange(RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS);
+
+        grabber = new FtcServo("relicGrabber");
+        grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
     }   //RelicArm
+
+    //
+    // Implements TrcRotationalActuator.PowerCompensation interface
+    //
+
+    /**
+     * This method is called to get compensation power that adds to the power value when doing a set power on
+     * the motor.
+     *
+     * @return compensation power value to counter gravity.
+     */
+    @Override
+    public double getCompensation()
+    {
+        return Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
+    }
+
+    //
+    // Implements TrcPidController.PidInput.
+    //
+
+    /**
+     * This method is called by the PID controller to get the current height of the elevator.
+     *
+     * @param pidCtrl specifies the PID controller who is inquiring.
+     *
+     * @return current elevator height.
+     */
+    @Override
+    public double getInput(TrcPidController pidCtrl)
+    {
+        double value = 0.0;
+
+        if (pidCtrl == this.elbowPidCtrl)
+        {
+            value = elbow.getPosition();
+        }
+
+        return value;
+    }   //getInput
 
 }   //class RelicArm

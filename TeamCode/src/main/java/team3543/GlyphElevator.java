@@ -27,30 +27,54 @@ import ftclib.FtcDigitalInput;
 import trclib.TrcLinearActuator;
 import trclib.TrcPidController;
 
-public class GlyphElevator extends TrcLinearActuator
+public class GlyphElevator implements TrcPidController.PidInput
 {
-    private FtcDigitalInput lowerLimitSwitch;
-    private FtcDcMotor motor;
-    private TrcPidController pidCtrl;
+    private FtcDigitalInput elevatorLowerLimitSwitch;
+    private FtcDcMotor elevatorMotor;
+    private TrcPidController elevatorPidCtrl;
+    public TrcLinearActuator elevator;
 
     /**
      * Constructor: Create an instance of the object.
      */
     public GlyphElevator()
     {
-        super("glyphElevator");
-        lowerLimitSwitch = new FtcDigitalInput("elevatorLowerLimit");
-        motor = new FtcDcMotor("elevatorMotor", lowerLimitSwitch);
-        pidCtrl = new TrcPidController(
+        elevatorLowerLimitSwitch = new FtcDigitalInput("elevatorLowerLimit");
+        elevatorMotor = new FtcDcMotor("elevatorMotor", elevatorLowerLimitSwitch);
+        elevatorPidCtrl = new TrcPidController(
                 "elevatorPidCtrl",
                 new TrcPidController.PidCoefficients(
                         RobotInfo.ELEVATOR_KP, RobotInfo.ELEVATOR_KI, RobotInfo.ELEVATOR_KD),
                 RobotInfo.ELEVATOR_TOLERANCE, this);
-        pidCtrl.setAbsoluteSetPoint(true);
-        initialize(motor, lowerLimitSwitch, pidCtrl);
-        setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT);
-        setPositionRange(RobotInfo.ELEVATOR_MIN_HEIGHT, RobotInfo.ELEVATOR_MAX_HEIGHT);
-        setManualOverride(true);
+        elevator = new TrcLinearActuator(
+                "elevator", elevatorMotor, elevatorLowerLimitSwitch, elevatorPidCtrl);
+        elevator.setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT, 0.0);
+        elevator.setPositionRange(RobotInfo.ELEVATOR_MIN_HEIGHT, RobotInfo.ELEVATOR_MAX_HEIGHT);
+        elevator.setManualOverride(true);
     }   //GlyphElevator
+
+    //
+    // Implements TrcPidController.PidInput.
+    //
+
+    /**
+     * This method is called by the PID controller to get the current height of the elevator.
+     *
+     * @param pidCtrl specifies the PID controller who is inquiring.
+     *
+     * @return current elevator height.
+     */
+    @Override
+    public double getInput(TrcPidController pidCtrl)
+    {
+        double value = 0.0;
+
+        if (pidCtrl == this.elevatorPidCtrl)
+        {
+            value = elevator.getPosition();
+        }
+
+        return value;
+    }   //getInput
 
 }   //class GlyphElevator

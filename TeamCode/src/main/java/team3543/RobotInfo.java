@@ -106,27 +106,42 @@ class RobotInfo
     static final double ELEVATOR_KI                     = 0.0;
     static final double ELEVATOR_KD                     = 0.0;
     static final double ELEVATOR_TOLERANCE              = 0.2;
-    static final double ELEVATOR_MIN_HEIGHT             = 7.5;  //
+    static final double ELEVATOR_MIN_HEIGHT             = 7.5;
     static final double ELEVATOR_MAX_HEIGHT             = 24.0; // Needs more calibration! Modified as of 10/20/17 21:16
-    static final double ELEVATOR_MID_HEIGHT             = 15.5; //
+    static final double ELEVATOR_MID_HEIGHT             = 15.5;
     static final double ELEVATOR_CAL_POWER              = 0.3;
 
     //
     // RelicArm subsystem.
     //
-    static final double EXTENDER_INCHES_PER_COUNT       = 1.0;
-    static final double EXTENDER_KP                     = 0.5;
-    static final double EXTENDER_KI                     = 0.0;
-    static final double EXTENDER_KD                     = 0.0;
-    static final double EXTENDER_TOLERANCE              = 0.2;
-    static final double EXTENDER_MIN_POSITION           = 0.0;
-    static final double EXTENDER_MAX_POSITION           = 30.0;
-    static final double EXTENDER_CAL_POWER              = 0.3;
-
     static final double RELIC_GRABBER_OPEN              = 0.2;
     static final double RELIC_GRABBER_CLOSE             = 0.8;
-    static final double RELIC_ELBOW_DOWN_POWER          = -0.8;
-    static final double RELIC_ELBOW_UP_POWER            = 0.8;
-
+    static final double RELIC_ELBOW_KP                  = 0.5;
+    static final double RELIC_ELBOW_KI                  = 0.0;
+    static final double RELIC_ELBOW_KD                  = 0.0;
+    static final double RELIC_ELBOW_TOLERANCE           = 2.0;
+    static final double RELIC_ELBOW_MIN_POS             = -40.0;
+    static final double RELIC_ELBOW_MAX_POS             = 200.0;    //????
+    //
+    // To counteract gravity, we need to add power compensation to the elbow motor.
+    // We are using a NeveRest 60 motor. The performance spec of this motor is:
+    // - Stall Torque: 593 oz-in
+    // - Output counts per revolution of Output Shaft (cpr): 1680 Pulses
+    // The greatest effort to hold the elbow is when the arm is horizontal.
+    // Arm length = 19 inches.
+    // Weight of arm at 19-inch from fulcrum = 21.16 oz.
+    // Torque at fulcrum = Weight of arm * arm length = 21.16*19 = 402.04 oz-in.
+    // Additional gear ratio = 2:1.
+    // Torque at motor = 402.04/2 = 201.02 oz-in.
+    // To maintain arm at horizontal position, we need to apply 201.02/593 = 0.339 of full power.
+    // To calculate Degrees/EncoderCount, one revolution of the motor will give 1680 counts.
+    // One revolution of the motor will yield 180-degree movement of the arm because of the 2:1 gear ratio.
+    // Therefore, the degrees_per_count = 180.0/1680.0.
+    // The arm is resting at 40 degrees below the horizontal position. A lower limit switch will clear the encoder
+    // when the arm is at rest. So the scaled position read from the encoder should subtract 40 degrees from it.
+    //
+    static final double RELIC_ELBOW_DEGREES_PER_COUNT   = (180.0/1680.0);
+    static final double RELIC_ELBOW_POS_OFFSET          = -40.0;
+    static final double RELIC_ELBOW_LEVEL_MOTOR_POWER   = 0.339;
 
 }   //class RobotInfo
