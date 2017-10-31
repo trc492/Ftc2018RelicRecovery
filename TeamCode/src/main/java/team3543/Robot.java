@@ -31,6 +31,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import ftclib.FtcAnalogGyro;
 import ftclib.FtcAndroidTone;
 import ftclib.FtcBNO055Imu;
+import ftclib.FtcColorSensor;
 import ftclib.FtcDcMotor;
 import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
@@ -51,6 +52,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     private static final boolean USE_SPEECH = true;
     private static final boolean USE_VUFORIA = true;
     private static final boolean USE_GRIPVISION = false;
+    private static final boolean USE_JEWEL_COLOR_SENSOR = true;
 
     private static final String moduleName = "Robot";
     //
@@ -68,6 +70,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     FtcBNO055Imu imu = null;
     TrcGyro gyro = null;
     double targetHeading = 0.0;
+    FtcColorSensor jewelColorSensor = null;
     //
     // Vision subsystems.
     //
@@ -136,6 +139,10 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
             {
                 TrcUtil.sleep(10);
             }
+        }
+        if (USE_JEWEL_COLOR_SENSOR)
+        {
+            jewelColorSensor = new FtcColorSensor("jewelColorRangeSensor");
         }
         //
         // Initialize vision subsystems.
@@ -222,7 +229,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
 
-        jewelArm = new JewelArm("jewelArm");
+        jewelArm = new JewelArm("jewelArm", this);
         jewelArm.setExtended(false);
         jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
 

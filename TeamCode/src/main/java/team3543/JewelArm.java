@@ -22,20 +22,32 @@
 
 package team3543;
 
+import android.graphics.Color;
+
+import ftclib.FtcColorSensor;
 import ftclib.FtcServo;
 
 public class JewelArm
 {
+    public enum JewelColor
+    {
+        NONE,
+        RED,
+        BLUE
+    }
+
     private String instanceName;
+    private Robot robot;
     private FtcServo verticalServo;
     private FtcServo horizontalServo;
 
     /**
      * Constructor: Create an instance of the object  .
      */
-    public JewelArm(String instanceName)
+    public JewelArm(String instanceName, Robot robot)
     {
         this.instanceName = instanceName;
+        this.robot = robot;
         verticalServo = new FtcServo(instanceName + "VerticalServo");
         // verticalServo.setInverted(true);
         horizontalServo = new FtcServo(instanceName + "HorizontalServo");
@@ -55,6 +67,26 @@ public class JewelArm
     public void setSweepPosition(double pos)
     {
         horizontalServo.setPosition(pos);
+    }
+
+    public JewelColor getJewelColor()
+    {
+        JewelColor color = JewelColor.NONE;
+
+        if (robot.jewelColorSensor != null)
+        {
+            float hsvValues[] = {0.0f, 0.0f, 0.0f};
+            int red = robot.jewelColorSensor.getRawData(0, FtcColorSensor.DataType.RED).value;
+            int green = robot.jewelColorSensor.getRawData(0, FtcColorSensor.DataType.GREEN).value;
+            int blue = robot.jewelColorSensor.getRawData(0, FtcColorSensor.DataType.BLUE).value;
+            Color.RGBToHSV(red, green, blue, hsvValues);
+
+            color = hsvValues[0] >= 120.0f && hsvValues[0] <= 220.0f ? JewelColor.BLUE :
+                    hsvValues[0] >= 0.0f && hsvValues[0] <= 30.0 || hsvValues[0] >= 350.0 ? JewelColor.RED :
+                           JewelColor.NONE;
+        }
+
+        return color;
     }
 
 }   //class JewelArm

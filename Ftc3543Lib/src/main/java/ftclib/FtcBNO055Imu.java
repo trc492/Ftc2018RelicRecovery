@@ -64,7 +64,7 @@ public class FtcBNO055Imu
     {
         private AngularVelocity turnRateData = null;
         private long turnRateTagId = -1;
-        private double[] headingAngles = new double[3];
+        private double[] eulerAngles = new double[3];
         private Orientation headingData = null;
         private long headingTagId = -1;
 
@@ -84,22 +84,23 @@ public class FtcBNO055Imu
         }   //Gyro
 
         /**
-         * This method returns the angles of all 3 axes from quaternion orientation.
+         * This method returns the Euler angles of all 3 axes from quaternion orientation.
          *
          * @param angles specifies the array to hold the angles of the 3 axes.
          */
-        private void getAngles(double[] angles)
+        private void getEulerAngles(double[] angles)
         {
             Quaternion q = imu.getQuaternionOrientation();
             //
-            // 0: x (pitch)
-            // 1: y (roll)
-            // 2: z (yaw)
+            // 0: roll (x-axis rotation)
+            // 1: pitch (y-axis rotation)
+            // 2: yaw (z-axis rotation)
             //
-            angles[0] = Math.toDegrees(Math.asin(2*(q.w*q.y - q.x*q.z)));
-            angles[1] = Math.toDegrees(Math.atan2(2*(q.w*q.x + q.y*q.z), 1 - 2*(q.x*q.x + q.y*q.y)));
-            angles[2] = Math.toDegrees(Math.atan2(2*(q.w*q.z + q.x*q.y), 1 - 2*(q.y*q.y + q.z*q.z)));
-        }   //getAngles
+            angles[0] = Math.toDegrees(Math.atan2(2.0*(q.w*q.x + q.y*q.z), 1.0 - 2.0*(q.x*q.x + q.y*q.y)));
+            double sinp = 2.0*(q.w*q.y - q.z*q.x);
+            angles[1] = Math.toDegrees(Math.abs(sinp) >= 1.0? Math.signum(sinp)*(Math.PI/2.0): Math.asin(sinp));
+            angles[2] = Math.toDegrees(Math.atan2(2.0*(q.w*q.z + q.x*q.y), 1.0 - 2.0*(q.y*q.y + q.z*q.z)));
+        }   //getEulerAngles
 
         //
         // Implements TrcGyro abstract methods.
@@ -133,7 +134,7 @@ public class FtcBNO055Imu
                 {
                     if (USE_QUATERNION)
                     {
-                        getAngles(headingAngles);
+                        getEulerAngles(eulerAngles);
                     }
                     else
                     {
@@ -145,7 +146,7 @@ public class FtcBNO055Imu
 
                 if (USE_QUATERNION)
                 {
-                    value = headingAngles[0];
+                    value = eulerAngles[0];
                 }
                 else
                 {
@@ -192,7 +193,7 @@ public class FtcBNO055Imu
                 {
                     if (USE_QUATERNION)
                     {
-                        getAngles(headingAngles);
+                        getEulerAngles(eulerAngles);
                     }
                     else
                     {
@@ -204,7 +205,7 @@ public class FtcBNO055Imu
 
                 if (USE_QUATERNION)
                 {
-                    value = headingAngles[1];
+                    value = eulerAngles[1];
                 }
                 else
                 {
@@ -251,7 +252,7 @@ public class FtcBNO055Imu
                 {
                     if (USE_QUATERNION)
                     {
-                        getAngles(headingAngles);
+                        getEulerAngles(eulerAngles);
                     }
                     else
                     {
@@ -263,7 +264,7 @@ public class FtcBNO055Imu
 
                 if (USE_QUATERNION)
                 {
-                    value = headingAngles[2];
+                    value = -eulerAngles[2];
                 }
                 else
                 {
@@ -519,6 +520,14 @@ public class FtcBNO055Imu
         // So we need to initialize the Cartesian converter with the range values.
         //
         gyro = new Gyro(instanceName);
+        //
+        // Note:
+        // We can convert only X (roll) and Z (yaw) axes to Cartesian.
+        // For Y (pitch), when pointing upright, it will return 90-degree but pitching forward or backward will
+        // yield the same decrement. So one can't tell if it is rotating forward or backward. This makes it
+        // impossible to do the Cartesian conversion.
+        //
+        gyro.setXValueRange(-180.0, 180.0);
         gyro.setZValueRange(-180.0, 180.0);
         //
         // Create the accelerometer object of the IMU.

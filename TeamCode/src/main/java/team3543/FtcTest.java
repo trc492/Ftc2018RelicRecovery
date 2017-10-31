@@ -285,8 +285,13 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
                                 robot.leftFrontWheel.getPosition(), robot.rightFrontWheel.getPosition());
         dashboard.displayPrintf(4, LABEL_WIDTH, "RearEnc: ", "l=%.0f,r=%.0f",
                                 robot.leftRearWheel.getPosition(), robot.rightRearWheel.getPosition());
-        dashboard.displayPrintf(5, LABEL_WIDTH, "Gyro: ", "Rate=%.3f,Heading=%.1f",
-                                robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
+        if (robot.gyro != null)
+        {
+            dashboard.displayPrintf(5, LABEL_WIDTH, "Gyro: ", "Rate=%.3f,Heading=%.1f",
+                    robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
+        }
+        dashboard.displayPrintf(6, LABEL_WIDTH, "Jewel: ", "Color=%s",
+                                robot.jewelArm.getJewelColor());
     }   //doSensorsTest
 
     private void doVisionTest()
