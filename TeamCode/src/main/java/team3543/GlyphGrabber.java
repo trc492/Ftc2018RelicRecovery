@@ -37,9 +37,10 @@ public class GlyphGrabber
         this.instanceName = instanceName;
         glyphLeftServo = new FtcServo("glyphLeftServo");
         glyphRightServo = new FtcServo("glyphRightServo");
-        grabber = new TrcEnhancedServo("glyphGrabber", glyphLeftServo, glyphRightServo);
         glyphLeftServo.setInverted(true);
         glyphRightServo.setInverted(false);
+        grabber = new TrcEnhancedServo("glyphGrabber", glyphLeftServo, glyphRightServo);
+        grabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
     }   //GlyphGrabber
 
     public double getPosition()

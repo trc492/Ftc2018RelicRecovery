@@ -199,9 +199,11 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
 
                 case FtcGamepad.GAMEPAD_LBUMPER:
+                    robot.relicArm.elbow.setManualOverride(pressed);
                     break;
 
                 case FtcGamepad.GAMEPAD_RBUMPER:
+                    robot.glyphElevator.elevator.setManualOverride(pressed);
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_UP:

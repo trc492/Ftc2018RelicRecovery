@@ -50,7 +50,6 @@ public class GlyphElevator implements TrcPidController.PidInput
                 "elevator", elevatorMotor, elevatorLowerLimitSwitch, elevatorPidCtrl);
         elevator.setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT, 0.0);
         elevator.setPositionRange(RobotInfo.ELEVATOR_MIN_HEIGHT, RobotInfo.ELEVATOR_MAX_HEIGHT);
-        elevator.setManualOverride(true);
     }   //GlyphElevator
 
     //

@@ -35,11 +35,13 @@ public class RelicArm implements TrcPidController.PidInput, TrcRotationalActuato
     public FtcDigitalInput extenderUpperLimitSwitch;
     private FtcServo extenderServo;
     public TrcEnhancedServo extender;
+
     public FtcDigitalInput elbowLowerLimitSwitch;
     public FtcDigitalInput elbowUpperLimitSwitch;
     private FtcDcMotor elbowMotor;
     public TrcPidController elbowPidCtrl;
     public TrcRotationalActuator elbow;
+
     public FtcServo grabber;
 
     /**

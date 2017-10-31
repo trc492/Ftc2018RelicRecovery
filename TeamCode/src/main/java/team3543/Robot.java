@@ -227,13 +227,14 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         }
 
         glyphGrabber = new GlyphGrabber("glyphGrabber");
-        glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
 
         jewelArm = new JewelArm("jewelArm", this);
-        jewelArm.setExtended(false);
-        jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
 
         relicArm = new RelicArm();
+        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+        {
+            relicArm.elbow.zeroCalibrate(RobotInfo.RELIC_ELBOW_CAL_POWER);
+        }
 
         //
         // Tell the driver initialization is complete.
@@ -289,6 +290,17 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
             textToSpeech.shutdown();
         }
     }   //stopMode
+
+    void traceStateInfo(double elapsedTime, String stateName, double xDistance, double yDistance, double heading)
+    {
+        tracer.traceInfo(
+                moduleName,
+                "[%5.3f] %17s: xPos=%6.2f/%6.2f,yPos=%6.2f/%6.2f,heading=%6.1f/%6.1f,volt=%5.2fV(%5.2fV)",
+                elapsedTime, stateName,
+                driveBase.getXPosition(), xDistance, driveBase.getYPosition(), yDistance,
+                driveBase.getHeading(), heading,
+                battery.getVoltage(), battery.getLowestVoltage());
+    }   //traceStateInfo
 
     //
     // Implements TrcPidController.PidInput
@@ -446,16 +458,5 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 //        setDrivePID(xDistance, yDistance, heading);
 //        pidDrive.setTarget(xDistance, yDistance, heading, holdTarget, event);
 //    }   //setPIDDriveTarget
-
-    void traceStateInfo(double elapsedTime, String stateName, double xDistance, double yDistance, double heading)
-    {
-        tracer.traceInfo(
-                moduleName,
-                "[%5.3f] %17s: xPos=%6.2f/%6.2f,yPos=%6.2f/%6.2f,heading=%6.1f/%6.1f,volt=%5.2fV(%5.2fV)",
-                elapsedTime, stateName,
-                driveBase.getXPosition(), xDistance, driveBase.getYPosition(), yDistance,
-                driveBase.getHeading(), heading,
-                battery.getVoltage(), battery.getLowestVoltage());
-    }   //traceStateInfo
 
 }   //class Robot

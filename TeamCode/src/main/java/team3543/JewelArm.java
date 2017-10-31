@@ -52,6 +52,8 @@ public class JewelArm
         // verticalServo.setInverted(true);
         horizontalServo = new FtcServo(instanceName + "HorizontalServo");
         // horizontalServo.setInverted(true);
+        setExtended(false);
+        setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
     }   //JewelArm
 
     public String toString()
