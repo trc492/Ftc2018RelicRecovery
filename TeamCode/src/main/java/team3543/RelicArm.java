@@ -31,14 +31,14 @@ import trclib.TrcRotationalActuator;
 
 public class RelicArm implements TrcPidController.PidInput, TrcRotationalActuator.PowerCompensation
 {
-    private FtcDigitalInput extenderLowerLimitSwitch;
-    private FtcDigitalInput extenderUpperLimitSwitch;
+    public FtcDigitalInput extenderLowerLimitSwitch;
+    public FtcDigitalInput extenderUpperLimitSwitch;
     private FtcServo extenderServo;
     public TrcEnhancedServo extender;
-    private FtcDigitalInput elbowLowerLimitSwitch;
-    private FtcDigitalInput elbowUpperLimitSwitch;
+    public FtcDigitalInput elbowLowerLimitSwitch;
+    public FtcDigitalInput elbowUpperLimitSwitch;
     private FtcDcMotor elbowMotor;
-    private TrcPidController elbowPidCtrl;
+    public TrcPidController elbowPidCtrl;
     public TrcRotationalActuator elbow;
     public FtcServo grabber;
 

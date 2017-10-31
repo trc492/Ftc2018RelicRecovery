@@ -29,9 +29,9 @@ import trclib.TrcPidController;
 
 public class GlyphElevator implements TrcPidController.PidInput
 {
-    private FtcDigitalInput elevatorLowerLimitSwitch;
+    public FtcDigitalInput elevatorLowerLimitSwitch;
     private FtcDcMotor elevatorMotor;
-    private TrcPidController elevatorPidCtrl;
+    public TrcPidController elevatorPidCtrl;
     public TrcLinearActuator elevator;
 
     /**
