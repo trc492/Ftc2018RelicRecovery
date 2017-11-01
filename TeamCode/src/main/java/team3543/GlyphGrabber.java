@@ -40,7 +40,6 @@ public class GlyphGrabber
         glyphLeftServo.setInverted(true);
         glyphRightServo.setInverted(false);
         grabber = new TrcEnhancedServo("glyphGrabber", glyphLeftServo, glyphRightServo);
-        grabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
     }   //GlyphGrabber
 
     public double getPosition()

@@ -93,11 +93,11 @@ class RobotInfo
     //
     // JewelBar subsystem.
     //
-    static final double JEWEL_ARM_EXTENDED              = 0.8;
+    static final double JEWEL_ARM_EXTENDED              = 0.75;
     static final double JEWEL_ARM_RETRACTED             = 0.2;
     static final double JEWEL_ARM_NEUTRAL               = 0.5;
-    static final double JEWEL_ARM_FORWARD               = 0.2;
-    static final double JEWEL_ARM_BACKWARD              = 0.8;
+    static final double JEWEL_ARM_FORWARD               = 0.0;
+    static final double JEWEL_ARM_BACKWARD              = 1.0;
     //
     // GlyphElevator subsystem.
     //

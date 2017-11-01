@@ -221,20 +221,24 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
 
         glyphElevator = new GlyphElevator();
-        if (runMode == TrcRobot.RunMode.AUTO_MODE)
-        {
-            glyphElevator.elevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
-        }
+//        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+//        {
+//            glyphElevator.elevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
+//        }
 
         glyphGrabber = new GlyphGrabber("glyphGrabber");
+        glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
 
         jewelArm = new JewelArm("jewelArm", this);
+        jewelArm.setExtended(false);
+        jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
 
         relicArm = new RelicArm();
-        if (runMode == TrcRobot.RunMode.AUTO_MODE)
-        {
-            relicArm.elbow.zeroCalibrate(RobotInfo.RELIC_ELBOW_CAL_POWER);
-        }
+//        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+//        {
+//            relicArm.elbow.zeroCalibrate(RobotInfo.RELIC_ELBOW_CAL_POWER);
+//        }
+        relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
 
         //
         // Tell the driver initialization is complete.

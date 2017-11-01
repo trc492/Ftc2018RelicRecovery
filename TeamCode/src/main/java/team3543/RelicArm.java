@@ -29,7 +29,7 @@ import trclib.TrcEnhancedServo;
 import trclib.TrcPidController;
 import trclib.TrcRotationalActuator;
 
-public class RelicArm implements TrcPidController.PidInput, TrcRotationalActuator.PowerCompensation
+public class RelicArm implements TrcPidController.PidInput, TrcPidController.PidOutputCompensation
 {
     public FtcDigitalInput extenderLowerLimitSwitch;
     public FtcDigitalInput extenderUpperLimitSwitch;
@@ -69,31 +69,14 @@ public class RelicArm implements TrcPidController.PidInput, TrcRotationalActuato
                 "elbowPidCtrl",
                 new TrcPidController.PidCoefficients(
                         RobotInfo.RELIC_ELBOW_KP, RobotInfo.RELIC_ELBOW_KI, RobotInfo.RELIC_ELBOW_KD),
-                RobotInfo.RELIC_ELBOW_TOLERANCE, this);
+                RobotInfo.RELIC_ELBOW_TOLERANCE, this, this);
         elbow = new TrcRotationalActuator(
                 "elbow", elbowMotor, elbowLowerLimitSwitch, elbowPidCtrl, this);
         elbow.setPositionScale(RobotInfo.RELIC_ELBOW_DEGREES_PER_COUNT, RobotInfo.RELIC_ELBOW_POS_OFFSET);
-        elbow.setPositionRange(RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS);
+//???        elbow.setPositionRange(RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS);
 
         grabber = new FtcServo("relicGrabber");
-        grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
     }   //RelicArm
-
-    //
-    // Implements TrcRotationalActuator.PowerCompensation interface
-    //
-
-    /**
-     * This method is called to get compensation power that adds to the power value when doing a set power on
-     * the motor.
-     *
-     * @return compensation power value to counter gravity.
-     */
-    @Override
-    public double getCompensation()
-    {
-        return Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
-    }
 
     //
     // Implements TrcPidController.PidInput.
@@ -118,5 +101,30 @@ public class RelicArm implements TrcPidController.PidInput, TrcRotationalActuato
 
         return value;
     }   //getInput
+
+    //
+    // Implements TrcPidController.PidOutputCompensation interface
+    //
+
+    /**
+     * This method is called by the PID controller to get output compensation. The output compensation will be
+     * added to the output power calculation.
+     *
+     * @param pidCtrl specifies this PID controller so the provider can identify what sensor to read if it is
+     *                a provider for multiple PID controllers.
+     * @return compensation value of the actuator.
+     */
+    @Override
+    public double getOutputCompensation(TrcPidController pidCtrl)
+    {
+        double compensation = 0.0;
+
+        if (pidCtrl == elbowPidCtrl)
+        {
+            compensation = Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
+        }
+
+        return compensation;
+    }   //getOutputCompensation
 
 }   //class RelicArm

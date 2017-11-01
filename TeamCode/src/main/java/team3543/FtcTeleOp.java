@@ -78,13 +78,6 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
     {
         dashboard.clearDisplay();
         robot.startMode(TrcRobot.RunMode.TELEOP_MODE);
-//        //
-//        // There is an issue with the gamepad objects that may not be valid
-//        // before waitForStart() is called. So we call the setGamepad method
-//        // here to update their references in case they have changed.
-//        //
-//        driverGamepad.setGamepad(gamepad1);
-//        operatorGamepad.setGamepad(gamepad2);
     }   //startMode
 
     @Override
@@ -208,9 +201,17 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_UP:
+                    if (pressed)
+                    {
+                        robot.jewelArm.setExtended(false);
+                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_DOWN:
+                    if (pressed)
+                    {
+                        robot.jewelArm.setExtended(true);
+                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_LEFT:
