@@ -167,28 +167,28 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                 case FtcGamepad.GAMEPAD_A:
                     if (pressed)
                     {
-                        robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+                        robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
                     }
                     break;
 
                 case FtcGamepad.GAMEPAD_B:
                     if (pressed)
                     {
-                        robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
+                        robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
                     }
                     break;
 
                 case FtcGamepad.GAMEPAD_X:
                     if (pressed)
                     {
-                        robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_OPEN);
+                        robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
                     }
                     break;
 
                 case FtcGamepad.GAMEPAD_Y:
                     if (pressed)
                     {
-                        robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
+                        robot.relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_OPEN);
                     }
                     break;
 

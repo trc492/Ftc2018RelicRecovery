@@ -76,6 +76,7 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidController.Pid
 //???        elbow.setPositionRange(RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS);
 
         grabber = new FtcServo("relicGrabber");
+        grabber.setInverted(true);
     }   //RelicArm
 
     //

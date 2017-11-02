@@ -52,7 +52,6 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     private static final boolean USE_SPEECH = true;
     private static final boolean USE_VUFORIA = true;
     private static final boolean USE_GRIPVISION = false;
-    private static final boolean USE_JEWEL_COLOR_SENSOR = true;
 
     private static final String moduleName = "Robot";
     //
@@ -70,7 +69,6 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     FtcBNO055Imu imu = null;
     TrcGyro gyro = null;
     double targetHeading = 0.0;
-    FtcColorSensor jewelColorSensor = null;
     //
     // Vision subsystems.
     //
@@ -139,10 +137,6 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
             {
                 TrcUtil.sleep(10);
             }
-        }
-        if (USE_JEWEL_COLOR_SENSOR)
-        {
-            jewelColorSensor = new FtcColorSensor("jewelColorRangeSensor");
         }
         //
         // Initialize vision subsystems.

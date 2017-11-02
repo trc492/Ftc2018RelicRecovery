@@ -292,8 +292,9 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
                     robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
         }
 
-        dashboard.displayPrintf(6, LABEL_WIDTH, "Jewel: ", "Color=%s",
-                                robot.jewelArm.getJewelColor());
+        dashboard.displayPrintf(6, LABEL_WIDTH, "Jewel: ", "Color=%s,HSV=%.0f/%.0f/%.0f",
+                                robot.jewelArm.getJewelColor(), robot.jewelArm.getJewelHsvHue(),
+                                robot.jewelArm.getJewelHsvSaturation(), robot.jewelArm.getJewelHsvValue());
 
         dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pos=%5.1f,low=%s",
                 robot.glyphElevator.elevator.getPosition(), robot.glyphElevator.elevatorLowerLimitSwitch.isActive());
@@ -304,8 +305,9 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
                 robot.relicArm.elbowLowerLimitSwitch.isActive(), robot.relicArm.elbowUpperLimitSwitch.isActive());
         robot.relicArm.elbowPidCtrl.displayPidInfo(13);
 
-        dashboard.displayPrintf(15, "Extender: ", "low=%s,high=%s",
-                robot.relicArm.extenderLowerLimitSwitch.isActive(), robot.relicArm.elbowUpperLimitSwitch.isActive());
+        dashboard.displayPrintf(15, LABEL_WIDTH, "Extender: ", "low=%s,high=%s",
+                robot.relicArm.extenderLowerLimitSwitch.isActive(), robot.relicArm.extenderUpperLimitSwitch.isActive());
+
     }   //doSensorsTest
 
     private void doVisionTest()
