@@ -24,7 +24,8 @@ package team3543;
 
 import ftclib.FtcDcMotor;
 import ftclib.FtcDigitalInput;
-import trclib.TrcLinearActuator;
+import trclib.TrcEvent;
+import trclib.TrcPidActuator;
 import trclib.TrcPidController;
 
 public class GlyphElevator implements TrcPidController.PidInput
@@ -32,7 +33,8 @@ public class GlyphElevator implements TrcPidController.PidInput
     public FtcDigitalInput elevatorLowerLimitSwitch;
     private FtcDcMotor elevatorMotor;
     public TrcPidController elevatorPidCtrl;
-    public TrcLinearActuator elevator;
+    private TrcPidActuator elevator;
+    private boolean manualOverride = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -41,16 +43,52 @@ public class GlyphElevator implements TrcPidController.PidInput
     {
         elevatorLowerLimitSwitch = new FtcDigitalInput("elevatorLowerLimit");
         elevatorMotor = new FtcDcMotor("elevatorMotor", elevatorLowerLimitSwitch);
+        elevatorMotor.setBrakeModeEnabled(true);
         elevatorPidCtrl = new TrcPidController(
                 "elevatorPidCtrl",
                 new TrcPidController.PidCoefficients(
                         RobotInfo.ELEVATOR_KP, RobotInfo.ELEVATOR_KI, RobotInfo.ELEVATOR_KD),
                 RobotInfo.ELEVATOR_TOLERANCE, this);
-        elevator = new TrcLinearActuator(
+        elevator = new TrcPidActuator(
                 "elevator", elevatorMotor, elevatorLowerLimitSwitch, elevatorPidCtrl);
         elevator.setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT, 0.0);
         elevator.setPositionRange(RobotInfo.ELEVATOR_MIN_HEIGHT, RobotInfo.ELEVATOR_MAX_HEIGHT);
+        elevator.setManualOverride(true);   //TODO: remove
     }   //GlyphElevator
+
+    public void setManualOverride(boolean manualOverride)
+    {
+        this.manualOverride = manualOverride;
+    }
+
+    public void zeroCalibrate()
+    {
+        elevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
+    }   //zeroCalibrate
+
+    public void setPower(double power)
+    {
+        double pos = elevator.getPosition();
+
+        if (!manualOverride &&
+            (power > 0.0 && pos >= RobotInfo.ELEVATOR_MAX_HEIGHT ||
+             power < 0.0 && pos <= RobotInfo.ELEVATOR_MIN_HEIGHT))
+        {
+            power = 0.0;
+        }
+
+        elevator.setPower(power);
+    }   //setPower
+
+    public double getPosition()
+    {
+        return elevator.getPosition();
+    }   //getPosition
+
+    public void setPosition(double pos, TrcEvent event, double timeout)
+    {
+        elevator.setTarget(pos, event, timeout);
+    }   //setPosition
 
     //
     // Implements TrcPidController.PidInput.

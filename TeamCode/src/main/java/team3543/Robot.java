@@ -31,7 +31,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import ftclib.FtcAnalogGyro;
 import ftclib.FtcAndroidTone;
 import ftclib.FtcBNO055Imu;
-import ftclib.FtcColorSensor;
 import ftclib.FtcDcMotor;
 import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
@@ -171,6 +170,11 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         rightFrontWheel.setInverted(true);
         rightRearWheel.setInverted(true);
 
+        leftFrontWheel.setBrakeModeEnabled(true);
+        leftRearWheel.setBrakeModeEnabled(true);
+        rightFrontWheel.setBrakeModeEnabled(true);
+        rightRearWheel.setBrakeModeEnabled(true);
+
         driveBase = new TrcDriveBase(leftFrontWheel, leftRearWheel, rightFrontWheel, rightRearWheel, gyro);
         driveBase.setXPositionScale(RobotInfo.ENCODER_X_INCHES_PER_COUNT);
         driveBase.setYPositionScale(RobotInfo.ENCODER_Y_INCHES_PER_COUNT);
@@ -215,15 +219,15 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
 
         glyphElevator = new GlyphElevator();
-//        if (runMode == TrcRobot.RunMode.AUTO_MODE)
-//        {
-//            glyphElevator.elevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
-//        }
+        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+        {
+            glyphElevator.zeroCalibrate();
+        }
 
         glyphGrabber = new GlyphGrabber("glyphGrabber");
-        glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+        glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_START);
 
-        jewelArm = new JewelArm("jewelArm", this);
+        jewelArm = new JewelArm("jewelArm", this, textToSpeech);
         jewelArm.setExtended(false);
         jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
 
@@ -264,6 +268,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
         driveBase.resetPosition();
         targetHeading = 0.0;
+        glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
     }   //startMode
 
     void stopMode(TrcRobot.RunMode runMode)

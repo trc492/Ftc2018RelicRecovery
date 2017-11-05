@@ -34,11 +34,11 @@ class RobotInfo
     static final DcMotor.RunMode DRIVE_MOTOR_MODE       = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
     static final double TURN_POWER_LIMIT                = 0.5;
 
-    static final double ENCODER_X_KP                    = 0.2;
+    static final double ENCODER_X_KP                    = 0.2;  //???
     static final double ENCODER_X_KI                    = 0.0;
-    static final double ENCODER_X_KD                    = 0.0;
+    static final double ENCODER_X_KD                    = 0.02;
     static final double ENCODER_X_TOLERANCE             = 2.0;
-    static final double ENCODER_X_INCHES_PER_COUNT      = 0.0132166817227156;
+    static final double ENCODER_X_INCHES_PER_COUNT      = 63.0/4403.2;
 
 //    static final double SMALL_X_THRESHOLD               = 8.0;
 //    static final double ENCODER_SMALL_X_KP              = 0.2;
@@ -48,20 +48,21 @@ class RobotInfo
     static final double ENCODER_Y_KP                    = 0.02;
     static final double ENCODER_Y_KI                    = 0.0;
     static final double ENCODER_Y_KD                    = 0.0022;
-    static final double ENCODER_Y_TOLERANCE             = 2.0;
-    static final double ENCODER_Y_INCHES_PER_COUNT      = 0.01667;
+    static final double ENCODER_Y_TOLERANCE             = 1.0;
+    static final double ENCODER_Y_INCHES_PER_COUNT      = 68.0/4100.5;
 
-    static final double SMALL_Y_THRESHOLD               = 8.0;
-    static final double ENCODER_SMALL_Y_KP              = 0.045;
-    static final double ENCODER_SMALL_Y_KI              = 0.0;
-    static final double ENCODER_SMALL_Y_KD              = 0.001;
+//    static final double SMALL_Y_THRESHOLD               = 8.0;
+//    static final double ENCODER_SMALL_Y_KP              = 0.045;
+//    static final double ENCODER_SMALL_Y_KI              = 0.0;
+//    static final double ENCODER_SMALL_Y_KD              = 0.001;
 
     static final double ANALOG_GYRO_SCALE               = 1.0136;
     static final double ANALOG_GYRO_VOLT_PER_DEG_PER_SEC= 0.007;
-    static final double GYRO_KP                         = 0.024;
+
+    static final double GYRO_KP                         = 0.02;
     static final double GYRO_KI                         = 0.0;
     static final double GYRO_KD                         = 0.0024;
-    static final double GYRO_TOLERANCE                  = 2.0;
+    static final double GYRO_TOLERANCE                  = 1.0;
 
 //    static final double SMALL_TURN_THRESHOLD            = 15.0;
 //    static final double GYRO_SMALL_TURN_KP              = 0.03;
@@ -87,42 +88,44 @@ class RobotInfo
     //
     // GlyphGrabber subsystem.
     //
+    static final double GLYPH_GRABBER_COLLAPSE          = 0.0;
     static final double GLYPH_GRABBER_CLOSE             = 0.2;
-    static final double GLYPH_GRABBER_OPEN              = 0.6;
+    static final double GLYPH_GRABBER_OPEN              = 0.4;
+    static final double GLYPH_GRABBER_START             = 0.6;
 
     //
     // JewelBar subsystem.
     //
     static final double JEWEL_ARM_RETRACTED             = 0.1;
-    static final double JEWEL_ARM_EXTENDED              = 0.75;
+    static final double JEWEL_ARM_EXTENDED              = 0.7;
     static final double JEWEL_ARM_NEUTRAL               = 0.5;
     static final double JEWEL_ARM_FORWARD               = 0.0;
     static final double JEWEL_ARM_BACKWARD              = 1.0;
     //
     // GlyphElevator subsystem.
     //
-    static final double ELEVATOR_INCHES_PER_COUNT       = 1.0;
+    static final double ELEVATOR_INCHES_PER_COUNT       = 0.002822426329889;
     static final double ELEVATOR_KP                     = 0.5;
     static final double ELEVATOR_KI                     = 0.0;
     static final double ELEVATOR_KD                     = 0.0;
-    static final double ELEVATOR_TOLERANCE              = 0.2;
-    static final double ELEVATOR_MIN_HEIGHT             = 7.5;
-    static final double ELEVATOR_MAX_HEIGHT             = 24.0; // Needs more calibration! Modified as of 10/20/17 21:16
-    static final double ELEVATOR_MID_HEIGHT             = 15.5;
-    static final double ELEVATOR_CAL_POWER              = 0.3;
+    static final double ELEVATOR_TOLERANCE              = 0.5;
+    static final double ELEVATOR_MIN_HEIGHT             = 0.0;
+    static final double ELEVATOR_MAX_HEIGHT             = 15.0;
+    static final double ELEVATOR_MID_HEIGHT             = 3.0;
+    static final double ELEVATOR_CAL_POWER              = 0.;
 
     //
     // RelicArm subsystem.
     //
     static final double RELIC_GRABBER_CLOSE             = 0.0;
     static final double RELIC_GRABBER_OPEN              = 0.5;
-    static final double RELIC_ELBOW_KP                  = 0.5;
+    static final double RELIC_ELBOW_KP                  = 0.5;  //???
     static final double RELIC_ELBOW_KI                  = 0.0;
     static final double RELIC_ELBOW_KD                  = 0.0;
     static final double RELIC_ELBOW_TOLERANCE           = 2.0;
     static final double RELIC_ELBOW_MIN_POS             = -40.0;
-    static final double RELIC_ELBOW_MAX_POS             = 200.0;    //????
-    static final double RELIC_ELBOW_CAL_POWER           = 0.3;
+    static final double RELIC_ELBOW_MAX_POS             = 200.0;    //???
+    static final double RELIC_ELBOW_CAL_POWER           = 0.15;
     //
     // To counteract gravity, we need to add power compensation to the elbow motor.
     // We are using a NeveRest 60 motor. The performance spec of this motor is:

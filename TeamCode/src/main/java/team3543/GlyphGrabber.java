@@ -31,6 +31,7 @@ public class GlyphGrabber
     private FtcServo glyphLeftServo;
     private FtcServo glyphRightServo;
     private TrcEnhancedServo grabber;
+    private double grabberPos = RobotInfo.GLYPH_GRABBER_START;
 
     public GlyphGrabber(String instanceName)
     {
@@ -49,7 +50,20 @@ public class GlyphGrabber
 
     public void setPosition(double position)
     {
+        grabberPos = position;
         grabber.setPosition(position);
     }   //setPosition
+
+    public void open()
+    {
+        setPosition(grabberPos == RobotInfo.GLYPH_GRABBER_OPEN?
+                RobotInfo.GLYPH_GRABBER_START: RobotInfo.GLYPH_GRABBER_OPEN);
+    }   //open
+
+    public void close()
+    {
+        setPosition(grabberPos == RobotInfo.GLYPH_GRABBER_CLOSE?
+                RobotInfo.GLYPH_GRABBER_COLLAPSE: RobotInfo.GLYPH_GRABBER_CLOSE);
+    }   //close
 
 }   //class GlyphGrabber

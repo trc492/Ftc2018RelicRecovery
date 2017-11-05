@@ -26,10 +26,11 @@ import ftclib.FtcDcMotor;
 import ftclib.FtcDigitalInput;
 import ftclib.FtcServo;
 import trclib.TrcEnhancedServo;
+import trclib.TrcPidActuator;
 import trclib.TrcPidController;
-import trclib.TrcRotationalActuator;
+import trclib.TrcPidMotor;
 
-public class RelicArm implements TrcPidController.PidInput, TrcPidController.PidOutputCompensation
+public class RelicArm implements TrcPidController.PidInput, TrcPidMotor.PowerCompensation
 {
     public FtcDigitalInput extenderLowerLimitSwitch;
     public FtcDigitalInput extenderUpperLimitSwitch;
@@ -40,7 +41,7 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidController.Pid
     public FtcDigitalInput elbowUpperLimitSwitch;
     private FtcDcMotor elbowMotor;
     public TrcPidController elbowPidCtrl;
-    public TrcRotationalActuator elbow;
+    public TrcPidActuator elbow;
 
     public FtcServo grabber;
 
@@ -65,15 +66,17 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidController.Pid
         elbowLowerLimitSwitch = new FtcDigitalInput("elbowLowerLimit");
         elbowUpperLimitSwitch = new FtcDigitalInput("elbowUpperLimit");
         elbowMotor = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
+        elbowMotor.setBrakeModeEnabled(true);
         elbowPidCtrl = new TrcPidController(
                 "elbowPidCtrl",
                 new TrcPidController.PidCoefficients(
                         RobotInfo.RELIC_ELBOW_KP, RobotInfo.RELIC_ELBOW_KI, RobotInfo.RELIC_ELBOW_KD),
-                RobotInfo.RELIC_ELBOW_TOLERANCE, this, this);
-        elbow = new TrcRotationalActuator(
+                RobotInfo.RELIC_ELBOW_TOLERANCE, this);
+        elbow = new TrcPidActuator(
                 "elbow", elbowMotor, elbowLowerLimitSwitch, elbowPidCtrl, this);
         elbow.setPositionScale(RobotInfo.RELIC_ELBOW_DEGREES_PER_COUNT, RobotInfo.RELIC_ELBOW_POS_OFFSET);
-//???        elbow.setPositionRange(RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS);
+        elbow.setPositionRange(RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS);
+        elbow.setManualOverride(true);  //TODO: remove
 
         grabber = new FtcServo("relicGrabber");
         grabber.setInverted(true);
@@ -93,39 +96,22 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidController.Pid
     @Override
     public double getInput(TrcPidController pidCtrl)
     {
-        double value = 0.0;
-
-        if (pidCtrl == this.elbowPidCtrl)
-        {
-            value = elbow.getPosition();
-        }
-
-        return value;
+        return elbow.getPosition();
     }   //getInput
 
     //
-    // Implements TrcPidController.PidOutputCompensation interface
+    // Implements TrcPidMotor.PowerCompensation interface
     //
 
     /**
-     * This method is called by the PID controller to get output compensation. The output compensation will be
-     * added to the output power calculation.
+     * This method is called to compute the power compensation to counteract the varying non-linear load.
      *
-     * @param pidCtrl specifies this PID controller so the provider can identify what sensor to read if it is
-     *                a provider for multiple PID controllers.
      * @return compensation value of the actuator.
      */
     @Override
-    public double getOutputCompensation(TrcPidController pidCtrl)
+    public double getCompensation()
     {
-        double compensation = 0.0;
-
-        if (pidCtrl == elbowPidCtrl)
-        {
-            compensation = Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
-        }
-
-        return compensation;
-    }   //getOutputCompensation
+        return Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
+    }   //getCompensation
 
 }   //class RelicArm

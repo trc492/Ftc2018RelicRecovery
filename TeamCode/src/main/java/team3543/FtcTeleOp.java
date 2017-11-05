@@ -119,7 +119,7 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
         robot.relicArm.elbow.setPower(operatorGamepad.getLeftStickY(true));
         robot.relicArm.extender.setPower(
                 operatorGamepad.getRightTrigger(true) - operatorGamepad.getLeftTrigger(true));
-        robot.glyphElevator.elevator.setPower(operatorGamepad.getRightStickY(true));
+        robot.glyphElevator.setPower(operatorGamepad.getRightStickY(true));
     }   //runPeriodic
 
 
@@ -167,14 +167,14 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                 case FtcGamepad.GAMEPAD_A:
                     if (pressed)
                     {
-                        robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
+                        robot.glyphGrabber.close();
                     }
                     break;
 
                 case FtcGamepad.GAMEPAD_B:
                     if (pressed)
                     {
-                        robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+                        robot.glyphGrabber.open();
                     }
                     break;
 
@@ -197,7 +197,7 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
 
                 case FtcGamepad.GAMEPAD_RBUMPER:
-                    robot.glyphElevator.elevator.setManualOverride(pressed);
+                    robot.glyphElevator.setManualOverride(pressed);
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_UP:
@@ -246,7 +246,7 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                 case FtcGamepad.GAMEPAD_START:
                     if (pressed)
                     {
-                        robot.glyphElevator.elevator.zeroCalibrate(RobotInfo.ELEVATOR_CAL_POWER);
+                        robot.glyphElevator.zeroCalibrate();
                     }
                     break;
             }

@@ -27,7 +27,7 @@ import trclib.TrcRobot;
 import trclib.TrcStateMachine;
 import trclib.TrcTimer;
 
-class CmdAutoNear implements TrcRobot.RobotCommand
+class CmdAutoFull implements TrcRobot.RobotCommand
 {
     private static final boolean debugXPid = false;
     private static final boolean debugYPid = false;
@@ -36,43 +36,51 @@ class CmdAutoNear implements TrcRobot.RobotCommand
     private enum State
     {
         DEPLOY_JEWEL_ARM,
-        DETECT_JEWEL,
         WHACK_JEWEL,
         MOVE_JEWEL_ARM_UP,
         RESET_JEWEL_ARM,
         DO_DELAY,
         GRAB_LIFT_GLYPH,
         DRIVE_OFF_PLATFORM,
-        CRAB_SIDEWAYS,
-        MOVE_FORWARD, // 3-4ft
+        TURN_TO_CRYPTOBOX,
+        ALIGN_CRYPTOBOX,
+        MOVE_FORWARD,
         SET_DOWN_GLYPH,
         RELEASE_GLYPH,
         DONE
     }   //enum State
 
-    private static final String moduleName = "CmdAutoNear";
+    private static final String moduleName = "CmdAutoFull";
 
     private Robot robot;
-    private double delay;
     private FtcAuto.Alliance alliance;
-    private boolean doJewel;
+    private double delay;
+    private FtcAuto.StartPos startPos;
+    private FtcAuto.DoJewel doJewel;
+    private FtcAuto.DoCrypto doCrypto;
     private TrcEvent event;
     private TrcTimer timer;
     private TrcStateMachine<State> sm;
-    private double jewelArmSweepPosition = RobotInfo.JEWEL_ARM_NEUTRAL;
+    private double targetX = 0.0;
+    private double targetY = 0.0;
+    private int retryCount = 0;
 
-    CmdAutoNear(Robot robot, double delay, FtcAuto.Alliance alliance, boolean doJewel)
+    CmdAutoFull(
+            Robot robot, FtcAuto.Alliance alliance, double delay, FtcAuto.StartPos startPos,
+            FtcAuto.DoJewel doJewel, FtcAuto.DoCrypto doCrypto)
     {
         this.robot = robot;
-        this.delay = delay;
         this.alliance = alliance;
+        this.delay = delay;
+        this.startPos = startPos;
         this.doJewel = doJewel;
+        this.doCrypto = doCrypto;
 
         event = new TrcEvent(moduleName);
         timer = new TrcTimer(moduleName);
         sm = new TrcStateMachine<>(moduleName);
-        sm.start(State.DO_DELAY);
-    }   //CmdAutoNear
+        sm.start(doJewel == FtcAuto.DoJewel.YES? State.DEPLOY_JEWEL_ARM: State.DO_DELAY);
+    }   //CmdAutoFull
 
     //
     // Implements the TrcRobot.RobotCommand interface.
@@ -94,31 +102,32 @@ class CmdAutoNear implements TrcRobot.RobotCommand
 
             switch (state)
             {
-                //Deploy the jewel arm*
-                //Wait for the jewel arm to deploy.*
-                //Call grip vision to access jewel info.
-                //Wait for jewel info.*
-                //Disable grip vision.
-                //Determine direction of arm.
-                //Whack the jewel in that direction.
-                //Wait for jewel to get whacked.*
-                //Move jewel arm up.
-                //Wait for jewel arm to move up.*
-                //Move jewel arm back to zero position.
-                //???
-                //PROFIT
                 case DEPLOY_JEWEL_ARM:
+                    retryCount = 10;
                     robot.jewelArm.setExtended(true);
-                    timer.set(0.3, event);
-                    sm.waitForSingleEvent(event, State.DETECT_JEWEL);
-                    break;
-
-                case DETECT_JEWEL:
+                    timer.set(0.5, event);
+                    sm.waitForSingleEvent(event, State.WHACK_JEWEL);
                     break;
 
                 case WHACK_JEWEL:
-                    robot.jewelArm.setSweepPosition(jewelArmSweepPosition);
-                    timer.set(0.3, event);
+                    // determine the jewel color and whack the correct one.
+                    JewelArm.JewelColor jewelColor = robot.jewelArm.getJewelColor();
+
+                    if (jewelColor == JewelArm.JewelColor.NO && retryCount > 0)
+                    {
+                        retryCount--;
+                        break;
+                    }
+
+                    double sweepPosition =
+                            jewelColor == JewelArm.JewelColor.RED && alliance == FtcAuto.Alliance.RED_ALLIANCE ||
+                            jewelColor == JewelArm.JewelColor.BLUE && alliance == FtcAuto.Alliance.BLUE_ALLIANCE ?
+                                    RobotInfo.JEWEL_ARM_FORWARD :
+                            jewelColor == JewelArm.JewelColor.BLUE && alliance == FtcAuto.Alliance.RED_ALLIANCE ||
+                            jewelColor == JewelArm.JewelColor.RED && alliance == FtcAuto.Alliance.BLUE_ALLIANCE ?
+                                    RobotInfo.JEWEL_ARM_BACKWARD : RobotInfo.JEWEL_ARM_NEUTRAL;
+                    robot.jewelArm.setSweepPosition(sweepPosition);
+                    timer.set(0.5, event);
                     sm.waitForSingleEvent(event, State.MOVE_JEWEL_ARM_UP);
                     break;
 
@@ -131,6 +140,7 @@ class CmdAutoNear implements TrcRobot.RobotCommand
                 case RESET_JEWEL_ARM:
                     robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
                     timer.set(0.3, event);
+//                    sm.waitForSingleEvent(event, State.DONE);
                     sm.waitForSingleEvent(event, State.DO_DELAY);
                     break;
 
@@ -151,34 +161,53 @@ class CmdAutoNear implements TrcRobot.RobotCommand
 
                 case GRAB_LIFT_GLYPH:
                     robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
-                    robot.glyphElevator.elevator.setPosition(RobotInfo.ELEVATOR_MID_HEIGHT, event, 2.0);
+                    robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MID_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.DRIVE_OFF_PLATFORM);
                     break;
 
                 case DRIVE_OFF_PLATFORM:
+                    targetX = 0.0;
+                    targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -26.0 : 26.0;
                     robot.targetHeading = 0.0;
-                    robot.pidDrive.setTarget(0.0, 30.0, robot.targetHeading, false, event);
-                    sm.waitForSingleEvent(event, State.CRAB_SIDEWAYS);
+
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event);
+                    sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     break;
 
-                case CRAB_SIDEWAYS:
-                    // ...
+                case TURN_TO_CRYPTOBOX:
+                    targetX = 0.0;
+                    targetY = 0.0;
+                    robot.targetHeading =
+                            startPos == FtcAuto.StartPos.FAR ? -90.0 :
+                            alliance == FtcAuto.Alliance.RED_ALLIANCE && startPos == FtcAuto.StartPos.NEAR ? 180.0 : 0.0;
+
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event);
+                    sm.waitForSingleEvent(event, State.ALIGN_CRYPTOBOX);
+                    break;
+
+                case ALIGN_CRYPTOBOX:
+                    targetX = startPos == FtcAuto.StartPos.NEAR ? 12.0 : 6.0;
+                    if (alliance == FtcAuto.Alliance.RED_ALLIANCE) targetX = -targetX;
+                    targetY = 0.0;
                     robot.targetHeading = 0.0;
-                    double xDistance = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -15.0 : 15.0;
-                    robot.pidDrive.setTarget(xDistance, 0.0, robot.targetHeading, false, event);
+
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
                     break;
 
                 case MOVE_FORWARD:
                     // Move forward
+                    targetX = 0.0;
+                    targetY = 6.0;
                     robot.targetHeading = 0.0;
-                    robot.pidDrive.setTarget(0.0, 4.0, robot.targetHeading, false, event);
-                    sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);
+
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event);
+                    sm.waitForSingleEvent(event, doCrypto == FtcAuto.DoCrypto.NO? State.DONE: State.SET_DOWN_GLYPH);
                     break;
 
                 case SET_DOWN_GLYPH:
                     // lower the elevator
-                    robot.glyphElevator.elevator.setPosition(RobotInfo.ELEVATOR_MIN_HEIGHT, event, 2.0);
+                    robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MIN_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.RELEASE_GLYPH);
                     break;
 
@@ -194,7 +223,7 @@ class CmdAutoNear implements TrcRobot.RobotCommand
                     sm.stop();
                     break;
             }
-//            robot.traceStateInfo(elapsedTime, state.toString(), xDistance, yDistance, heading);
+            robot.traceStateInfo(elapsedTime, state.toString(), targetX, targetY, robot.targetHeading);
         }
 
         if (robot.pidDrive.isActive() && (debugXPid || debugYPid || debugTurnPid))
@@ -202,23 +231,23 @@ class CmdAutoNear implements TrcRobot.RobotCommand
             robot.tracer.traceInfo("Battery", "Voltage=%5.2fV (%5.2fV)",
                     robot.battery.getVoltage(), robot.battery.getLowestVoltage());
 
-//            if (debugXPid && xDistance != 0.0)
-//            {
-//                robot.encoderXPidCtrl.printPidInfo(robot.tracer);
-//            }
-//
-//            if (debugYPid && yDistance != 0.0)
-//            {
-//                robot.encoderYPidCtrl.printPidInfo(robot.tracer);
-//            }
-//
-//            if (debugTurnPid)
-//            {
-//                robot.gyroPidCtrl.printPidInfo(robot.tracer);
-//            }
+            if (debugXPid && targetX != 0.0)
+            {
+                robot.encoderXPidCtrl.printPidInfo(robot.tracer);
+            }
+
+            if (debugYPid && targetY != 0.0)
+            {
+                robot.encoderYPidCtrl.printPidInfo(robot.tracer);
+            }
+
+            if (debugTurnPid)
+            {
+                robot.gyroPidCtrl.printPidInfo(robot.tracer);
+            }
         }
 
         return done;
     }   //cmdPeriodic
 
-}   //class CmdAutoNear
+}   //class CmdAutoFull

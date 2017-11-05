@@ -297,7 +297,7 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
                                 robot.jewelArm.getJewelHsvSaturation(), robot.jewelArm.getJewelHsvValue());
 
         dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pos=%5.1f,low=%s",
-                robot.glyphElevator.elevator.getPosition(), robot.glyphElevator.elevatorLowerLimitSwitch.isActive());
+                robot.glyphElevator.getPosition(), robot.glyphElevator.elevatorLowerLimitSwitch.isActive());
         robot.glyphElevator.elevatorPidCtrl.displayPidInfo(10);
 
         dashboard.displayPrintf(12, LABEL_WIDTH, "RelicElbow: ", "Pos=%5.1f,low=%s,high=%s",
