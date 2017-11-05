@@ -140,7 +140,6 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                 case RESET_JEWEL_ARM:
                     robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
                     timer.set(0.3, event);
-//                    sm.waitForSingleEvent(event, State.DONE);
                     sm.waitForSingleEvent(event, State.DO_DELAY);
                     break;
 
@@ -167,10 +166,10 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 
                 case DRIVE_OFF_PLATFORM:
                     targetX = 0.0;
-                    targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -26.0 : 26.0;
+                    targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -22.0 : 26.0;
                     robot.targetHeading = 0.0;
 
-                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
                     sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     break;
 
@@ -181,27 +180,38 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                             startPos == FtcAuto.StartPos.FAR ? -90.0 :
                             alliance == FtcAuto.Alliance.RED_ALLIANCE && startPos == FtcAuto.StartPos.NEAR ? 180.0 : 0.0;
 
-                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 3.0);
                     sm.waitForSingleEvent(event, State.ALIGN_CRYPTOBOX);
                     break;
 
                 case ALIGN_CRYPTOBOX:
-                    targetX = startPos == FtcAuto.StartPos.NEAR ? 12.0 : 6.0;
-                    if (alliance == FtcAuto.Alliance.RED_ALLIANCE) targetX = -targetX;
+                    if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                    {
+                        targetX = startPos == FtcAuto.StartPos.NEAR ? -4.0 : -10.5;
+                    }
+                    else
+                    {
+                        targetX = startPos == FtcAuto.StartPos.NEAR ? 12.0 : 13.5;
+                    }
                     targetY = 0.0;
-                    robot.targetHeading = 0.0;
 
-                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
                     break;
 
                 case MOVE_FORWARD:
                     // Move forward
                     targetX = 0.0;
-                    targetY = 6.0;
-                    robot.targetHeading = 0.0;
+                    if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                    {
+                        targetY = 15.0;
+                    }
+                    else
+                    {
+                        targetY = 9.0;
+                    }
 
-                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event);
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 1.0);
                     sm.waitForSingleEvent(event, doCrypto == FtcAuto.DoCrypto.NO? State.DONE: State.SET_DOWN_GLYPH);
                     break;
 

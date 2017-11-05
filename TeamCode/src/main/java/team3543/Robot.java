@@ -144,7 +144,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         {
             int cameraViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
                     "cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
-            vuforiaVision = new VuforiaVision(this, cameraViewId);
+            vuforiaVision = new VuforiaVision(this, -1);//cameraViewId);
 
             if (USE_GRIPVISION)
             {
@@ -186,6 +186,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
                 new TrcPidController.PidCoefficients(
                         RobotInfo.ENCODER_X_KP, RobotInfo.ENCODER_X_KI, RobotInfo.ENCODER_X_KD),
                 RobotInfo.ENCODER_X_TOLERANCE, this);
+//        encoderXPidCtrl.setNoOscillation(true);
         encoderYPidCtrl = new TrcPidController(
                 "encoderYPidCtrl",
                 new TrcPidController.PidCoefficients(
@@ -198,6 +199,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
                 RobotInfo.GYRO_TOLERANCE, this);
         gyroPidCtrl.setAbsoluteSetPoint(true);
         gyroPidCtrl.setOutputRange(-RobotInfo.TURN_POWER_LIMIT, RobotInfo.TURN_POWER_LIMIT);
+//        gyroPidCtrl.setNoOscillation(true);
 
         pidDrive = new TrcPidDrive("pidDrive", driveBase, encoderXPidCtrl, encoderYPidCtrl, gyroPidCtrl);
         pidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
