@@ -126,6 +126,10 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                             jewelColor == JewelArm.JewelColor.BLUE && alliance == FtcAuto.Alliance.RED_ALLIANCE ||
                             jewelColor == JewelArm.JewelColor.RED && alliance == FtcAuto.Alliance.BLUE_ALLIANCE ?
                                     RobotInfo.JEWEL_ARM_BACKWARD : RobotInfo.JEWEL_ARM_NEUTRAL;
+                    robot.tracer.traceInfo(
+                            state.toString(), "[%.0f,%.0f,%.0f]color=%s",
+                            robot.jewelArm.getJewelHsvHue(), robot.jewelArm.getJewelHsvSaturation(),
+                            robot.jewelArm.getJewelHsvValue(), jewelColor.toString());
                     robot.jewelArm.setSweepPosition(sweepPosition);
                     timer.set(0.5, event);
                     sm.waitForSingleEvent(event, State.MOVE_JEWEL_ARM_UP);

@@ -90,7 +90,11 @@ public class JewelArm implements TrcAnalogTrigger.TriggerHandler
 
         if (jewelColorSensor != null)
         {
-            color = jewelColor;
+            double hue = jewelColorSensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
+            if (hue <= 20.0 || hue >= 350.0)
+                color = JewelColor.RED;
+            else if (hue >= 120.0 && hue <= 220.0)
+                color = JewelColor.BLUE;
         }
 
         return color;
