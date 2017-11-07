@@ -146,6 +146,6 @@ class RobotInfo
     //
     static final double RELIC_ELBOW_DEGREES_PER_COUNT   = (180.0/1680.0);
     static final double RELIC_ELBOW_POS_OFFSET          = -40.0;
-    static final double RELIC_ELBOW_LEVEL_MOTOR_POWER   = 0.339;
+    static final double RELIC_ELBOW_LEVEL_MOTOR_POWER   = 0.339*1.0;
 
 }   //class RobotInfo

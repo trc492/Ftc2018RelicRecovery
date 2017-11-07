@@ -29,9 +29,9 @@ import trclib.TrcTimer;
 
 class CmdAutoFull implements TrcRobot.RobotCommand
 {
-    private static final boolean debugXPid = false;
-    private static final boolean debugYPid = false;
-    private static final boolean debugTurnPid = false;
+    private static final boolean debugXPid = true;
+    private static final boolean debugYPid = true;
+    private static final boolean debugTurnPid = true;
 
     private enum State
     {
@@ -69,6 +69,9 @@ class CmdAutoFull implements TrcRobot.RobotCommand
             Robot robot, FtcAuto.Alliance alliance, double delay, FtcAuto.StartPos startPos,
             FtcAuto.DoJewel doJewel, FtcAuto.DoCrypto doCrypto)
     {
+        robot.tracer.traceInfo(
+                moduleName, "alliance=%s, delay=%.0f, startPos=%s, doJewel=%s, doCrypto=%s",
+                alliance, delay, startPos, doJewel,doCrypto);
         this.robot = robot;
         this.alliance = alliance;
         this.delay = delay;
@@ -103,7 +106,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
             switch (state)
             {
                 case DEPLOY_JEWEL_ARM:
-                    retryCount = 10;
+                    retryCount = 0;
                     robot.jewelArm.setExtended(true);
                     timer.set(0.5, event);
                     sm.waitForSingleEvent(event, State.WHACK_JEWEL);
@@ -113,9 +116,13 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     // determine the jewel color and whack the correct one.
                     JewelArm.JewelColor jewelColor = robot.jewelArm.getJewelColor();
 
-                    if (jewelColor == JewelArm.JewelColor.NO && retryCount > 0)
+                    robot.tracer.traceInfo(
+                            state.toString(), "%d: Color=%s, HSV=[%.0f/%.0f/%.0f]",
+                            retryCount, jewelColor.toString(), robot.jewelArm.getJewelHsvHue(),
+                            robot.jewelArm.getJewelHsvSaturation(), robot.jewelArm.getJewelHsvValue());
+                    if (jewelColor == JewelArm.JewelColor.NO && retryCount < 10)
                     {
-                        retryCount--;
+                        retryCount++;
                         break;
                     }
 
@@ -125,11 +132,8 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                                     RobotInfo.JEWEL_ARM_FORWARD :
                             jewelColor == JewelArm.JewelColor.BLUE && alliance == FtcAuto.Alliance.RED_ALLIANCE ||
                             jewelColor == JewelArm.JewelColor.RED && alliance == FtcAuto.Alliance.BLUE_ALLIANCE ?
-                                    RobotInfo.JEWEL_ARM_BACKWARD : RobotInfo.JEWEL_ARM_NEUTRAL;
-                    robot.tracer.traceInfo(
-                            state.toString(), "[%.0f,%.0f,%.0f]color=%s",
-                            robot.jewelArm.getJewelHsvHue(), robot.jewelArm.getJewelHsvSaturation(),
-                            robot.jewelArm.getJewelHsvValue(), jewelColor.toString());
+                                    RobotInfo.JEWEL_ARM_BACKWARD :
+                                    RobotInfo.JEWEL_ARM_NEUTRAL;
                     robot.jewelArm.setSweepPosition(sweepPosition);
                     timer.set(0.5, event);
                     sm.waitForSingleEvent(event, State.MOVE_JEWEL_ARM_UP);
@@ -151,6 +155,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     //
                     // Do delay if any.
                     //
+                    robot.tracer.traceInfo(state.toString(), "Delay=%.0f", delay);
                     if (delay == 0.0)
                     {
                         sm.setState(State.GRAB_LIFT_GLYPH);

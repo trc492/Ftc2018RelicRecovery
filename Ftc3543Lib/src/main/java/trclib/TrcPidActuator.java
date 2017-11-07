@@ -57,12 +57,14 @@ public class TrcPidActuator extends TrcPidMotor
      * @param motor specifies the motor in the actuator.
      * @param lowerLimitSwitch specifies the lower limit switch. Required for zero calibration.
      * @param pidCtrl specifies the PID controller for PID controlled movement.
+     * @param minPos specifies the minimum position of the actuator range.
+     * @param maxPos specifies the maximum position of the actuator range.
      * @param powerCompensation specifies the object that implements the PowerCompensation interface, null if none
      *                          provided.
      */
     public TrcPidActuator(
             final String instanceName, TrcMotor motor, TrcDigitalInput lowerLimitSwitch, TrcPidController pidCtrl,
-            PowerCompensation powerCompensation)
+            double minPos,double maxPos,PowerCompensation powerCompensation)
     {
         super(instanceName, motor, pidCtrl, powerCompensation);
 
@@ -73,6 +75,8 @@ public class TrcPidActuator extends TrcPidMotor
         }
 
         this.motor = motor;
+        this.minPos = minPos;
+        this.maxPos = maxPos;
         motor.resetPositionOnDigitalInput(lowerLimitSwitch);
         pidCtrl.setAbsoluteSetPoint(true);
     }   //TrcPidActuator
@@ -84,32 +88,15 @@ public class TrcPidActuator extends TrcPidMotor
      * @param motor specifies the motor in the actuator.
      * @param lowerLimitSwitch specifies the lower limit switch. Required for zero calibration.
      * @param pidCtrl specifies the PID controller for PID controlled movement.
-     */
-    public TrcPidActuator(
-            final String instanceName, TrcMotor motor, TrcDigitalInput lowerLimitSwitch, TrcPidController pidCtrl)
-    {
-        this(instanceName, motor, lowerLimitSwitch, pidCtrl, null);
-    }   //TrcPidActuator
-
-    /**
-     * This method sets the position range of the actuator.
-     *
      * @param minPos specifies the minimum position of the actuator range.
      * @param maxPos specifies the maximum position of the actuator range.
      */
-    public void setPositionRange(double minPos, double maxPos)
+    public TrcPidActuator(
+            final String instanceName, TrcMotor motor, TrcDigitalInput lowerLimitSwitch, TrcPidController pidCtrl,
+            double minPos, double maxPos)
     {
-        final String funcName = "setPositionRange";
-
-        if (debugEnabled)
-        {
-            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API, "min=%f,max=%f", minPos, maxPos);
-            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API);
-        }
-
-        this.minPos = minPos;
-        this.maxPos = maxPos;
-    }   //setPositionRange
+        this(instanceName, motor, lowerLimitSwitch, pidCtrl, minPos, maxPos, null);
+    }   //TrcPidActuator
 
     /**
      * This method sets manual override mode. This is useful to override PID control of the actuator in situations

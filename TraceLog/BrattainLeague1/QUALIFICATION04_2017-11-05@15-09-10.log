@@ -1,0 +1,14 @@
+Test.FtcAuto_Info: Sun Nov 05 15:09:10 PST 2017: ***** Starting autonomous *****
+Test.Robot_Info: [0.070]  DEPLOY_JEWEL_ARM: xPos= 70.17/  0.00,yPos=-241.93/  0.00,heading=   1.0/   0.0,volt=14.17V(14.18V)
+Test.WHACK_JEWEL_Info: [12,0,0]color=RED
+Test.Robot_Info: [0.714]       WHACK_JEWEL: xPos= 70.17/  0.00,yPos=-241.93/  0.00,heading=   1.0/   0.0,volt=14.18V(14.17V)
+Test.Robot_Info: [1.245] MOVE_JEWEL_ARM_UP: xPos= 70.17/  0.00,yPos=-241.93/  0.00,heading=   1.1/   0.0,volt=14.18V(14.17V)
+Test.Robot_Info: [1.742]   RESET_JEWEL_ARM: xPos= 70.17/  0.00,yPos=-241.93/  0.00,heading=   1.0/   0.0,volt=14.16V(14.16V)
+Test.Robot_Info: [2.082]          DO_DELAY: xPos= 70.17/  0.00,yPos=-241.93/  0.00,heading=   1.0/   0.0,volt=14.17V(14.16V)
+Test.Robot_Info: [2.229]   GRAB_LIFT_GLYPH: xPos= 70.17/  0.00,yPos=-241.93/  0.00,heading=   1.0/   0.0,volt=14.18V(14.16V)
+Test.Robot_Info: [3.280] DRIVE_OFF_PLATFORM: xPos= 70.17/  0.00,yPos=-241.93/ 26.00,heading=   1.0/   0.0,volt=13.98V(13.75V)
+Test.Robot_Info: [5.614] TURN_TO_CRYPTOBOX: xPos= 28.69/  0.00,yPos=-45.41/  0.00,heading=   7.6/   0.0,volt=14.07V(13.10V)
+Test.Robot_Info: [6.333]   ALIGN_CRYPTOBOX: xPos= 28.65/ 12.00,yPos=-46.28/  0.00,heading=   2.8/   0.0,volt=14.10V(13.10V)
+Test.Robot_Info: [8.648]      MOVE_FORWARD: xPos= 40.63/  0.00,yPos=-45.72/  9.00,heading=  -1.5/   0.0,volt=14.07V(12.56V)
+Test.Robot_Info: [9.924]    SET_DOWN_GLYPH: xPos= 40.36/  0.00,yPos=-38.76/  9.00,heading=  -0.6/   0.0,volt=14.08V(12.56V)
+Test.Robot_Info: [11.065]     RELEASE_GLYPH: xPos= 40.36/  0.00,yPos=-38.76/  9.00,heading=  -0.5/   0.0,volt=14.08V(12.56V)

@@ -73,9 +73,9 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidMotor.PowerCom
                         RobotInfo.RELIC_ELBOW_KP, RobotInfo.RELIC_ELBOW_KI, RobotInfo.RELIC_ELBOW_KD),
                 RobotInfo.RELIC_ELBOW_TOLERANCE, this);
         elbow = new TrcPidActuator(
-                "elbow", elbowMotor, elbowLowerLimitSwitch, elbowPidCtrl, this);
+                "elbow", elbowMotor, elbowLowerLimitSwitch, elbowPidCtrl,
+                RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS, this);
         elbow.setPositionScale(RobotInfo.RELIC_ELBOW_DEGREES_PER_COUNT, RobotInfo.RELIC_ELBOW_POS_OFFSET);
-        elbow.setPositionRange(RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS);
         elbow.setManualOverride(true);  //TODO: remove
 
         grabber = new FtcServo("relicGrabber");

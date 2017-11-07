@@ -143,8 +143,7 @@ public class FtcAuto extends FtcOpMode
 
         if (USE_TRACELOG)
         {
-            String filePrefix = matchType.toString();
-            if (matchType != MatchType.PRACTICE) filePrefix += matchNumber;
+            String filePrefix = String.format("%s%02d", matchType, matchNumber);
             robot.tracer.openTraceLog("/sdcard/FIRST/tracelog", filePrefix);
         }
 

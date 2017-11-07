@@ -186,7 +186,6 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
                 new TrcPidController.PidCoefficients(
                         RobotInfo.ENCODER_X_KP, RobotInfo.ENCODER_X_KI, RobotInfo.ENCODER_X_KD),
                 RobotInfo.ENCODER_X_TOLERANCE, this);
-//        encoderXPidCtrl.setNoOscillation(true);
         encoderYPidCtrl = new TrcPidController(
                 "encoderYPidCtrl",
                 new TrcPidController.PidCoefficients(
@@ -199,7 +198,6 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
                 RobotInfo.GYRO_TOLERANCE, this);
         gyroPidCtrl.setAbsoluteSetPoint(true);
         gyroPidCtrl.setOutputRange(-RobotInfo.TURN_POWER_LIMIT, RobotInfo.TURN_POWER_LIMIT);
-//        gyroPidCtrl.setNoOscillation(true);
 
         pidDrive = new TrcPidDrive("pidDrive", driveBase, encoderXPidCtrl, encoderYPidCtrl, gyroPidCtrl);
         pidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
@@ -221,7 +219,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         //
 
         glyphElevator = new GlyphElevator();
-        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+        if (runMode != TrcRobot.RunMode.TELEOP_MODE)
         {
             glyphElevator.zeroCalibrate();
         }
@@ -234,7 +232,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
 
         relicArm = new RelicArm();
-//        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+//        if (runMode != TrcRobot.RunMode.TELEOP_MODE)
 //        {
 //            relicArm.elbow.zeroCalibrate(RobotInfo.RELIC_ELBOW_CAL_POWER);
 //        }
