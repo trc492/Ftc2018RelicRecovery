@@ -38,7 +38,12 @@ public class JewelArm implements TrcAnalogTrigger.TriggerHandler
     }
 
     private static final boolean USE_JEWEL_COLOR_SENSOR = true;
-    private static final double[] triggerPoints = {20.0, 120.0, 220.0, 350.0};
+    private static final double RED_LOW_THRESHOLD = 40.0;
+    private static final double RED_HIGH_THRESHOLD = 350.0;
+    private static final double BLUE_LOW_THRESHOLD = 120.0;
+    private static final double BLUE_HIGH_THRESHOLD = 220.0;
+    private static final double[] triggerPoints =
+            {RED_LOW_THRESHOLD, BLUE_LOW_THRESHOLD, BLUE_HIGH_THRESHOLD, RED_HIGH_THRESHOLD};
 
     private String instanceName;
     private TextToSpeech textToSpeech = null;
@@ -91,9 +96,9 @@ public class JewelArm implements TrcAnalogTrigger.TriggerHandler
         if (jewelColorSensor != null)
         {
             double hue = jewelColorSensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
-            if (hue <= 20.0 || hue >= 350.0)
+            if (hue <= RED_LOW_THRESHOLD || hue >= RED_HIGH_THRESHOLD)
                 color = JewelColor.RED;
-            else if (hue >= 120.0 && hue <= 220.0)
+            else if (hue >= BLUE_LOW_THRESHOLD && hue <= BLUE_HIGH_THRESHOLD)
                 color = JewelColor.BLUE;
         }
 
