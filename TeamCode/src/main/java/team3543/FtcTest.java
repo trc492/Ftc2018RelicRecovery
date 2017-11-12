@@ -29,6 +29,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import ftclib.FtcChoiceMenu;
+import ftclib.FtcColorSensor;
 import ftclib.FtcGamepad;
 import ftclib.FtcMenu;
 import ftclib.FtcValueMenu;
@@ -135,6 +136,44 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
     //
     // Overrides TrcRobot.RobotMode methods.
     //
+
+    @Override
+    public void startMode()
+    {
+        super.startMode();
+
+        if (test == Test.SENSORS_TEST)
+        {
+            if (robot.jewelColorTrigger != null)
+            {
+                robot.jewelColorTrigger.setEnabled(true);
+            }
+
+            if (robot.cryptoColorTrigger != null)
+            {
+                robot.cryptoColorTrigger.setEnabled(true);
+            }
+        }
+    }   //startMode
+
+    @Override
+    public void stopMode()
+    {
+        super.stop();
+
+        if (test == Test.SENSORS_TEST)
+        {
+            if (robot.jewelColorTrigger != null)
+            {
+                robot.jewelColorTrigger.setEnabled(false);
+            }
+
+            if (robot.cryptoColorTrigger != null)
+            {
+                robot.cryptoColorTrigger.setEnabled(false);
+            }
+        }
+    }   //stopMode
 
     @Override
     public void runPeriodic(double elapsedTime)
@@ -292,9 +331,13 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
                     robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
         }
 
-        dashboard.displayPrintf(6, LABEL_WIDTH, "Jewel: ", "Color=%s,HSV=%.0f/%.0f/%.0f",
-                                robot.jewelArm.getJewelColor(), robot.jewelArm.getJewelHsvHue(),
-                                robot.jewelArm.getJewelHsvSaturation(), robot.jewelArm.getJewelHsvValue());
+        dashboard.displayPrintf(
+                6, LABEL_WIDTH, "Color: ", "Jewel=%s[%.0f/%.2f/%.2f],Crypto=%s[%.0f/%.2f/%.2f]",
+                robot.getObjectColor(robot.jewelColorSensor), robot.getObjectHsvHue(robot.jewelColorSensor),
+                robot.getObjectHsvSaturation(robot.jewelColorSensor), robot.getObjectHsvValue(robot.jewelColorSensor),
+                robot.getObjectColor(robot.cryptoColorSensor), robot.getObjectHsvHue(robot.cryptoColorSensor),
+                robot.getObjectHsvSaturation(robot.cryptoColorSensor),
+                robot.getObjectHsvValue(robot.cryptoColorSensor));
 
         dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pos=%5.1f,low=%s",
                 robot.glyphElevator.getPosition(), robot.glyphElevator.elevatorLowerLimitSwitch.isActive());
@@ -307,7 +350,6 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
 
         dashboard.displayPrintf(15, LABEL_WIDTH, "Extender: ", "low=%s,high=%s",
                 robot.relicArm.extenderLowerLimitSwitch.isActive(), robot.relicArm.extenderUpperLimitSwitch.isActive());
-
     }   //doSensorsTest
 
     private void doVisionTest()

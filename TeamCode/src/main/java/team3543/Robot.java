@@ -31,11 +31,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import ftclib.FtcAnalogGyro;
 import ftclib.FtcAndroidTone;
 import ftclib.FtcBNO055Imu;
+import ftclib.FtcColorSensor;
 import ftclib.FtcDcMotor;
 import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
 import ftclib.FtcRobotBattery;
 import hallib.HalDashboard;
+import trclib.TrcAnalogTrigger;
 import trclib.TrcDbgTrace;
 import trclib.TrcDriveBase;
 import trclib.TrcGyro;
@@ -44,15 +46,25 @@ import trclib.TrcPidDrive;
 import trclib.TrcRobot;
 import trclib.TrcUtil;
 
-public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
+public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, TrcAnalogTrigger.TriggerHandler
 {
     private static final boolean USE_IMU = true;
     private static final boolean USE_ANALOG_GYRO = false;
     private static final boolean USE_SPEECH = true;
     private static final boolean USE_VUFORIA = true;
     private static final boolean USE_GRIPVISION = false;
+    private static final boolean USE_JEWEL_COLOR_SENSOR = true;
+    private static final boolean USE_CRYPTO_COLOR_SENSOR = true;
 
     private static final String moduleName = "Robot";
+
+    enum ObjectColor
+    {
+        NO,
+        RED,
+        BLUE
+    }
+
     //
     // Global objects.
     //
@@ -68,6 +80,17 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
     FtcBNO055Imu imu = null;
     TrcGyro gyro = null;
     double targetHeading = 0.0;
+
+    static final double[] colorTriggerPoints = {
+            RobotInfo.RED_LOW_THRESHOLD, RobotInfo.BLUE_LOW_THRESHOLD,
+            RobotInfo.BLUE_HIGH_THRESHOLD, RobotInfo.RED_HIGH_THRESHOLD};
+
+    FtcColorSensor jewelColorSensor = null;
+    TrcAnalogTrigger<FtcColorSensor.DataType> jewelColorTrigger = null;
+
+    FtcColorSensor cryptoColorSensor = null;
+    TrcAnalogTrigger<FtcColorSensor.DataType> cryptoColorTrigger = null;
+
     //
     // Vision subsystems.
     //
@@ -115,6 +138,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         if (USE_SPEECH)
         {
             textToSpeech = FtcOpMode.getInstance().getTextToSpeech();
+            textToSpeech.speak("Initialization starting", TextToSpeech.QUEUE_FLUSH, null);
         }
         //
         // Initialize sensors.
@@ -137,6 +161,23 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
                 TrcUtil.sleep(10);
             }
         }
+
+        if (USE_JEWEL_COLOR_SENSOR)
+        {
+            jewelColorSensor = new FtcColorSensor("jewelColorRangeSensor");
+            jewelColorTrigger = new TrcAnalogTrigger(
+                    "jewelColorTrigger", jewelColorSensor, 0, FtcColorSensor.DataType.HUE,
+                    colorTriggerPoints, this);
+        }
+
+        if (USE_CRYPTO_COLOR_SENSOR)
+        {
+            cryptoColorSensor = new FtcColorSensor("cryptoColorRangeSensor");
+            cryptoColorTrigger = new TrcAnalogTrigger(
+                    "cryptoColorTrigger", cryptoColorSensor, 0, FtcColorSensor.DataType.HUE,
+                    colorTriggerPoints, this);
+        }
+
         //
         // Initialize vision subsystems.
         //
@@ -227,7 +268,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         glyphGrabber = new GlyphGrabber("glyphGrabber");
         glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_START);
 
-        jewelArm = new JewelArm("jewelArm", this, textToSpeech);
+        jewelArm = new JewelArm("jewelArm");
         jewelArm.setExtended(false);
         jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
 
@@ -263,6 +304,20 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
         {
             gripVision.setEnabled(true);
         }
+
+        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+        {
+            if (jewelColorTrigger != null)
+            {
+                jewelColorTrigger.setEnabled(true);
+            }
+
+            if (cryptoColorTrigger != null)
+            {
+                cryptoColorTrigger.setEnabled(true);
+            }
+        }
+
         //
         // Reset all X, Y and heading values.
         //
@@ -273,6 +328,19 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 
     void stopMode(TrcRobot.RunMode runMode)
     {
+        if (runMode == TrcRobot.RunMode.AUTO_MODE)
+        {
+            if (jewelColorTrigger != null)
+            {
+                jewelColorTrigger.setEnabled(false);
+            }
+
+            if (cryptoColorTrigger != null)
+            {
+                cryptoColorTrigger.setEnabled(false);
+            }
+        }
+
         if (gripVision != null)
         {
             gripVision.setEnabled(false);
@@ -304,6 +372,61 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
                 driveBase.getHeading(), heading,
                 battery.getVoltage(), battery.getLowestVoltage());
     }   //traceStateInfo
+
+    ObjectColor getObjectColor(FtcColorSensor sensor)
+    {
+        ObjectColor color = ObjectColor.NO;
+
+        if (sensor != null)
+        {
+            double hue = sensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
+//            double sat = sensor.getRawData(0, FtcColorSensor.DataType.SATURATION).value;
+//            double value = sensor.getRawData(0, FtcColorSensor.DataType.VALUE).value;
+
+            if (hue <= RobotInfo.RED_LOW_THRESHOLD || hue >= RobotInfo.RED_HIGH_THRESHOLD)
+                color = ObjectColor.RED;
+            else if (hue >= RobotInfo.BLUE_LOW_THRESHOLD && hue <= RobotInfo.BLUE_HIGH_THRESHOLD)
+                color = ObjectColor.BLUE;
+        }
+
+        return color;
+    }   //getObjectColor
+
+    double getObjectHsvHue(FtcColorSensor sensor)
+    {
+        double value = 0.0;
+
+        if (sensor != null)
+        {
+            value = sensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
+        }
+
+        return value;
+    }   //getObjectHsvHue
+
+    double getObjectHsvSaturation(FtcColorSensor sensor)
+    {
+        double value = 0.0;
+
+        if (sensor != null)
+        {
+            value = sensor.getRawData(0, FtcColorSensor.DataType.SATURATION).value;
+        }
+
+        return value;
+    }   //getObjectHsvSaturation
+
+    double getObjectHsvValue(FtcColorSensor sensor)
+    {
+        double value = 0.0;
+
+        if (sensor != null)
+        {
+            value = sensor.getRawData(0, FtcColorSensor.DataType.VALUE).value;
+        }
+
+        return value;
+    }   //getObjectHsvValue
 
     //
     // Implements TrcPidController.PidInput
@@ -357,6 +480,50 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons
 
         return input;
     }   //getInput
+
+    //
+    // Implements TrcAnalogTrigger.TriggerHandler interface.
+    //
+
+    @Override
+    public void triggerEvent(TrcAnalogTrigger<?> analogTrigger, int zoneIndex, double zoneValue)
+    {
+        String object = analogTrigger == jewelColorTrigger? "jewel":
+                        analogTrigger == cryptoColorTrigger? "crypto box": null;
+        ObjectColor color = ObjectColor.NO;
+
+        switch (zoneIndex)
+        {
+            case 0:
+            case 4:
+                //
+                // RED found.
+                //
+                color = ObjectColor.RED;
+                break;
+
+            case 1:
+            case 3:
+                //
+                // None found.
+                //
+                color = ObjectColor.NO;
+                break;
+
+            case 2:
+                //
+                // BLUE found.
+                //
+                color = ObjectColor.BLUE;
+                break;
+        }
+
+        if (textToSpeech != null)
+        {
+            textToSpeech.speak(
+                    String.format("%s %s found.", color.toString(), object), TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }   // triggerEvent
 
     //
     // Implements FtcMenu.MenuButtons interface.

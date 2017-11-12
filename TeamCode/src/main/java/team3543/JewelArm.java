@@ -22,55 +22,24 @@
 
 package team3543;
 
-import android.speech.tts.TextToSpeech;
-
-import ftclib.FtcColorSensor;
 import ftclib.FtcServo;
-import trclib.TrcAnalogTrigger;
 
-public class JewelArm implements TrcAnalogTrigger.TriggerHandler
+public class JewelArm
 {
-    public enum JewelColor
-    {
-        NO,
-        RED,
-        BLUE
-    }
-
-    private static final boolean USE_JEWEL_COLOR_SENSOR = true;
-    private static final double RED_LOW_THRESHOLD = 40.0;
-    private static final double RED_HIGH_THRESHOLD = 350.0;
-    private static final double BLUE_LOW_THRESHOLD = 120.0;
-    private static final double BLUE_HIGH_THRESHOLD = 220.0;
-    private static final double[] triggerPoints =
-            {RED_LOW_THRESHOLD, BLUE_LOW_THRESHOLD, BLUE_HIGH_THRESHOLD, RED_HIGH_THRESHOLD};
 
     private String instanceName;
-    private TextToSpeech textToSpeech = null;
     private FtcServo verticalServo;
     private FtcServo horizontalServo;
-    private FtcColorSensor jewelColorSensor = null;
-    private TrcAnalogTrigger<FtcColorSensor.DataType> jewelColorTrigger = null;
-    private JewelColor jewelColor = JewelColor.NO;
     private boolean armExtended = false;
 
     /**
      * Constructor: Create an instance of the object  .
      */
-    public JewelArm(String instanceName, Robot robot, TextToSpeech textToSpeech)
+    public JewelArm(String instanceName)
     {
         this.instanceName = instanceName;
-        this.textToSpeech = textToSpeech;
         verticalServo = new FtcServo(instanceName + "VerticalServo");
         horizontalServo = new FtcServo(instanceName + "HorizontalServo");
-        if (USE_JEWEL_COLOR_SENSOR)
-        {
-            jewelColorSensor = new FtcColorSensor("jewelColorRangeSensor");
-            jewelColorTrigger = new TrcAnalogTrigger(
-                    "jewelColorTrigger", jewelColorSensor, 0, FtcColorSensor.DataType.HUE,
-                    triggerPoints, this);
-            jewelColorTrigger.setEnabled(true);
-        }
     }   //JewelArm
 
     public String toString()
@@ -88,115 +57,5 @@ public class JewelArm implements TrcAnalogTrigger.TriggerHandler
     {
         horizontalServo.setPosition(pos);
     }
-
-    public JewelColor getJewelColor()
-    {
-        JewelColor color = JewelColor.NO;
-
-        if (jewelColorSensor != null)
-        {
-            double hue = jewelColorSensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
-            if (hue <= RED_LOW_THRESHOLD || hue >= RED_HIGH_THRESHOLD)
-                color = JewelColor.RED;
-            else if (hue >= BLUE_LOW_THRESHOLD && hue <= BLUE_HIGH_THRESHOLD)
-                color = JewelColor.BLUE;
-        }
-
-        return color;
-    }
-
-    public double getJewelHsvHue()
-    {
-        double value = 0.0;
-
-        if (jewelColorSensor != null)
-        {
-            value = jewelColorSensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
-        }
-
-        return value;
-    }
-
-    public double getJewelHsvSaturation()
-    {
-        double value = 0.0;
-
-        if (jewelColorSensor != null)
-        {
-            value = jewelColorSensor.getRawData(0, FtcColorSensor.DataType.SATURATION).value;
-        }
-
-        return value;
-    }
-
-    public double getJewelHsvValue()
-    {
-        double value = 0.0;
-
-        if (jewelColorSensor != null)
-        {
-            value = jewelColorSensor.getRawData(0, FtcColorSensor.DataType.VALUE).value;
-        }
-
-        return value;
-    }
-
-    //
-    // Implements TrcAnalogTrigger.TriggerHandler interface.
-    //
-
-    /**
-     * This method is called when a threshold has been crossed.
-     *
-     * @param analogTrigger specifies the TrcAnalogTrigger object that detected the trigger.
-     * @param zoneIndex specifies the zone index it is crossing into.
-     * @param zoneValue specifies the actual sensor value.
-     */
-    @Override
-    public void triggerEvent(TrcAnalogTrigger<?> analogTrigger, int zoneIndex, double zoneValue)
-    {
-        if (analogTrigger == jewelColorTrigger)
-        {
-            if (armExtended)
-            {
-                switch (zoneIndex)
-                {
-                    case 0:
-                    case 4:
-                        //
-                        // RED jewel found.
-                        //
-                        jewelColor = JewelColor.RED;
-                        break;
-
-                    case 1:
-                    case 3:
-                        //
-                        // No jewel found.
-                        //
-                        jewelColor = JewelColor.NO;
-                        break;
-
-                    case 2:
-                        //
-                        // BLUE jewel found.
-                        //
-                        jewelColor = JewelColor.BLUE;
-                        break;
-                }
-
-                if (textToSpeech != null)
-                {
-                    textToSpeech.speak(
-                            String.format("%s jewel found.", jewelColor.toString()),
-                            TextToSpeech.QUEUE_FLUSH, null);
-                }
-            }
-            else
-            {
-                jewelColor = JewelColor.NO;
-            }
-        }
-    }   //triggerEvent
 
 }   //class JewelArm

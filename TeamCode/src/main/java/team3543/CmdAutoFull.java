@@ -47,6 +47,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
         MOVE_FORWARD,
         SET_DOWN_GLYPH,
         RELEASE_GLYPH,
+        BACK_OFF,
         DONE
     }   //enum State
 
@@ -114,24 +115,26 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 
                 case WHACK_JEWEL:
                     // determine the jewel color and whack the correct one.
-                    JewelArm.JewelColor jewelColor = robot.jewelArm.getJewelColor();
+                    Robot.ObjectColor jewelColor = robot.getObjectColor(robot.jewelColorSensor);
 
                     robot.tracer.traceInfo(
                             state.toString(), "%d: Color=%s, HSV=[%.0f/%.0f/%.0f]",
-                            retryCount, jewelColor.toString(), robot.jewelArm.getJewelHsvHue(),
-                            robot.jewelArm.getJewelHsvSaturation(), robot.jewelArm.getJewelHsvValue());
-                    if (jewelColor == JewelArm.JewelColor.NO && retryCount < 10)
+                            retryCount, jewelColor.toString(),
+                            robot.getObjectHsvHue(robot.jewelColorSensor),
+                            robot.getObjectHsvSaturation(robot.jewelColorSensor),
+                            robot.getObjectHsvValue(robot.jewelColorSensor));
+                    if (jewelColor == Robot.ObjectColor.NO && retryCount < 10)
                     {
                         retryCount++;
                         break;
                     }
 
                     double sweepPosition =
-                            jewelColor == JewelArm.JewelColor.RED && alliance == FtcAuto.Alliance.RED_ALLIANCE ||
-                            jewelColor == JewelArm.JewelColor.BLUE && alliance == FtcAuto.Alliance.BLUE_ALLIANCE ?
+                            jewelColor == Robot.ObjectColor.RED && alliance == FtcAuto.Alliance.RED_ALLIANCE ||
+                            jewelColor == Robot.ObjectColor.BLUE && alliance == FtcAuto.Alliance.BLUE_ALLIANCE ?
                                     RobotInfo.JEWEL_ARM_FORWARD :
-                            jewelColor == JewelArm.JewelColor.BLUE && alliance == FtcAuto.Alliance.RED_ALLIANCE ||
-                            jewelColor == JewelArm.JewelColor.RED && alliance == FtcAuto.Alliance.BLUE_ALLIANCE ?
+                            jewelColor == Robot.ObjectColor.BLUE && alliance == FtcAuto.Alliance.RED_ALLIANCE ||
+                            jewelColor == Robot.ObjectColor.RED && alliance == FtcAuto.Alliance.BLUE_ALLIANCE ?
                                     RobotInfo.JEWEL_ARM_BACKWARD :
                                     RobotInfo.JEWEL_ARM_NEUTRAL;
                     robot.jewelArm.setSweepPosition(sweepPosition);
@@ -200,7 +203,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     }
                     else
                     {
-                        targetX = startPos == FtcAuto.StartPos.NEAR ? 12.0 : 13.5;
+                        targetX = startPos == FtcAuto.StartPos.NEAR ? 16.0 : 13.5;
                     }
                     targetY = 0.0;
 
@@ -217,7 +220,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     }
                     else
                     {
-                        targetY = 9.0;
+                        targetY = 8.0;
                     }
 
                     robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 1.0);
@@ -231,6 +234,19 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case RELEASE_GLYPH:
+                    robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
+                    timer.set(0.5, event);
+                    sm.waitForSingleEvent(event, State.BACK_OFF);
+                    break;
+
+                case BACK_OFF:
+                    targetX = 0.0;
+                    targetY = -4.5;
+
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 1.0);
+                    sm.waitForSingleEvent(event, State.DONE);
+                    break;
+
                 case DONE:
                 default:
                     // open the glyphgrabber servos

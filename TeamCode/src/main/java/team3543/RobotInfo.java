@@ -29,6 +29,16 @@ class RobotInfo
     static final float MM_PER_INCH                      = 25.4f;
 
     //
+    // Color sensor values.
+    //
+    static final double RED_LOW_THRESHOLD = 40.0;
+    static final double RED_HIGH_THRESHOLD = 350.0;
+    static final double BLUE_LOW_THRESHOLD = 150.0;
+    static final double BLUE_HIGH_THRESHOLD = 220.0;
+    static final double HSV_SATURATION_THRESHOLD = 0.05;
+    static final double HSV_VALUE_THRESHOLD = 0.01;
+
+    //
     // DriveBase subsystem.
     //
     static final DcMotor.RunMode DRIVE_MOTOR_MODE       = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
