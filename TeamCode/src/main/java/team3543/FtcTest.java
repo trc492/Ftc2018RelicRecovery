@@ -34,11 +34,12 @@ import ftclib.FtcGamepad;
 import ftclib.FtcMenu;
 import ftclib.FtcValueMenu;
 import trclib.TrcEvent;
+import trclib.TrcGameController;
 import trclib.TrcStateMachine;
 import trclib.TrcTimer;
 
 @TeleOp(name="Test", group="3543Test")
-public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
+public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandler
 {
     private static final String moduleName = "FtcTest";
 
@@ -471,18 +472,19 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
     }   //doMotorsTest
 
     //
-    // Overrides FtcGamepad.ButtonHandler in FtcTeleOp.
+    // Overrides TrcGameController.ButtonHandler in FtcTeleOp.
     //
 
     @Override
-    public void gamepadButtonEvent(FtcGamepad gamepad, int button, boolean pressed)
+    public void buttonEvent(TrcGameController gamepad, int button, boolean pressed)
     {
         boolean processed = false;
         //
         // In addition to or instead of the gamepad controls handled by FtcTeleOp, we can add to or override the
         // FtcTeleOp gamepad actions.
         //
-        dashboard.displayPrintf(7, "%s: %04x->%s", gamepad.toString(), button, pressed? "Pressed": "Released");
+        dashboard.displayPrintf(
+                7, "%s: %04x->%s", gamepad.toString(), button, pressed? "Pressed": "Released");
         if (gamepad == driverGamepad)
         {
             switch (button)
@@ -505,8 +507,8 @@ public class FtcTest extends FtcTeleOp implements FtcGamepad.ButtonHandler
         //
         if (!processed)
         {
-            super.gamepadButtonEvent(gamepad, button, pressed);
+            super.buttonEvent(gamepad, button, pressed);
         }
-    }   //gamepadButtonEvent
+    }   //buttonEvent
 
 }   //class FtcTest

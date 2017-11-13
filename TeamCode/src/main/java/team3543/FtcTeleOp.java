@@ -27,10 +27,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import ftclib.FtcGamepad;
 import ftclib.FtcOpMode;
 import hallib.HalDashboard;
+import trclib.TrcGameController;
 import trclib.TrcRobot;
 
 @TeleOp(name="TeleOp", group="3543TeleOp")
-public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
+public class FtcTeleOp extends FtcOpMode implements TrcGameController.ButtonHandler
 {
     private enum DriveMode
     {
@@ -124,13 +125,14 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
 
 
     //
-    // Implements FtcGamepad.ButtonHandler interface.
+    // Implements TrcGameController.ButtonHandler interface.
     //
 
     @Override
-    public void gamepadButtonEvent(FtcGamepad gamepad, int button, boolean pressed)
+    public void buttonEvent(TrcGameController gamepad, int button, boolean pressed)
     {
-        dashboard.displayPrintf(7, "%s: %04x->%s", gamepad.toString(), button, pressed? "Pressed": "Released");
+        dashboard.displayPrintf(
+                7, "%s: %04x->%s", gamepad.toString(), button, pressed? "Pressed": "Released");
         if (gamepad == driverGamepad)
         {
             switch (button)
@@ -251,6 +253,6 @@ public class FtcTeleOp extends FtcOpMode implements FtcGamepad.ButtonHandler
                     break;
             }
         }
-    }   //gamepadButtonEvent
+    }   //buttonEvent
 
 }   //class FtcTeleOp
