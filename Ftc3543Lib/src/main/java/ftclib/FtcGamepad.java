@@ -373,7 +373,7 @@ public class FtcGamepad extends TrcGameController
     public double getLeftStickDirectionRadians(boolean doExp)
     {
         final String funcName = "getLeftStickDirectionRadians";
-        double value = getDirection(gamepad.left_stick_x, gamepad.left_stick_y, doExp);
+        double value = getDirectionRadians(gamepad.left_stick_x, gamepad.left_stick_y, doExp);
 
         if (debugEnabled)
         {
@@ -405,7 +405,7 @@ public class FtcGamepad extends TrcGameController
     public double getRightStickDirectionRadians(boolean doExp)
     {
         final String funcName = "getRightStickDirectionRadians";
-        double value = getDirection(gamepad.right_stick_x, gamepad.right_stick_y, doExp);
+        double value = getDirectionRadians(gamepad.right_stick_x, gamepad.right_stick_y, doExp);
 
         if (debugEnabled)
         {
@@ -436,7 +436,16 @@ public class FtcGamepad extends TrcGameController
      */
     public double getLeftStickDirectionDegrees(boolean doExp)
     {
-        return Math.toDegrees(getLeftStickDirectionRadians(doExp));
+        final String funcName = "getLeftStickDirectionDegrees";
+        double value = getDirectionDegrees(gamepad.left_stick_x, gamepad.left_stick_y, doExp);
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API, "exp=%s", Boolean.toString(doExp));
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API, "=%f", value);
+        }
+
+        return value;
     }   //getLeftStickDirectionDegrees
 
     /**
@@ -459,7 +468,16 @@ public class FtcGamepad extends TrcGameController
      */
     public double getRightStickDirectionDegrees(boolean doExp)
     {
-        return Math.toDegrees(getRightStickDirectionRadians(doExp));
+        final String funcName = "getRightStickDirectionDegrees";
+        double value = getDirectionDegrees(gamepad.right_stick_x, gamepad.right_stick_y, doExp);
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API, "exp=%s", Boolean.toString(doExp));
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API, "=%f", value);
+        }
+
+        return value;
     }   //getRightStickDirectionDegrees
 
     /**

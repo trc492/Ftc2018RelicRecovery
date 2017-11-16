@@ -171,9 +171,9 @@ public abstract class TrcGameController implements TrcTaskMgr.Task
      *
      * @return stick direction in radians.
      */
-    protected double getDirection(double xValue, double yValue, boolean doExp)
+    protected double getDirectionRadians(double xValue, double yValue, boolean doExp)
     {
-        final String funcName = "getDirection";
+        final String funcName = "getDirectionRadians";
         double value = Math.atan2(expValue(yValue, doExp), expValue(xValue, doExp));
 
         if (debugEnabled)
@@ -184,7 +184,32 @@ public abstract class TrcGameController implements TrcTaskMgr.Task
         }
 
         return value;
-    }   //getDirection
+    }   //getDirectionRadians
+
+    /**
+     * This method returns the stick direction in degrees combining the x and y axes.
+     *
+     * @param xValue specifies the x-axis value.
+     * @param yValue specifies the y-axis value.
+     * @param doExp specifies true if the value should be raised exponentially, false otherwise. If the value is
+     *              raised exponentially, it gives you more precise control on the low end values.
+     *
+     * @return stick direction in degrees.
+     */
+    protected double getDirectionDegrees(double xValue, double yValue, boolean doExp)
+    {
+        final String funcName = "getDirectionDegrees";
+        double value = Math.toDegrees(getDirectionRadians(xValue, yValue, doExp));
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.FUNC,
+                    "x=%f,y=%f,exp=%s", xValue, yValue, Boolean.toString(doExp));
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.FUNC, "=%f", value);
+        }
+
+        return value;
+    }   //getDirectionDegrees
 
     /**
      * This method returns the magnitude value combining the x and y values. The magnitude is calculated by squaring
