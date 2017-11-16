@@ -249,8 +249,8 @@ public class FtcAuto extends FtcOpMode
         //
         // Show choices.
         //
-        robot.dashboard.displayPrintf(1, "== Match: %s%s ==",
-                                      matchType.toString(), matchType == MatchType.PRACTICE? "": "_" + matchNumber);
+        robot.dashboard.displayPrintf(1, "== Match: %s ==",
+                                      matchType.toString() + "_" + matchNumber);
         robot.dashboard.displayPrintf(2, "Auto Strategy: %s", strategyMenu.getCurrentChoiceText());
         robot.dashboard.displayPrintf(3, "Alliance=%s,Delay=%.0f sec", alliance.toString(), delay);
         robot.dashboard.displayPrintf(4, "StartPos=%s", startPos.toString());

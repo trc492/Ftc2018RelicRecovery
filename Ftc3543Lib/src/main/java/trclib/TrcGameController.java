@@ -67,7 +67,6 @@ public abstract class TrcGameController implements TrcTaskMgr.Task
     private double deadbandThreshold = DEF_DEADBAND_THRESHOLD;
     private ButtonHandler buttonHandler;
     private int prevButtons;
-    private int ySign;
     private int exponent = 2;
 
     /**
@@ -89,14 +88,21 @@ public abstract class TrcGameController implements TrcTaskMgr.Task
         this.instanceName = instanceName;
         this.deadbandThreshold = deadbandThreshold;
         this.buttonHandler = buttonHandler;
-        prevButtons = getButtons();
-        ySign = 1;
 
         if (buttonHandler != null)
         {
             TrcTaskMgr.getInstance().registerTask(instanceName, this, TrcTaskMgr.TaskType.PREPERIODIC_TASK);
         }
     }   //TrcGameController
+
+    /**
+     * This method initializes the game controller. This is done separate from the constructor because the getButtons
+     * method may not be accessible when the object is constructed.
+     */
+    public void init()
+    {
+        prevButtons = getButtons();
+    }   //init
 
     /**
      * This method returns the instance name.
@@ -107,24 +113,6 @@ public abstract class TrcGameController implements TrcTaskMgr.Task
     {
         return instanceName;
     }   //toString
-
-    /**
-     * This method inverts the y-axis of the analog sticks.
-     *
-     * @param inverted specifies true if inverting the y-axis, false otherwise.
-     */
-    public void setYInverted(boolean inverted)
-    {
-        final String funcName = "setYInverted";
-
-        ySign = inverted? -1: 1;
-
-        if (debugEnabled)
-        {
-            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API, "inverted=%s", Boolean.toString(inverted));
-            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API);
-        }
-    }   //setYInverted
 
     /**
      * This method sets the exponential value for raising analog control values.
@@ -163,7 +151,7 @@ public abstract class TrcGameController implements TrcTaskMgr.Task
         }
 
         value = (Math.abs(value) >= deadbandThreshold)? value: 0.0;
-        value = expValue((double)(ySign*value), doExp);
+        value = expValue(value, doExp);
 
         if (debugEnabled)
         {

@@ -49,6 +49,7 @@ public class FtcGamepad extends TrcGameController
     public static final int GAMEPAD_DPAD_DOWN   = ((int)1 << 13);
 
     private Gamepad gamepad;
+    private int ySign;
 
     /**
      * Constructor: Create an instance of the object.
@@ -62,6 +63,8 @@ public class FtcGamepad extends TrcGameController
     {
         super(instanceName, 0.0, buttonHandler);
         this.gamepad = gamepad;
+        ySign = 1;
+        init();
     }   //FtcGamepad
 
     /**
@@ -102,6 +105,24 @@ public class FtcGamepad extends TrcGameController
     {
         this(instanceName, gamepad, deadbandThreshold, null);
     }   //FtcGamepad
+
+    /**
+     * This method inverts the y-axis of the analog sticks.
+     *
+     * @param inverted specifies true if inverting the y-axis, false otherwise.
+     */
+    public void setYInverted(boolean inverted)
+    {
+        final String funcName = "setYInverted";
+
+        ySign = inverted? -1: 1;
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API, "inverted=%s", Boolean.toString(inverted));
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API);
+        }
+    }   //setYInverted
 
     /**
      * This method returns the x-axis value of the left stick.
@@ -146,7 +167,7 @@ public class FtcGamepad extends TrcGameController
     public double getLeftStickY(boolean doExp)
     {
         final String funcName = "getLeftStickY";
-        double value = adjustAnalogControl(gamepad.left_stick_y, doExp);
+        double value = ySign*adjustAnalogControl(gamepad.left_stick_y, doExp);
 
         if (debugEnabled)
         {
@@ -210,7 +231,7 @@ public class FtcGamepad extends TrcGameController
     public double getRightStickY(boolean doExp)
     {
         final String funcName = "getRightStickY";
-        double value = adjustAnalogControl(gamepad.right_stick_y, doExp);
+        double value = ySign*adjustAnalogControl(gamepad.right_stick_y, doExp);
 
         if (debugEnabled)
         {
