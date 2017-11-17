@@ -22,6 +22,10 @@
 
 package team3543;
 
+import android.speech.tts.TextToSpeech;
+
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+
 import trclib.TrcEvent;
 import trclib.TrcRobot;
 import trclib.TrcStateMachine;
@@ -32,6 +36,22 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final boolean debugXPid = true;
     private static final boolean debugYPid = true;
     private static final boolean debugTurnPid = true;
+
+    private static final double RED_NEAR_LEFT_COL_OFFSET_IN = -11.5;
+    private static final double RED_NEAR_CENTER_COL_OFFSET_IN = -4.0;
+    private static final double RED_NEAR_RIGHT_COL_OFFSET_IN = 3.5;
+
+    private static final double RED_FAR_LEFT_COL_OFFSET_IN = -18.0;
+    private static final double RED_FAR_CENTER_COL_OFFSET_IN = -10.5;
+    private static final double RED_FAR_RIGHT_COL_OFFSET_IN = -3.0;
+
+    private static final double BLUE_NEAR_LEFT_COL_OFFSET_IN = 8.5;
+    private static final double BLUE_NEAR_CENTER_COL_OFFSET_IN = 16.0;
+    private static final double BLUE_NEAR_RIGHT_COL_OFFSET_IN = 23.5;
+
+    private static final double BLUE_FAR_LEFT_COL_OFFSET_IN = 6.0;
+    private static final double BLUE_FAR_CENTER_COL_OFFSET_IN = 13.5;
+    private static final double BLUE_FAR_RIGHT_COL_OFFSET_IN = 21.0;
 
     private enum State
     {
@@ -65,6 +85,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private double targetX = 0.0;
     private double targetY = 0.0;
     private int retryCount = 0;
+    private RelicRecoveryVuMark vuMark;
 
     CmdAutoFull(
             Robot robot, FtcAuto.Alliance alliance, double delay, FtcAuto.StartPos startPos,
@@ -114,6 +135,14 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case WHACK_JEWEL:
+                    vuMark = robot.vuforiaVision.getVuMark();
+                    robot.tracer.traceInfo(state.toString(), "VuMark: %s", vuMark.toString());
+                    if (robot.textToSpeech != null)
+                    {
+                        robot.textToSpeech.speak(
+                                String.format("%s found!", vuMark), TextToSpeech.QUEUE_ADD, null);
+                    }
+
                     // determine the jewel color and whack the correct one.
                     Robot.ObjectColor jewelColor = robot.getObjectColor(robot.jewelColorSensor);
 
@@ -177,6 +206,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_OFF_PLATFORM:
+                    robot.encoderYPidCtrl.setOutputRange(-0.5, 0.5);
                     targetX = 0.0;
                     targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -22.0 : 26.0;
                     robot.targetHeading = 0.0;
@@ -186,6 +216,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case TURN_TO_CRYPTOBOX:
+                    robot.encoderYPidCtrl.setOutputRange(-1.0, 1.0);
                     targetX = 0.0;
                     targetY = 0.0;
                     robot.targetHeading =
@@ -199,11 +230,69 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                 case ALIGN_CRYPTOBOX:
                     if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                     {
-                        targetX = startPos == FtcAuto.StartPos.NEAR ? -4.0 : -10.5;
+                        if (startPos == FtcAuto.StartPos.NEAR)
+                        {
+                            if (vuMark == RelicRecoveryVuMark.LEFT)
+                            {
+                                targetX = RED_NEAR_LEFT_COL_OFFSET_IN;
+                            }
+                            else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                            {
+                                targetX = RED_NEAR_RIGHT_COL_OFFSET_IN;
+                            }
+                            else
+                            {
+                                targetX = RED_NEAR_CENTER_COL_OFFSET_IN;
+                            }
+                        }
+                        else
+                        {
+                            if (vuMark == RelicRecoveryVuMark.LEFT)
+                            {
+                                targetX = RED_FAR_LEFT_COL_OFFSET_IN;
+                            }
+                            else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                            {
+                                targetX = RED_FAR_RIGHT_COL_OFFSET_IN;
+                            }
+                            else
+                            {
+                                targetX = RED_FAR_CENTER_COL_OFFSET_IN;
+                            }
+                        }
                     }
                     else
                     {
-                        targetX = startPos == FtcAuto.StartPos.NEAR ? 16.0 : 13.5;
+                        if (startPos == FtcAuto.StartPos.NEAR)
+                        {
+                            if (vuMark == RelicRecoveryVuMark.LEFT)
+                            {
+                                targetX = BLUE_NEAR_LEFT_COL_OFFSET_IN;
+                            }
+                            else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                            {
+                                targetX = BLUE_NEAR_RIGHT_COL_OFFSET_IN;
+                            }
+                            else
+                            {
+                                targetX = BLUE_NEAR_CENTER_COL_OFFSET_IN;
+                            }
+                        }
+                        else
+                        {
+                            if (vuMark == RelicRecoveryVuMark.LEFT)
+                            {
+                                targetX = BLUE_FAR_LEFT_COL_OFFSET_IN;
+                            }
+                            else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                            {
+                                targetX = BLUE_FAR_RIGHT_COL_OFFSET_IN;
+                            }
+                            else
+                            {
+                                targetX = BLUE_FAR_CENTER_COL_OFFSET_IN;
+                            }
+                        }
                     }
                     targetY = 0.0;
 

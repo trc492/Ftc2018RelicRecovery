@@ -185,7 +185,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
         {
             int cameraViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
                     "cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
-            vuforiaVision = new VuforiaVision(this, -1);//cameraViewId);
+            vuforiaVision = new VuforiaVision(this, cameraViewId);
 
             if (USE_GRIPVISION)
             {
@@ -312,10 +312,10 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
                 jewelColorTrigger.setEnabled(true);
             }
 
-            if (cryptoColorTrigger != null)
-            {
-                cryptoColorTrigger.setEnabled(true);
-            }
+//            if (cryptoColorTrigger != null)
+//            {
+//                cryptoColorTrigger.setEnabled(true);
+//            }
         }
 
         //
@@ -473,7 +473,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
 
                 if (sentence != null)
                 {
-                    textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
+                    textToSpeech.speak(sentence, TextToSpeech.QUEUE_ADD, null);
                 }
             }
         }
@@ -521,7 +521,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
         if (textToSpeech != null)
         {
             textToSpeech.speak(
-                    String.format("%s %s found.", color.toString(), object), TextToSpeech.QUEUE_FLUSH, null);
+                    String.format("%s %s found.", color.toString(), object), TextToSpeech.QUEUE_ADD, null);
         }
     }   // triggerEvent
 
