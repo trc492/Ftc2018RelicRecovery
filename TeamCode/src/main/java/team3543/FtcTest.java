@@ -152,6 +152,8 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
 
             if (robot.cryptoColorTrigger != null)
             {
+                robot.redCryptoBarCount = 0;
+                robot.blueCryptoBarCount = 0;
                 robot.cryptoColorTrigger.setEnabled(true);
             }
         }

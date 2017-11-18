@@ -67,6 +67,7 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidMotor.PowerCom
         elbowUpperLimitSwitch = new FtcDigitalInput("elbowUpperLimit");
         elbowMotor = new FtcDcMotor("relicArmElbow", elbowLowerLimitSwitch, elbowUpperLimitSwitch);
         elbowMotor.setBrakeModeEnabled(true);
+        elbowMotor.setInverted(true);
         elbowPidCtrl = new TrcPidController(
                 "elbowPidCtrl",
                 new TrcPidController.PidCoefficients(
@@ -76,7 +77,7 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidMotor.PowerCom
                 "elbow", elbowMotor, elbowLowerLimitSwitch, elbowPidCtrl,
                 RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS, this);
         elbow.setPositionScale(RobotInfo.RELIC_ELBOW_DEGREES_PER_COUNT, RobotInfo.RELIC_ELBOW_POS_OFFSET);
-        elbow.setManualOverride(true);  //TODO: remove
+        elbow.setManualOverride(true);
 
         grabber = new FtcServo("relicGrabber");
         grabber.setInverted(true);
@@ -111,7 +112,8 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidMotor.PowerCom
     @Override
     public double getCompensation()
     {
-        return Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
+        return 0.0;
+        // return Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
     }   //getCompensation
 
 }   //class RelicArm

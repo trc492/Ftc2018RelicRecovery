@@ -128,6 +128,11 @@ class CmdAutoFull implements TrcRobot.RobotCommand
             switch (state)
             {
                 case DEPLOY_JEWEL_ARM:
+                    if (robot.jewelColorTrigger != null)
+                    {
+                        robot.jewelColorTrigger.setEnabled(true);
+                    }
+
                     retryCount = 0;
                     robot.jewelArm.setExtended(true);
                     timer.set(0.5, event);
@@ -135,6 +140,11 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case WHACK_JEWEL:
+                    if (robot.jewelColorTrigger != null)
+                    {
+                        robot.jewelColorTrigger.setEnabled(false);
+                    }
+
                     vuMark = robot.vuforiaVision.getVuMark();
                     robot.tracer.traceInfo(state.toString(), "VuMark: %s", vuMark.toString());
                     if (robot.textToSpeech != null)
@@ -228,6 +238,13 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case ALIGN_CRYPTOBOX:
+                    if (robot.cryptoColorTrigger != null)
+                    {
+                        robot.redCryptoBarCount = 0;
+                        robot.blueCryptoBarCount = 0;
+                        robot.cryptoColorTrigger.setEnabled(true);
+                    }
+
                     if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                     {
                         if (startPos == FtcAuto.StartPos.NEAR)
@@ -301,6 +318,11 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case MOVE_FORWARD:
+                    if (robot.cryptoColorTrigger != null)
+                    {
+                        robot.cryptoColorTrigger.setEnabled(false);
+                    }
+
                     // Move forward
                     targetX = 0.0;
                     if (alliance == FtcAuto.Alliance.RED_ALLIANCE)

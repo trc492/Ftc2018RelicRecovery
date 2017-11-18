@@ -55,6 +55,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
     private static final boolean USE_GRIPVISION = false;
     private static final boolean USE_JEWEL_COLOR_SENSOR = true;
     private static final boolean USE_CRYPTO_COLOR_SENSOR = true;
+    private static final boolean USE_ANALOG_TRIGGERS = true;
 
     private static final String moduleName = "Robot";
 
@@ -82,14 +83,17 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
     double targetHeading = 0.0;
 
     static final double[] colorTriggerPoints = {
-            RobotInfo.RED_LOW_THRESHOLD, RobotInfo.BLUE_LOW_THRESHOLD,
-            RobotInfo.BLUE_HIGH_THRESHOLD, RobotInfo.RED_HIGH_THRESHOLD};
+            RobotInfo.RED1_LOW_THRESHOLD, RobotInfo.RED1_HIGH_THRESHOLD,
+            RobotInfo.BLUE_LOW_THRESHOLD, RobotInfo.BLUE_HIGH_THRESHOLD,
+            RobotInfo.RED2_LOW_THRESHOLD, RobotInfo.RED2_HIGH_THRESHOLD};
 
     FtcColorSensor jewelColorSensor = null;
     TrcAnalogTrigger<FtcColorSensor.DataType> jewelColorTrigger = null;
 
     FtcColorSensor cryptoColorSensor = null;
     TrcAnalogTrigger<FtcColorSensor.DataType> cryptoColorTrigger = null;
+    int redCryptoBarCount = 0;
+    int blueCryptoBarCount = 0;
 
     //
     // Vision subsystems.
@@ -138,7 +142,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
         if (USE_SPEECH)
         {
             textToSpeech = FtcOpMode.getInstance().getTextToSpeech();
-            textToSpeech.speak("Initialization starting", TextToSpeech.QUEUE_FLUSH, null);
+            textToSpeech.speak("Init Starting", TextToSpeech.QUEUE_FLUSH, null);
         }
         //
         // Initialize sensors.
@@ -165,17 +169,23 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
         if (USE_JEWEL_COLOR_SENSOR)
         {
             jewelColorSensor = new FtcColorSensor("jewelColorRangeSensor");
-            jewelColorTrigger = new TrcAnalogTrigger(
-                    "jewelColorTrigger", jewelColorSensor, 0, FtcColorSensor.DataType.HUE,
-                    colorTriggerPoints, this);
+            if (USE_ANALOG_TRIGGERS)
+            {
+                jewelColorTrigger = new TrcAnalogTrigger(
+                        "jewelColorTrigger", jewelColorSensor, 0, FtcColorSensor.DataType.HUE,
+                        colorTriggerPoints, this);
+            }
         }
 
         if (USE_CRYPTO_COLOR_SENSOR)
         {
             cryptoColorSensor = new FtcColorSensor("cryptoColorRangeSensor");
-            cryptoColorTrigger = new TrcAnalogTrigger(
-                    "cryptoColorTrigger", cryptoColorSensor, 0, FtcColorSensor.DataType.HUE,
-                    colorTriggerPoints, this);
+            if (USE_ANALOG_TRIGGERS)
+            {
+                cryptoColorTrigger = new TrcAnalogTrigger(
+                        "cryptoColorTrigger", cryptoColorSensor, 0, FtcColorSensor.DataType.HUE,
+                        colorTriggerPoints, this);
+            }
         }
 
         //
@@ -273,10 +283,10 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
         jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
 
         relicArm = new RelicArm();
-//        if (runMode != TrcRobot.RunMode.TELEOP_MODE)
-//        {
-//            relicArm.elbow.zeroCalibrate(RobotInfo.RELIC_ELBOW_CAL_POWER);
-//        }
+        if (runMode != TrcRobot.RunMode.TELEOP_MODE)
+        {
+            relicArm.elbow.zeroCalibrate(RobotInfo.RELIC_ELBOW_CAL_POWER);
+        }
         relicArm.grabber.setPosition(RobotInfo.RELIC_GRABBER_CLOSE);
 
         //
@@ -284,7 +294,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
         //
         if (textToSpeech != null)
         {
-            textToSpeech.speak("Initialization complete!", TextToSpeech.QUEUE_FLUSH, null);
+            textToSpeech.speak("Init complete!", TextToSpeech.QUEUE_ADD, null);
         }
     }   //Robot
 
@@ -304,20 +314,6 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
         {
             gripVision.setEnabled(true);
         }
-
-        if (runMode == TrcRobot.RunMode.AUTO_MODE)
-        {
-            if (jewelColorTrigger != null)
-            {
-                jewelColorTrigger.setEnabled(true);
-            }
-
-//            if (cryptoColorTrigger != null)
-//            {
-//                cryptoColorTrigger.setEnabled(true);
-//            }
-        }
-
         //
         // Reset all X, Y and heading values.
         //
@@ -328,19 +324,6 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
 
     void stopMode(TrcRobot.RunMode runMode)
     {
-        if (runMode == TrcRobot.RunMode.AUTO_MODE)
-        {
-            if (jewelColorTrigger != null)
-            {
-                jewelColorTrigger.setEnabled(false);
-            }
-
-            if (cryptoColorTrigger != null)
-            {
-                cryptoColorTrigger.setEnabled(false);
-            }
-        }
-
         if (gripVision != null)
         {
             gripVision.setEnabled(false);
@@ -380,13 +363,21 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
         if (sensor != null)
         {
             double hue = sensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
-//            double sat = sensor.getRawData(0, FtcColorSensor.DataType.SATURATION).value;
-//            double value = sensor.getRawData(0, FtcColorSensor.DataType.VALUE).value;
+            double sat = sensor.getRawData(0, FtcColorSensor.DataType.SATURATION).value;
+            double value = sensor.getRawData(0, FtcColorSensor.DataType.VALUE).value;
 
-            if (hue <= RobotInfo.RED_LOW_THRESHOLD || hue >= RobotInfo.RED_HIGH_THRESHOLD)
-                color = ObjectColor.RED;
-            else if (hue >= RobotInfo.BLUE_LOW_THRESHOLD && hue <= RobotInfo.BLUE_HIGH_THRESHOLD)
-                color = ObjectColor.BLUE;
+            if (sat > 0.0 && value > 0.0)
+            {
+                if (hue >= RobotInfo.RED1_LOW_THRESHOLD && hue <= RobotInfo.RED1_HIGH_THRESHOLD ||
+                    hue >= RobotInfo.RED2_LOW_THRESHOLD && hue >= RobotInfo.RED2_HIGH_THRESHOLD)
+                {
+                    color = ObjectColor.RED;
+                }
+                else if (hue >= RobotInfo.BLUE_LOW_THRESHOLD && hue <= RobotInfo.BLUE_HIGH_THRESHOLD)
+                {
+                    color = ObjectColor.BLUE;
+                }
+            }
         }
 
         return color;
@@ -473,7 +464,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
 
                 if (sentence != null)
                 {
-                    textToSpeech.speak(sentence, TextToSpeech.QUEUE_ADD, null);
+                    textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
         }
@@ -488,40 +479,34 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
     @Override
     public void triggerEvent(TrcAnalogTrigger<?> analogTrigger, int zoneIndex, double zoneValue)
     {
-        String object = analogTrigger == jewelColorTrigger? "jewel":
-                        analogTrigger == cryptoColorTrigger? "crypto box": null;
-        ObjectColor color = ObjectColor.NO;
+        FtcColorSensor colorSensor = analogTrigger == jewelColorTrigger? jewelColorSensor: cryptoColorSensor;
+        ObjectColor color = getObjectColor(colorSensor);
 
-        switch (zoneIndex)
+        if (analogTrigger == cryptoColorTrigger)
         {
-            case 0:
-            case 4:
-                //
-                // RED found.
-                //
-                color = ObjectColor.RED;
-                break;
-
-            case 1:
-            case 3:
-                //
-                // None found.
-                //
-                color = ObjectColor.NO;
-                break;
-
-            case 2:
-                //
-                // BLUE found.
-                //
-                color = ObjectColor.BLUE;
-                break;
+            if (color == ObjectColor.RED)
+            {
+                redCryptoBarCount++;
+                if (textToSpeech != null)
+                {
+                    textToSpeech.speak(
+                            String.format("%s red crypto.", redCryptoBarCount), TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
+            else if (color == ObjectColor.BLUE)
+            {
+                blueCryptoBarCount++;
+                if (textToSpeech != null)
+                {
+                    textToSpeech.speak(
+                            String.format("%s blue crypto.", blueCryptoBarCount), TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
         }
-
-        if (textToSpeech != null)
+        else if (textToSpeech != null)
         {
             textToSpeech.speak(
-                    String.format("%s %s found.", color.toString(), object), TextToSpeech.QUEUE_ADD, null);
+                    String.format("%s jewel found.", color.toString()), TextToSpeech.QUEUE_FLUSH, null);
         }
     }   // triggerEvent
 

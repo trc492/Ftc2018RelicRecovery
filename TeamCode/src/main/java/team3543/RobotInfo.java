@@ -31,12 +31,12 @@ class RobotInfo
     //
     // Color sensor values.
     //
-    static final double RED_LOW_THRESHOLD = 40.0;
-    static final double RED_HIGH_THRESHOLD = 350.0;
+    static final double RED1_LOW_THRESHOLD = 1.0;
+    static final double RED1_HIGH_THRESHOLD = 40.0;
     static final double BLUE_LOW_THRESHOLD = 150.0;
     static final double BLUE_HIGH_THRESHOLD = 220.0;
-    static final double HSV_SATURATION_THRESHOLD = 0.05;
-    static final double HSV_VALUE_THRESHOLD = 0.01;
+    static final double RED2_LOW_THRESHOLD = 350.0;
+    static final double RED2_HIGH_THRESHOLD = 359.0;
 
     //
     // DriveBase subsystem.
@@ -121,8 +121,8 @@ class RobotInfo
     static final double ELEVATOR_TOLERANCE              = 0.5;
     static final double ELEVATOR_MIN_HEIGHT             = 0.0;
     static final double ELEVATOR_MAX_HEIGHT             = 15.0;
-    static final double ELEVATOR_MID_HEIGHT             = 3.0;
-    static final double ELEVATOR_CAL_POWER              = 0.;
+    static final double ELEVATOR_MID_HEIGHT             = 5.0; // this is sorta weird, try changing to 6.0in 11/17/17 7:32PM
+    static final double ELEVATOR_CAL_POWER              = 0.3;
 
     //
     // RelicArm subsystem.
@@ -135,7 +135,7 @@ class RobotInfo
     static final double RELIC_ELBOW_TOLERANCE           = 2.0;
     static final double RELIC_ELBOW_MIN_POS             = -40.0;
     static final double RELIC_ELBOW_MAX_POS             = 200.0;    //???
-    static final double RELIC_ELBOW_CAL_POWER           = 0.15;
+    static final double RELIC_ELBOW_CAL_POWER           = 0.3;
     //
     // To counteract gravity, we need to add power compensation to the elbow motor.
     // We are using a NeveRest 60 motor. The performance spec of this motor is:
