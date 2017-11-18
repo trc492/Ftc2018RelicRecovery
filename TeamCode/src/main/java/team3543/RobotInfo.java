@@ -31,12 +31,12 @@ class RobotInfo
     //
     // Color sensor values.
     //
-    static final double RED1_LOW_THRESHOLD = 1.0;
-    static final double RED1_HIGH_THRESHOLD = 40.0;
-    static final double BLUE_LOW_THRESHOLD = 150.0;
-    static final double BLUE_HIGH_THRESHOLD = 220.0;
-    static final double RED2_LOW_THRESHOLD = 350.0;
-    static final double RED2_HIGH_THRESHOLD = 359.0;
+    static final double RED1_LOW_THRESHOLD              = 1.0;
+    static final double RED1_HIGH_THRESHOLD             = 40.0;
+    static final double BLUE_LOW_THRESHOLD              = 150.0;
+    static final double BLUE_HIGH_THRESHOLD             = 220.0;
+    static final double RED2_LOW_THRESHOLD              = 350.0;
+    static final double RED2_HIGH_THRESHOLD             = 359.0;
 
     //
     // DriveBase subsystem.
@@ -44,7 +44,7 @@ class RobotInfo
     static final DcMotor.RunMode DRIVE_MOTOR_MODE       = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
     static final double TURN_POWER_LIMIT                = 0.5;
 
-    static final double ENCODER_X_KP                    = 0.15;  //???
+    static final double ENCODER_X_KP                    = 0.15;
     static final double ENCODER_X_KI                    = 0.0;
     static final double ENCODER_X_KD                    = 0.015;
     static final double ENCODER_X_TOLERANCE             = 2.0;
@@ -129,7 +129,7 @@ class RobotInfo
     //
     static final double RELIC_GRABBER_CLOSE             = 0.0;
     static final double RELIC_GRABBER_OPEN              = 0.5;
-    static final double RELIC_ELBOW_KP                  = 0.5;  //???
+    static final double RELIC_ELBOW_KP                  = 0.1;  //???
     static final double RELIC_ELBOW_KI                  = 0.0;
     static final double RELIC_ELBOW_KD                  = 0.0;
     static final double RELIC_ELBOW_TOLERANCE           = 2.0;
