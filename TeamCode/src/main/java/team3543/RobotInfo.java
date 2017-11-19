@@ -121,7 +121,7 @@ class RobotInfo
     static final double ELEVATOR_TOLERANCE              = 0.5;
     static final double ELEVATOR_MIN_HEIGHT             = 0.0;
     static final double ELEVATOR_MAX_HEIGHT             = 15.0;
-    static final double ELEVATOR_MID_HEIGHT             = 5.0; // this is sorta weird, try changing to 6.0in 11/17/17 7:32PM
+    static final double ELEVATOR_MID_HEIGHT             = 7.0; // from 5.0in -> 7.0in
     static final double ELEVATOR_CAL_POWER              = 0.3;
 
     //

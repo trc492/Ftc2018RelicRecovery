@@ -45,7 +45,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final double RED_FAR_CENTER_COL_OFFSET_IN = -10.5;
     private static final double RED_FAR_RIGHT_COL_OFFSET_IN = -3.0;
 
-    private static final double BLUE_NEAR_LEFT_COL_OFFSET_IN = 8.5;
+    private static final double BLUE_NEAR_LEFT_COL_OFFSET_IN = 11.5;
     private static final double BLUE_NEAR_CENTER_COL_OFFSET_IN = 16.0;
     private static final double BLUE_NEAR_RIGHT_COL_OFFSET_IN = 23.5;
 
@@ -218,7 +218,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                 case DRIVE_OFF_PLATFORM:
                     robot.encoderYPidCtrl.setOutputRange(-0.5, 0.5);
                     targetX = 0.0;
-                    targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -22.0 : 26.0;
+                    targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -22.0 : 25.0;
                     robot.targetHeading = 0.0;
 
                     robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
@@ -331,7 +331,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     }
                     else
                     {
-                        targetY = 8.0;
+                        targetY = 9.0;
                     }
 
                     robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 1.0);
