@@ -46,7 +46,8 @@ import trclib.TrcPidDrive;
 import trclib.TrcRobot;
 import trclib.TrcUtil;
 
-public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, TrcAnalogTrigger.TriggerHandler
+public class Robot implements
+        TrcPidController.PidInput, FtcMenu.MenuButtons, TrcAnalogTrigger.TriggerHandler, TrcPidDrive.StuckWheelHandler
 {
     private static final boolean USE_IMU = true;
     private static final boolean USE_ANALOG_GYRO = false;
@@ -252,6 +253,7 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
 
         pidDrive = new TrcPidDrive("pidDrive", driveBase, encoderXPidCtrl, encoderYPidCtrl, gyroPidCtrl);
         pidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
+        pidDrive.setStuckWheelHandler(this, RobotInfo.PIDDRIVE_STALL_TIMEOUT);
         pidDrive.setBeep(androidTone);
 
         visionPidCtrl = new TrcPidController(
@@ -509,6 +511,18 @@ public class Robot implements TrcPidController.PidInput, FtcMenu.MenuButtons, Tr
                     String.format("%s jewel found.", color.toString()), TextToSpeech.QUEUE_FLUSH, null);
         }
     }   // triggerEvent
+
+    //
+    // Implements TrcPidDrive.StuckWheelHandler interface.
+    //
+    @Override
+    public void stuckWheel(TrcPidDrive pidDrive, TrcDriveBase.MotorType motorType)
+    {
+        if (textToSpeech != null)
+        {
+            textToSpeech.speak(String.format("%s wheel is stuck!", motorType), TextToSpeech.QUEUE_ADD, null);
+        }
+    }   //stuckWheel
 
     //
     // Implements FtcMenu.MenuButtons interface.
