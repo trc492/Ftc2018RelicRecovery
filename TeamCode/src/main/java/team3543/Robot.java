@@ -55,7 +55,7 @@ public class Robot implements
     private static final boolean USE_VUFORIA = true;
     private static final boolean USE_GRIPVISION = false;
     private static final boolean USE_JEWEL_COLOR_SENSOR = true;
-    private static final boolean USE_CRYPTO_COLOR_SENSOR = true;
+    private static final boolean USE_CRYPTO_COLOR_SENSOR = false;
     private static final boolean USE_ANALOG_TRIGGERS = true;
 
     private static final String moduleName = "Robot";

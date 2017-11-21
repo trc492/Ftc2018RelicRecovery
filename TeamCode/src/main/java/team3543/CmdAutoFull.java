@@ -140,24 +140,19 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case WHACK_JEWEL:
-                    if (robot.jewelColorTrigger != null)
-                    {
-                        robot.jewelColorTrigger.setEnabled(false);
-                    }
-
                     vuMark = robot.vuforiaVision.getVuMark();
                     robot.tracer.traceInfo(state.toString(), "VuMark: %s", vuMark.toString());
                     if (robot.textToSpeech != null)
                     {
                         robot.textToSpeech.speak(
-                                String.format("%s found!", vuMark), TextToSpeech.QUEUE_ADD, null);
+                                String.format("%s is in view.", vuMark), TextToSpeech.QUEUE_ADD, null);
                     }
 
                     // determine the jewel color and whack the correct one.
                     Robot.ObjectColor jewelColor = robot.getObjectColor(robot.jewelColorSensor);
 
                     robot.tracer.traceInfo(
-                            state.toString(), "%d: Color=%s, HSV=[%.0f/%.0f/%.0f]",
+                            state.toString(), "%d: Color=%s, HSV=[%f/%f/%f]",
                             retryCount, jewelColor.toString(),
                             robot.getObjectHsvHue(robot.jewelColorSensor),
                             robot.getObjectHsvSaturation(robot.jewelColorSensor),
@@ -166,6 +161,11 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     {
                         retryCount++;
                         break;
+                    }
+
+                    if (robot.jewelColorTrigger != null)
+                    {
+                        robot.jewelColorTrigger.setEnabled(false);
                     }
 
                     double sweepPosition =
