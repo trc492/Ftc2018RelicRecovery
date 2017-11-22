@@ -29,7 +29,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import ftclib.FtcChoiceMenu;
-import ftclib.FtcColorSensor;
 import ftclib.FtcGamepad;
 import ftclib.FtcMenu;
 import ftclib.FtcValueMenu;
@@ -53,7 +52,8 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         Y_DISTANCE_DRIVE,
         GYRO_TURN,
         VISION_TEST,
-        VISION_DRIVE
+        VISION_DRIVE,
+        RANGE_DRIVE
     }   //enum Test
 
     private enum State
@@ -75,10 +75,12 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
     private double driveTime = 0.0;
     private double driveDistance = 0.0;
     private double turnDegrees = 0.0;
+    private double rangeDistance = 0.0;
 
     private CmdTimedDrive timedDriveCommand = null;
     private CmdPidDrive pidDriveCommand = null;
     private CmdVisionDrive visionDriveCommand = null;
+    private CmdRangeDrive rangeDriveCommand = null;
 
     private int motorIndex = 0;
 
@@ -128,6 +130,13 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
 
             case VISION_DRIVE:
                 visionDriveCommand = new CmdVisionDrive(robot);
+                break;
+
+            case RANGE_DRIVE:
+                if (Robot.USE_SONAR_SENSOR)
+                {
+                    rangeDriveCommand = new CmdRangeDrive(robot, rangeDistance);
+                }
                 break;
         }
 
@@ -256,9 +265,37 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 break;
 
             case VISION_DRIVE:
+                dashboard.displayPrintf(9, "visionTarget=%.1f,heading=%.1f",
+                        robot.getInput(robot.visionPidCtrl),
+                        robot.getInput(robot.gyroPidCtrl));
+                robot.visionPidCtrl.displayPidInfo(10);
+                robot.gyroPidCtrl.displayPidInfo(12);
+
                 if (!visionDriveCommand.cmdPeriodic(elapsedTime))
                 {
-                    // Do we need to do anything?
+                    robot.visionPidCtrl.printPidInfo(robot.tracer);
+                    robot.gyroPidCtrl.printPidInfo(robot.tracer);
+                }
+                break;
+
+            case RANGE_DRIVE:
+                if (rangeDriveCommand != null)
+                {
+                    dashboard.displayPrintf(9, "wallDist=%.1f,heading=%.1f",
+                            robot.getInput(robot.rangePidCtrl),
+                            robot.getInput(robot.gyroPidCtrl));
+                    robot.rangePidCtrl.displayPidInfo(10);
+                    robot.gyroPidCtrl.displayPidInfo(12);
+
+                    if (!rangeDriveCommand.cmdPeriodic(elapsedTime))
+                    {
+                        robot.rangePidCtrl.printPidInfo(robot.tracer);
+                        robot.gyroPidCtrl.printPidInfo(robot.tracer);
+                    }
+                }
+                else
+                {
+                    dashboard.displayPrintf(9, "Range sensor is disabled.");
                 }
                 break;
         }
@@ -276,12 +313,12 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         FtcValueMenu driveDistanceMenu = new FtcValueMenu(
                 "Drive distance:", testMenu, robot, -10.0, 10.0, 0.5, 4.0,
                 " %.1f ft");
-        FtcValueMenu rangeDistanceMenu = new FtcValueMenu(
-                "Range distance:", testMenu, robot, 0.5, 12.0, 0.5, 6.0,
-                " %.0f in");
         FtcValueMenu turnDegreesMenu = new FtcValueMenu(
                 "Turn degrees:", testMenu, robot, -360.0, 360.0, 5.0, 45.0,
                 " %.0f deg");
+        FtcValueMenu rangeDistanceMenu = new FtcValueMenu(
+                "Range distance:", testMenu, robot, 0.5, 12.0, 0.5, 6.0,
+                " %.0f in");
         //
         // Populate menus.
         //
@@ -294,6 +331,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         testMenu.addChoice("Degrees turn", Test.GYRO_TURN, false, turnDegreesMenu);
         testMenu.addChoice("Vision test", Test.VISION_TEST, false);
         testMenu.addChoice("Vision drive", Test.VISION_DRIVE, false);
+        testMenu.addChoice("Range drive", Test.RANGE_DRIVE, false, rangeDistanceMenu);
         //
         // Traverse menus.
         //
@@ -305,6 +343,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         driveTime = driveTimeMenu.getCurrentValue();
         driveDistance = driveDistanceMenu.getCurrentValue();
         turnDegrees = turnDegreesMenu.getCurrentValue();
+        rangeDistance = rangeDistanceMenu.getCurrentValue();
         //
         // Show choices.
         //
@@ -342,11 +381,11 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 robot.getObjectHsvSaturation(robot.cryptoColorSensor),
                 robot.getObjectHsvValue(robot.cryptoColorSensor));
 
-        dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pos=%5.1f,low=%s",
+        dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pos=%.1f,low=%s",
                 robot.glyphElevator.getPosition(), robot.glyphElevator.elevatorLowerLimitSwitch.isActive());
         robot.glyphElevator.elevatorPidCtrl.displayPidInfo(10);
 
-        dashboard.displayPrintf(12, LABEL_WIDTH, "RelicElbow: ", "Pos=%5.1f,low=%s,high=%s",
+        dashboard.displayPrintf(12, LABEL_WIDTH, "RelicElbow: ", "Pos=%.1f,low=%s,high=%s",
                 robot.relicArm.elbow.getPosition(),
                 robot.relicArm.elbowLowerLimitSwitch.isActive(), robot.relicArm.elbowUpperLimitSwitch.isActive());
         robot.relicArm.elbowPidCtrl.displayPidInfo(13);

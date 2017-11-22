@@ -62,6 +62,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
         DO_DELAY,
         GRAB_LIFT_GLYPH,
         DRIVE_OFF_PLATFORM,
+        DRIVE_TO_WALL,
         TURN_TO_CRYPTOBOX,
         ALIGN_CRYPTOBOX,
         MOVE_FORWARD,
@@ -222,6 +223,13 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     robot.targetHeading = 0.0;
 
                     robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
+                    sm.waitForSingleEvent(event, State.DRIVE_TO_WALL);
+                    break;
+
+                case DRIVE_TO_WALL:
+                    targetY = 16.0;
+
+                    robot.rangeDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
                     sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     break;
 

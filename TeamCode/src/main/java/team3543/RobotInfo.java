@@ -95,6 +95,11 @@ class RobotInfo
     static final double VISION_KD                       = 0.0;
     static final double VISION_TOLERANCE                = 1.0;
 
+    static final double RANGE_KP                        = 0.0125;
+    static final double RANGE_KI                        = 0.0;
+    static final double RANGE_KD                        = 0.0;
+    static final double RANGE_TOLERANCE                 = 1.0;
+
     //
     // GlyphGrabber subsystem.
     //
@@ -123,6 +128,7 @@ class RobotInfo
     static final double ELEVATOR_MAX_HEIGHT             = 15.0;
     static final double ELEVATOR_MID_HEIGHT             = 7.0; // from 5.0in -> 7.0in
     static final double ELEVATOR_CAL_POWER              = 0.3;
+    static final double ELEVATOR_SCALE                  = 1.0; //TODO: Needs to calibrate.
 
     //
     // RelicArm subsystem.

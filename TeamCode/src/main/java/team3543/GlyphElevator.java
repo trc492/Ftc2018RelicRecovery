@@ -22,6 +22,7 @@
 
 package team3543;
 
+import ftclib.FtcAnalogInput;
 import ftclib.FtcDcMotor;
 import ftclib.FtcDigitalInput;
 import trclib.TrcEvent;
@@ -30,6 +31,7 @@ import trclib.TrcPidController;
 
 public class GlyphElevator implements TrcPidController.PidInput
 {
+    private FtcAnalogInput dogLeash = null;
     public FtcDigitalInput elevatorLowerLimitSwitch;
     private FtcDcMotor elevatorMotor;
     public TrcPidController elevatorPidCtrl;
@@ -41,6 +43,12 @@ public class GlyphElevator implements TrcPidController.PidInput
      */
     public GlyphElevator()
     {
+        if (Robot.USE_DOG_LEASH)
+        {
+            dogLeash = new FtcAnalogInput("dogLeash");
+            dogLeash.setScale(RobotInfo.ELEVATOR_SCALE);
+        }
+
         elevatorLowerLimitSwitch = new FtcDigitalInput("elevatorLowerLimit");
         elevatorMotor = new FtcDcMotor("elevatorMotor", elevatorLowerLimitSwitch);
         elevatorMotor.setBrakeModeEnabled(true);
@@ -82,7 +90,7 @@ public class GlyphElevator implements TrcPidController.PidInput
 
     public double getPosition()
     {
-        return elevator.getPosition();
+        return dogLeash != null? dogLeash.getData(0).value: elevator.getPosition();
     }   //getPosition
 
     public void setPosition(double pos, TrcEvent event, double timeout)
@@ -108,7 +116,7 @@ public class GlyphElevator implements TrcPidController.PidInput
 
         if (pidCtrl == this.elevatorPidCtrl)
         {
-            value = elevator.getPosition();
+            value = getPosition();
         }
 
         return value;

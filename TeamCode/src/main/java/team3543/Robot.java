@@ -28,11 +28,11 @@ import android.widget.TextView;
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
-import ftclib.FtcAnalogGyro;
 import ftclib.FtcAndroidTone;
 import ftclib.FtcBNO055Imu;
 import ftclib.FtcColorSensor;
 import ftclib.FtcDcMotor;
+import ftclib.FtcMRRangeSensor;
 import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
 import ftclib.FtcRobotBattery;
@@ -44,19 +44,18 @@ import trclib.TrcGyro;
 import trclib.TrcPidController;
 import trclib.TrcPidDrive;
 import trclib.TrcRobot;
-import trclib.TrcUtil;
 
 public class Robot implements
         TrcPidController.PidInput, FtcMenu.MenuButtons, TrcAnalogTrigger.TriggerHandler, TrcPidDrive.StuckWheelHandler
 {
-    private static final boolean USE_IMU = true;
-    private static final boolean USE_ANALOG_GYRO = false;
-    private static final boolean USE_SPEECH = true;
-    private static final boolean USE_VUFORIA = true;
-    private static final boolean USE_GRIPVISION = false;
-    private static final boolean USE_JEWEL_COLOR_SENSOR = true;
-    private static final boolean USE_CRYPTO_COLOR_SENSOR = false;
-    private static final boolean USE_ANALOG_TRIGGERS = true;
+    static final boolean USE_SPEECH = true;
+    static final boolean USE_VUFORIA = true;
+    static final boolean USE_GRIPVISION = false;
+    static final boolean USE_JEWEL_COLOR_SENSOR = true;
+    static final boolean USE_CRYPTO_COLOR_SENSOR = false;
+    static final boolean USE_ANALOG_TRIGGERS = true;
+    static final boolean USE_DOG_LEASH = true;
+    static final boolean USE_SONAR_SENSOR = true;
 
     private static final String moduleName = "Robot";
 
@@ -96,6 +95,8 @@ public class Robot implements
     int redCryptoBarCount = 0;
     int blueCryptoBarCount = 0;
 
+    FtcMRRangeSensor rangeSensor = null;
+
     //
     // Vision subsystems.
     //
@@ -118,6 +119,9 @@ public class Robot implements
 
     TrcPidController visionPidCtrl = null;
     TrcPidDrive visionDrive = null;
+
+    TrcPidController rangePidCtrl = null;
+    TrcPidDrive rangeDrive = null;
 
     //
     // Other subsystems.
@@ -148,24 +152,8 @@ public class Robot implements
         //
         // Initialize sensors.
         //
-        if (USE_IMU)
-        {
-            imu = new FtcBNO055Imu("imu2");
-            gyro = imu.gyro;
-        }
-        else if (USE_ANALOG_GYRO)
-        {
-            gyro = new FtcAnalogGyro("analogGyro", RobotInfo.ANALOG_GYRO_VOLT_PER_DEG_PER_SEC);
-            ((FtcAnalogGyro)gyro).calibrate();
-            gyro.setScale(0, RobotInfo.ANALOG_GYRO_SCALE);
-            //
-            // Wait for gyro calibration to complete if not already.
-            //
-            while (gyro.isCalibrating())
-            {
-                TrcUtil.sleep(10);
-            }
-        }
+        imu = new FtcBNO055Imu("imu2");
+        gyro = imu.gyro;
 
         if (USE_JEWEL_COLOR_SENSOR)
         {
@@ -187,6 +175,11 @@ public class Robot implements
                         "cryptoColorTrigger", cryptoColorSensor, 0, FtcColorSensor.DataType.HUE,
                         colorTriggerPoints, this);
             }
+        }
+
+        if (USE_SONAR_SENSOR)
+        {
+            rangeSensor = new FtcMRRangeSensor("mrRangeSensor");
         }
 
         //
@@ -263,9 +256,24 @@ public class Robot implements
                 RobotInfo.VISION_TOLERANCE, this);
         visionPidCtrl.setAbsoluteSetPoint(true);
 
-        visionDrive = new TrcPidDrive("visionDrive", driveBase, null, visionPidCtrl, null);
+        visionDrive = new TrcPidDrive("visionDrive", driveBase, null, visionPidCtrl, gyroPidCtrl);
         visionDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
         visionDrive.setBeep(androidTone);
+
+        if (USE_SONAR_SENSOR)
+        {
+            rangePidCtrl = new TrcPidController(
+                    "rangePidCtrl",
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.RANGE_KP, RobotInfo.RANGE_KI, RobotInfo.RANGE_KD),
+                    RobotInfo.RANGE_TOLERANCE, this);
+            rangePidCtrl.setAbsoluteSetPoint(true);
+            rangePidCtrl.setInverted(true);
+
+            rangeDrive = new TrcPidDrive("rangeDrive", driveBase, null, rangePidCtrl, gyroPidCtrl);
+            rangeDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
+            rangeDrive.setBeep(androidTone);
+        }
 
         //
         // Initialize other subsystems.
@@ -469,6 +477,10 @@ public class Robot implements
                     textToSpeech.speak(sentence, TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
+        }
+        else if (pidCtrl == rangePidCtrl)
+        {
+            input = rangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
         }
 
         return input;

@@ -28,9 +28,8 @@ import ftclib.FtcServo;
 import trclib.TrcEnhancedServo;
 import trclib.TrcPidActuator;
 import trclib.TrcPidController;
-import trclib.TrcPidMotor;
 
-public class RelicArm implements TrcPidController.PidInput, TrcPidMotor.PowerCompensation
+public class RelicArm implements TrcPidController.PidInput  //, TrcPidMotor.PowerCompensation
 {
     public FtcDigitalInput extenderLowerLimitSwitch;
     public FtcDigitalInput extenderUpperLimitSwitch;
@@ -75,7 +74,7 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidMotor.PowerCom
                 RobotInfo.RELIC_ELBOW_TOLERANCE, this);
         elbow = new TrcPidActuator(
                 "elbow", elbowMotor, elbowLowerLimitSwitch, elbowPidCtrl,
-                RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS, this);
+                RobotInfo.RELIC_ELBOW_MIN_POS, RobotInfo.RELIC_ELBOW_MAX_POS);
         elbow.setPositionScale(RobotInfo.RELIC_ELBOW_DEGREES_PER_COUNT, RobotInfo.RELIC_ELBOW_POS_OFFSET);
         elbow.setManualOverride(true);
 
@@ -109,11 +108,10 @@ public class RelicArm implements TrcPidController.PidInput, TrcPidMotor.PowerCom
      *
      * @return compensation value of the actuator.
      */
-    @Override
-    public double getCompensation()
-    {
-        return 0.0;
-        // return Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
-    }   //getCompensation
+//    @Override
+//    public double getCompensation()
+//    {
+//        return Math.cos(Math.toRadians(elbow.getPosition())) * RobotInfo.RELIC_ELBOW_LEVEL_MOTOR_POWER;
+//    }   //getCompensation
 
 }   //class RelicArm
