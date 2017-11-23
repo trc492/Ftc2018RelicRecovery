@@ -147,7 +147,7 @@ public class Robot implements
         if (USE_SPEECH)
         {
             textToSpeech = FtcOpMode.getInstance().getTextToSpeech();
-            textToSpeech.speak("Init Starting", TextToSpeech.QUEUE_FLUSH, null);
+            textToSpeech.speak("Init starting", TextToSpeech.QUEUE_FLUSH, null);
         }
         //
         // Initialize sensors.
@@ -311,7 +311,7 @@ public class Robot implements
     void startMode(TrcRobot.RunMode runMode)
     {
         //
-        // Since our gyro is analog, we need to enable its integrator.
+        // Since the IMU gyro is giving us cardinal heading, we need to enable its cardinal to cartesian converter.
         //
         gyro.setEnabled(true);
 
@@ -372,9 +372,9 @@ public class Robot implements
 
         if (sensor != null)
         {
-            double hue = sensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
-            double sat = sensor.getRawData(0, FtcColorSensor.DataType.SATURATION).value;
-            double value = sensor.getRawData(0, FtcColorSensor.DataType.VALUE).value;
+            double hue = sensor.getProcessedData(0, FtcColorSensor.DataType.HUE).value;
+            double sat = sensor.getProcessedData(0, FtcColorSensor.DataType.SATURATION).value;
+            double value = sensor.getProcessedData(0, FtcColorSensor.DataType.VALUE).value;
 
             if (sat > 0.0 && value > 0.0)
             {
@@ -399,7 +399,7 @@ public class Robot implements
 
         if (sensor != null)
         {
-            value = sensor.getRawData(0, FtcColorSensor.DataType.HUE).value;
+            value = sensor.getProcessedData(0, FtcColorSensor.DataType.HUE).value;
         }
 
         return value;
@@ -411,7 +411,7 @@ public class Robot implements
 
         if (sensor != null)
         {
-            value = sensor.getRawData(0, FtcColorSensor.DataType.SATURATION).value;
+            value = sensor.getProcessedData(0, FtcColorSensor.DataType.SATURATION).value;
         }
 
         return value;
@@ -423,7 +423,7 @@ public class Robot implements
 
         if (sensor != null)
         {
-            value = sensor.getRawData(0, FtcColorSensor.DataType.VALUE).value;
+            value = sensor.getProcessedData(0, FtcColorSensor.DataType.VALUE).value;
         }
 
         return value;
@@ -504,7 +504,7 @@ public class Robot implements
                 if (textToSpeech != null)
                 {
                     textToSpeech.speak(
-                            String.format("%s red crypto.", redCryptoBarCount), TextToSpeech.QUEUE_FLUSH, null);
+                            String.format("%d red crypto.", redCryptoBarCount), TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
             else if (color == ObjectColor.BLUE)
@@ -513,7 +513,7 @@ public class Robot implements
                 if (textToSpeech != null)
                 {
                     textToSpeech.speak(
-                            String.format("%s blue crypto.", blueCryptoBarCount), TextToSpeech.QUEUE_FLUSH, null);
+                            String.format("%d blue crypto.", blueCryptoBarCount), TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
         }
