@@ -60,6 +60,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
     private enum State
     {
         START,
+        STOP,
         DONE
     }   //enum State
 
@@ -437,11 +438,14 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
      */
     private void doMotorsTest()
     {
+        double lfEnc = robot.leftFrontWheel.getPosition();
+        double rfEnc = robot.rightFrontWheel.getPosition();
+        double lrEnc = robot.leftRearWheel.getPosition();
+        double rrEnc = robot.rightRearWheel.getPosition();
+
         dashboard.displayPrintf(9, "Motors Test: index=%d", motorIndex);
-        dashboard.displayPrintf(10, "Enc: lf=%.0f, rf=%.0f",
-                robot.leftFrontWheel.getPosition(), robot.rightFrontWheel.getPosition());
-        dashboard.displayPrintf(11, "Enc: lr=%.0f, rr=%.0f",
-                robot.leftRearWheel.getPosition(), robot.rightRearWheel.getPosition());
+        dashboard.displayPrintf(10, "Enc: lf=%.0f, rf=%.0f", lfEnc, rfEnc);
+        dashboard.displayPrintf(11, "Enc: lr=%.0f, rr=%.0f", lrEnc, rrEnc);
 
         if (sm.isReady())
         {
@@ -496,11 +500,10 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     }
                     motorIndex = motorIndex + 1;
                     timer.set(5.0, event);
-                    sm.waitForSingleEvent(event, motorIndex < 4? State.START: State.DONE);
+                    sm.waitForSingleEvent(event, motorIndex < 4? State.START: State.STOP);
                     break;
 
-                case DONE:
-                default:
+                case STOP:
                     //
                     // We are done, stop all wheels.
                     //
@@ -508,6 +511,50 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     robot.rightFrontWheel.setPower(0.0);
                     robot.leftRearWheel.setPower(0.0);
                     robot.rightRearWheel.setPower(0.0);
+                    sm.setState(State.DONE);
+                    break;
+
+                case DONE:
+                default:
+                    if (robot.textToSpeech != null)
+                    {
+                        double[] encCounts = {lfEnc, rfEnc, lrEnc, rrEnc};
+                        double avgEnc = (lfEnc + rfEnc + lrEnc + rrEnc) / 4.0;
+                        double minEnc = encCounts[0];
+                        double maxEnc = encCounts[0];
+
+                        for (int i = 1; i < encCounts.length; i++)
+                        {
+                            if (encCounts[i] < minEnc)
+                                minEnc = encCounts[i];
+                            else if (encCounts[i] > maxEnc)
+                                maxEnc = encCounts[i];
+                        }
+
+                        if ((avgEnc - lfEnc) / avgEnc > 0.5)
+                        {
+                            robot.textToSpeech.speak(
+                                    "left front wheel is stuck.", TextToSpeech.QUEUE_ADD, null);
+                        }
+
+                        if ((avgEnc - rfEnc) / avgEnc > 0.5)
+                        {
+                            robot.textToSpeech.speak(
+                                    "right front wheel is stuck.", TextToSpeech.QUEUE_ADD, null);
+                        }
+
+                        if ((avgEnc - lrEnc) / avgEnc > 0.5)
+                        {
+                            robot.textToSpeech.speak(
+                                    "left rear wheel is stuck.", TextToSpeech.QUEUE_ADD, null);
+                        }
+
+                        if ((avgEnc - rrEnc) / avgEnc > 0.5)
+                        {
+                            robot.textToSpeech.speak(
+                                    "right rear wheel is stuck.", TextToSpeech.QUEUE_ADD, null);
+                        }
+                    }
                     sm.stop();
                     break;
             }
