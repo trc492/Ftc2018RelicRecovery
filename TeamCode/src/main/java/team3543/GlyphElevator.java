@@ -46,11 +46,11 @@ public class GlyphElevator implements TrcPidController.PidInput
         if (Robot.USE_DOG_LEASH)
         {
             dogLeash = new FtcAnalogInput("dogLeash");
-            dogLeash.setScale(RobotInfo.ELEVATOR_SCALE);
         }
 
         elevatorLowerLimitSwitch = new FtcDigitalInput("elevatorLowerLimit");
-        elevatorMotor = new FtcDcMotor("elevatorMotor", elevatorLowerLimitSwitch);
+        elevatorMotor = new FtcDcMotor(
+                "elevatorMotor", elevatorLowerLimitSwitch, null, dogLeash);
         elevatorMotor.setBrakeModeEnabled(true);
         elevatorPidCtrl = new TrcPidController(
                 "elevatorPidCtrl",
@@ -60,8 +60,15 @@ public class GlyphElevator implements TrcPidController.PidInput
         elevator = new TrcPidActuator(
                 "elevator", elevatorMotor, elevatorLowerLimitSwitch, elevatorPidCtrl,
                 RobotInfo.ELEVATOR_MIN_HEIGHT, RobotInfo.ELEVATOR_MAX_HEIGHT);
-        elevator.setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT, 0.0);
-        elevator.setManualOverride(true);   //TODO: remove
+
+        if (dogLeash == null)
+        {
+            elevator.setPositionScale(RobotInfo.ELEVATOR_INCHES_PER_COUNT, 0.0);
+        }
+        else
+        {
+            elevator.setPositionScale(RobotInfo.ELEVATOR_SENSOR_SCALE, RobotInfo.ELEVATOR_SENSOR_ZERO_OFFSET);
+        }
     }   //GlyphElevator
 
     public void setManualOverride(boolean manualOverride)
@@ -76,11 +83,10 @@ public class GlyphElevator implements TrcPidController.PidInput
 
     public void setPower(double power)
     {
-        double pos = elevator.getPosition();
+        double pos = getPosition();
 
-        if (!manualOverride &&
-            (power > 0.0 && pos >= RobotInfo.ELEVATOR_MAX_HEIGHT ||
-             power < 0.0 && pos <= RobotInfo.ELEVATOR_MIN_HEIGHT))
+        if (power > 0.0 && pos >= RobotInfo.ELEVATOR_MAX_HEIGHT ||
+            power < 0.0 && pos <= RobotInfo.ELEVATOR_MIN_HEIGHT)
         {
             power = 0.0;
         }
@@ -90,7 +96,7 @@ public class GlyphElevator implements TrcPidController.PidInput
 
     public double getPosition()
     {
-        return dogLeash != null? dogLeash.getData(0).value: elevator.getPosition();
+        return elevator.getPosition();
     }   //getPosition
 
     public void setPosition(double pos, TrcEvent event, double timeout)

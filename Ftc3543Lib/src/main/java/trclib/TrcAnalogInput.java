@@ -185,18 +185,29 @@ public abstract class TrcAnalogInput extends TrcSensor<TrcAnalogInput.DataType>
      * This method sets the scale factor on the sensor data.
      *
      * @param scale specifies the scale factor.
+     * @param offset specifies the offset to be subtracted from the scaled data.
      */
-    public void setScale(double scale)
+    public void setScale(double scale, double offset)
     {
         final String funcName = "setScale";
 
         if (debugEnabled)
         {
-            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API, "scale=%f", scale);
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API, "scale=%f,offset=%f", scale, offset);
             dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API);
         }
 
-        setScale(0, scale);
+        super.setScale(0, scale, offset);
+    }   //setScale
+
+    /**
+     * This method sets the scale factor on the sensor data.
+     *
+     * @param scale specifies the scale factor.
+     */
+    public void setScale(double scale)
+    {
+        setScale(scale, 0.0);
     }   //setScale
 
     /**

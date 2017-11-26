@@ -120,15 +120,16 @@ class RobotInfo
     // GlyphElevator subsystem.
     //
     static final double ELEVATOR_INCHES_PER_COUNT       = 0.002822426329889;
-    static final double ELEVATOR_KP                     = 0.5;
+    static final double ELEVATOR_KP                     = 0.2;
     static final double ELEVATOR_KI                     = 0.0;
     static final double ELEVATOR_KD                     = 0.0;
     static final double ELEVATOR_TOLERANCE              = 0.5;
     static final double ELEVATOR_MIN_HEIGHT             = 0.0;
-    static final double ELEVATOR_MAX_HEIGHT             = 15.0;
+    static final double ELEVATOR_MAX_HEIGHT             = 19.0;
     static final double ELEVATOR_MID_HEIGHT             = 7.0; // from 5.0in -> 7.0in
     static final double ELEVATOR_CAL_POWER              = 0.3;
-    static final double ELEVATOR_SCALE                  = 1.0; //TODO: Needs to calibrate.
+    static final double ELEVATOR_SENSOR_SCALE           = 37.7166156982671;     //sensor max height in inches
+    static final double ELEVATOR_SENSOR_ZERO_OFFSET     = -4.827726809378186;   //inches
 
     //
     // RelicArm subsystem.

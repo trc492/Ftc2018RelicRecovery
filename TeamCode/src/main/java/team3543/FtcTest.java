@@ -30,6 +30,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import ftclib.FtcChoiceMenu;
 import ftclib.FtcGamepad;
+import ftclib.FtcMRRangeSensor;
 import ftclib.FtcMenu;
 import ftclib.FtcValueMenu;
 import trclib.TrcEvent;
@@ -369,8 +370,9 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
 
         if (robot.gyro != null)
         {
-            dashboard.displayPrintf(5, LABEL_WIDTH, "Gyro: ", "Rate=%.3f,Heading=%.1f",
-                    robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
+            dashboard.displayPrintf(5, LABEL_WIDTH, "Gyro: ", "Rate=%.3f,Heading=%.1f,US=%.1f",
+                    robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value,
+                    robot.rangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value);
         }
 
         dashboard.displayPrintf(
