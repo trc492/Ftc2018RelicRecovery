@@ -36,7 +36,6 @@ public class GlyphElevator implements TrcPidController.PidInput
     private FtcDcMotor elevatorMotor;
     public TrcPidController elevatorPidCtrl;
     private TrcPidActuator elevator;
-    private boolean manualOverride = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -73,8 +72,8 @@ public class GlyphElevator implements TrcPidController.PidInput
 
     public void setManualOverride(boolean manualOverride)
     {
-        this.manualOverride = manualOverride;
-    }
+        elevator.setManualOverride(manualOverride);
+    }   //setManualOverride
 
     public void zeroCalibrate()
     {

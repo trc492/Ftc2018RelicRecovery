@@ -444,7 +444,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 robot.getObjectHsvSaturation(robot.cryptoColorSensor),
                 robot.getObjectHsvValue(robot.cryptoColorSensor));
 
-        dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pos=%.1f,low=%s",
+        dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pos=%.3f,low=%s",
                 robot.glyphElevator.getPosition(), robot.glyphElevator.elevatorLowerLimitSwitch.isActive());
         robot.glyphElevator.elevatorPidCtrl.displayPidInfo(10);
 

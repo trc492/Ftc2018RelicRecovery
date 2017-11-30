@@ -99,6 +99,24 @@ public class TrcPidActuator extends TrcPidMotor
     }   //TrcPidActuator
 
     /**
+     * This method returns the state of manual override.
+     *
+     * @return true if manual override is ON, false otherwise.
+     */
+    public boolean isManualOverride()
+    {
+        final String funcName = "isManualOverride";
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API);
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API, "=%s", manualOverride);
+        }
+
+        return manualOverride;
+    }   //isManualOverride
+
+    /**
      * This method sets manual override mode. This is useful to override PID control of the actuator in situations
      * where the encoder is not zero calibrated or malfunctioning. Note that this only overrides the encoder but not
      * the limit switch. So if the lower limit switch is engaged, the actuator will not retract even though manual
