@@ -28,10 +28,12 @@ import android.widget.TextView;
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
+import ftclib.FtcAnalogInput;
 import ftclib.FtcAndroidTone;
 import ftclib.FtcBNO055Imu;
 import ftclib.FtcColorSensor;
 import ftclib.FtcDcMotor;
+import ftclib.FtcDigitalOutput;
 import ftclib.FtcMRRangeSensor;
 import ftclib.FtcMenu;
 import ftclib.FtcOpMode;
@@ -41,6 +43,7 @@ import trclib.TrcAnalogTrigger;
 import trclib.TrcDbgTrace;
 import trclib.TrcDriveBase;
 import trclib.TrcGyro;
+import trclib.TrcMaxbotixSonarArray;
 import trclib.TrcPidController;
 import trclib.TrcPidDrive;
 import trclib.TrcRobot;
@@ -55,7 +58,8 @@ public class Robot implements
     static final boolean USE_CRYPTO_COLOR_SENSOR = false;
     static final boolean USE_ANALOG_TRIGGERS = true;
     static final boolean USE_DOG_LEASH = true;
-    static final boolean USE_SONAR_SENSOR = true;
+    static final boolean USE_MRRANGE_SENSOR = false;
+    static final boolean USE_MAXBOTIX_SONAR_SENSOR = true;
 
     private static final String moduleName = "Robot";
 
@@ -96,6 +100,10 @@ public class Robot implements
     int blueCryptoBarCount = 0;
 
     FtcMRRangeSensor rangeSensor = null;
+    FtcAnalogInput leftSonar = null;
+    FtcAnalogInput frontSonar = null;
+    FtcDigitalOutput sonarRX = null;
+    TrcMaxbotixSonarArray sonarArray = null;
 
     //
     // Vision subsystems.
@@ -122,6 +130,12 @@ public class Robot implements
 
     TrcPidController rangePidCtrl = null;
     TrcPidDrive rangeDrive = null;
+
+    TrcPidController sonarXPidCtrl = null;
+    TrcPidController sonarYPidCtrl = null;
+    TrcPidDrive sonarDrive = null;
+    double prevSonarLeftDistance = 0.0;
+    double prevSonarFrontDistance = 0.0;
 
     //
     // Other subsystems.
@@ -177,9 +191,20 @@ public class Robot implements
             }
         }
 
-        if (USE_SONAR_SENSOR)
+        if (USE_MRRANGE_SENSOR)
         {
             rangeSensor = new FtcMRRangeSensor("mrRangeSensor");
+        }
+
+        if (USE_MAXBOTIX_SONAR_SENSOR)
+        {
+            leftSonar = new FtcAnalogInput("leftSonar");
+            leftSonar.setScale(RobotInfo.SONAR_INCHES_PER_VOLT);
+            frontSonar = new FtcAnalogInput("frontSonar");
+            frontSonar.setScale(RobotInfo.SONAR_INCHES_PER_VOLT);
+            sonarRX = new FtcDigitalOutput("sonarRX");
+            sonarArray = new TrcMaxbotixSonarArray(
+                    "sonarArray", new FtcAnalogInput[] {leftSonar, frontSonar}, sonarRX);
         }
 
         //
@@ -260,7 +285,7 @@ public class Robot implements
         visionDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
         visionDrive.setBeep(androidTone);
 
-        if (USE_SONAR_SENSOR)
+        if (USE_MRRANGE_SENSOR)
         {
             rangePidCtrl = new TrcPidController(
                     "rangePidCtrl",
@@ -273,6 +298,11 @@ public class Robot implements
             rangeDrive = new TrcPidDrive("rangeDrive", driveBase, null, rangePidCtrl, gyroPidCtrl);
             rangeDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
             rangeDrive.setBeep(androidTone);
+        }
+
+        if (USE_MAXBOTIX_SONAR_SENSOR)
+        {
+            //TODO: create sonarPidDrive.
         }
 
         //
@@ -324,6 +354,7 @@ public class Robot implements
         {
             gripVision.setEnabled(true);
         }
+
         //
         // Reset all X, Y and heading values.
         //
@@ -482,6 +513,40 @@ public class Robot implements
         {
             input = rangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
         }
+        else if (pidCtrl == sonarXPidCtrl)
+        {
+            //
+            // Read left sonar value.
+            //
+            input = sonarArray.getDistance(0).value;
+            //
+            // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
+            // value instead.
+            //
+            if (prevSonarLeftDistance != 0.0 &&
+                Math.abs(input - prevSonarLeftDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
+            {
+                input = prevSonarLeftDistance;
+            }
+            prevSonarLeftDistance = input;
+        }
+        else if (pidCtrl == sonarYPidCtrl)
+        {
+            //
+            // Read front sonar value.
+            //
+            input = sonarArray.getDistance(1).value;
+            //
+            // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
+            // value instead.
+            //
+            if (prevSonarFrontDistance != 0.0 &&
+                Math.abs(input - prevSonarFrontDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
+            {
+                input = prevSonarFrontDistance;
+            }
+            prevSonarFrontDistance = input;
+        }
 
         return input;
     }   //getInput
@@ -563,81 +628,5 @@ public class Robot implements
     {
         return opMode.gamepad1.dpad_left;
     }   //isMenuBackButton
-
-//    private void setDrivePID(double xDistance, double yDistance, double heading)
-//    {
-//        double degrees = Math.abs(heading - driveBase.getHeading());
-//        xDistance = Math.abs(xDistance);
-//        yDistance = Math.abs(yDistance);
-//        //
-//        // No oscillation if turn-only.
-//        //
-//        boolean noOscillation = degrees != 0.0 && xDistance == 0.0 && yDistance == 0.0;
-//        gyroPidCtrl.setNoOscillation(noOscillation);
-//        tracer.traceInfo("setDrivePID", "NoOscillation=%s", Boolean.toString(noOscillation));
-//        if (xDistance != 0.0 && xDistance < RobotInfo.SMALL_X_THRESHOLD)
-//        {
-//            //
-//            // Small X movement, use stronger X PID to overcome friction.
-//            //
-//            encoderXPidCtrl.setPidCoefficients(
-//                    new TrcPidController.PidCoefficients(
-//                            RobotInfo.ENCODER_SMALL_X_KP, RobotInfo.ENCODER_SMALL_X_KI, RobotInfo.ENCODER_SMALL_X_KD));
-//        }
-//        else
-//        {
-//            //
-//            // Use normal X PID.
-//            //
-//            encoderXPidCtrl.setPidCoefficients(
-//                    new TrcPidController.PidCoefficients(
-//                            RobotInfo.ENCODER_X_KP, RobotInfo.ENCODER_X_KI, RobotInfo.ENCODER_X_KD));
-//        }
-//
-//        if (yDistance != 0.0 && yDistance < RobotInfo.SMALL_Y_THRESHOLD)
-//        {
-//            //
-//            // Small Y movement, use stronger Y PID to overcome friction.
-//            //
-//            encoderYPidCtrl.setPidCoefficients(
-//                    new TrcPidController.PidCoefficients(
-//                            RobotInfo.ENCODER_SMALL_Y_KP, RobotInfo.ENCODER_SMALL_Y_KI, RobotInfo.ENCODER_SMALL_Y_KD));
-//        }
-//        else
-//        {
-//            //
-//            // Use normal Y PID.
-//            //
-//            encoderYPidCtrl.setPidCoefficients(
-//                    new TrcPidController.PidCoefficients(
-//                            RobotInfo.ENCODER_Y_KP, RobotInfo.ENCODER_Y_KI, RobotInfo.ENCODER_Y_KD));
-//        }
-//
-//        if (degrees != 0.0 && degrees < RobotInfo.SMALL_TURN_THRESHOLD)
-//        {
-//            //
-//            // Small turn, use stronger turn PID to overcome friction.
-//            //
-//            gyroPidCtrl.setPidCoefficients(
-//                    new TrcPidController.PidCoefficients(
-//                            RobotInfo.GYRO_SMALL_TURN_KP, RobotInfo.GYRO_SMALL_TURN_KI, RobotInfo.GYRO_SMALL_TURN_KD));
-//        }
-//        else
-//        {
-//            //
-//            // Use normal Y PID.
-//            //
-//            gyroPidCtrl.setPidCoefficients(
-//                    new TrcPidController.PidCoefficients(
-//                            RobotInfo.GYRO_KP, RobotInfo.GYRO_KI, RobotInfo.GYRO_KD));
-//        }
-//    }   //setDrivePID
-//
-//    void setPIDDriveTarget(
-//            double xDistance, double yDistance, double heading, boolean holdTarget, TrcEvent event)
-//    {
-//        setDrivePID(xDistance, yDistance, heading);
-//        pidDrive.setTarget(xDistance, yDistance, heading, holdTarget, event);
-//    }   //setPIDDriveTarget
 
 }   //class Robot

@@ -30,7 +30,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 import ftclib.FtcChoiceMenu;
 import ftclib.FtcGamepad;
-import ftclib.FtcMRRangeSensor;
 import ftclib.FtcMenu;
 import ftclib.FtcValueMenu;
 import trclib.TrcEvent;
@@ -54,7 +53,8 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         GYRO_TURN,
         VISION_TEST,
         VISION_DRIVE,
-        RANGE_DRIVE
+        RANGE_DRIVE,
+        SONAR_DRIVE
     }   //enum Test
 
     private enum State
@@ -78,11 +78,14 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
     private double driveDistance = 0.0;
     private double turnDegrees = 0.0;
     private double rangeDistance = 0.0;
+    private double sonarXDistance = 0.0;
+    private double sonarYDistance = 0.0;
 
     private CmdTimedDrive timedDriveCommand = null;
     private CmdPidDrive pidDriveCommand = null;
     private CmdVisionDrive visionDriveCommand = null;
     private CmdRangeDrive rangeDriveCommand = null;
+    private CmdSonarDrive sonarDriveCommand = null;
 
     private int motorIndex = 0;
 
@@ -135,9 +138,16 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 break;
 
             case RANGE_DRIVE:
-                if (Robot.USE_SONAR_SENSOR)
+                if (Robot.USE_MRRANGE_SENSOR)
                 {
                     rangeDriveCommand = new CmdRangeDrive(robot, rangeDistance);
+                }
+                break;
+
+            case SONAR_DRIVE:
+                if (Robot.USE_MAXBOTIX_SONAR_SENSOR)
+                {
+                    sonarDriveCommand = new CmdSonarDrive(robot, sonarXDistance, sonarYDistance);
                 }
                 break;
         }
@@ -168,12 +178,22 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 robot.cryptoColorTrigger.setEnabled(true);
             }
         }
+
+        if (robot.sonarArray != null)
+        {
+            robot.sonarArray.startRanging(true);
+        }
     }   //startMode
 
     @Override
     public void stopMode()
     {
         super.stop();
+
+        if (robot.sonarArray != null)
+        {
+            robot.sonarArray.stopRanging();
+        }
 
         if (test == Test.SENSORS_TEST)
         {
@@ -300,6 +320,30 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     dashboard.displayPrintf(9, "Range sensor is disabled.");
                 }
                 break;
+
+            case SONAR_DRIVE:
+                if (sonarDriveCommand != null)
+                {
+                    dashboard.displayPrintf(9, "leftDist=%.1f,frontDist=%.1f,heading=%.1f",
+                            robot.getInput(robot.sonarXPidCtrl),
+                            robot.getInput(robot.sonarYPidCtrl),
+                            robot.getInput(robot.gyroPidCtrl));
+                    robot.sonarXPidCtrl.displayPidInfo(10);
+                    robot.sonarYPidCtrl.displayPidInfo(12);
+                    robot.gyroPidCtrl.displayPidInfo(14);
+
+                    if (!sonarDriveCommand.cmdPeriodic(elapsedTime))
+                    {
+                        robot.sonarXPidCtrl.printPidInfo(robot.tracer);
+                        robot.sonarYPidCtrl.printPidInfo(robot.tracer);
+                        robot.gyroPidCtrl.printPidInfo(robot.tracer);
+                    }
+                }
+                else
+                {
+                    dashboard.displayPrintf(9, "Sonar sensors are disabled.");
+                }
+                break;
         }
     }   //runContinuous
 
@@ -321,6 +365,18 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         FtcValueMenu rangeDistanceMenu = new FtcValueMenu(
                 "Range distance:", testMenu, robot, 0.5, 12.0, 0.5, 6.0,
                 " %.0f in");
+        FtcValueMenu sonarXDistanceMenu = new FtcValueMenu(
+                "Sonar X distance:", testMenu, robot, 6.0, 24.0, 1.0, 12.0,
+                " %.0f in");
+        FtcValueMenu sonarYDistanceMenu = new FtcValueMenu(
+                "Sonar Y distance:", testMenu, robot, 6.0, 24.0, 1.0, 12.0,
+                " %.0f in");
+
+        //
+        // Set children of value menus.
+        //
+        sonarXDistanceMenu.setChildMenu(sonarYDistanceMenu);
+
         //
         // Populate menus.
         //
@@ -334,6 +390,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         testMenu.addChoice("Vision test", Test.VISION_TEST, false);
         testMenu.addChoice("Vision drive", Test.VISION_DRIVE, false);
         testMenu.addChoice("Range drive", Test.RANGE_DRIVE, false, rangeDistanceMenu);
+        testMenu.addChoice("Sonar drive", Test.RANGE_DRIVE, false, sonarXDistanceMenu);
         //
         // Traverse menus.
         //
@@ -346,6 +403,8 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         driveDistance = driveDistanceMenu.getCurrentValue();
         turnDegrees = turnDegreesMenu.getCurrentValue();
         rangeDistance = rangeDistanceMenu.getCurrentValue();
+        sonarXDistance = sonarXDistanceMenu.getCurrentValue();
+        sonarYDistance = sonarYDistanceMenu.getCurrentValue();
         //
         // Show choices.
         //
@@ -364,17 +423,18 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         // Read all sensors and display on the dashboard.
         // Drive the robot around to sample different locations of the field.
         //
-        dashboard.displayPrintf(3, LABEL_WIDTH, "FrontEnc: ", "l=%.0f,r=%.0f",
-                                robot.leftFrontWheel.getPosition(), robot.rightFrontWheel.getPosition());
-        dashboard.displayPrintf(4, LABEL_WIDTH, "RearEnc: ", "l=%.0f,r=%.0f",
+        dashboard.displayPrintf(3, LABEL_WIDTH, "Enc: ", "lf=%.0f,rf=%.0f,lr=%.0f,rr=%.0f",
+                                robot.leftFrontWheel.getPosition(), robot.rightFrontWheel.getPosition(),
                                 robot.leftRearWheel.getPosition(), robot.rightRearWheel.getPosition());
 
         if (robot.gyro != null)
         {
-            dashboard.displayPrintf(5, LABEL_WIDTH, "Gyro: ", "Rate=%.3f,Heading=%.1f,US=%.1f",
-                    robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value,
-                    robot.rangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value);
+            dashboard.displayPrintf(4, LABEL_WIDTH, "Gyro: ", "Rate=%.3f,Heading=%.1f",
+                    robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
         }
+
+        dashboard.displayPrintf(5, LABEL_WIDTH, "Sonar: ", "left=%.3f,front=%.3f",
+                robot.leftSonar.getData(0).value, robot.frontSonar.getData(0).value);
 
         dashboard.displayPrintf(
                 6, LABEL_WIDTH, "Color: ", "Jewel=%s[%.0f/%.2f/%.2f],Crypto=%s[%.0f/%.2f/%.2f]",

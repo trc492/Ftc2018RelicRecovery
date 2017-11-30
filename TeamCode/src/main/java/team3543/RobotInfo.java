@@ -39,6 +39,16 @@ class RobotInfo
     static final double RED2_HIGH_THRESHOLD             = 359.0;
 
     //
+    // Maxbotix ultrasonic sensor.
+    //
+    // According to the sensor spec, the sensor reports Vcc/512 volts per inch.
+    // For some reason unknown to us, we are a factor of 2 off. So the reading seems to be correct if we use 1024
+    // instead of 512.
+    //
+    static final double SONAR_INCHES_PER_VOLT           = (1024.0/3.3);
+    static final double SONAR_ERROR_THRESHOLD           = 50.0; // value should not jump 50 inches in one timeslice.
+
+    //
     // DriveBase subsystem.
     //
     static final DcMotor.RunMode DRIVE_MOTOR_MODE       = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
@@ -50,34 +60,19 @@ class RobotInfo
     static final double ENCODER_X_TOLERANCE             = 2.0;
     static final double ENCODER_X_INCHES_PER_COUNT      = 63.0/4403.2;
 
-//    static final double SMALL_X_THRESHOLD               = 8.0;
-//    static final double ENCODER_SMALL_X_KP              = 0.2;
-//    static final double ENCODER_SMALL_X_KI              = 0.0;
-//    static final double ENCODER_SMALL_X_KD              = 0.0;
-
     static final double ENCODER_Y_KP                    = 0.02;
     static final double ENCODER_Y_KI                    = 0.0;
     static final double ENCODER_Y_KD                    = 0.0022;
     static final double ENCODER_Y_TOLERANCE             = 1.0;
     static final double ENCODER_Y_INCHES_PER_COUNT      = 68.0/4100.5;
 
-//    static final double SMALL_Y_THRESHOLD               = 8.0;
-//    static final double ENCODER_SMALL_Y_KP              = 0.045;
-//    static final double ENCODER_SMALL_Y_KI              = 0.0;
-//    static final double ENCODER_SMALL_Y_KD              = 0.001;
-
-    static final double ANALOG_GYRO_SCALE               = 1.0136;
-    static final double ANALOG_GYRO_VOLT_PER_DEG_PER_SEC= 0.007;
+//    static final double ANALOG_GYRO_SCALE               = 1.0136;
+//    static final double ANALOG_GYRO_VOLT_PER_DEG_PER_SEC= 0.007;
 
     static final double GYRO_KP                         = 0.018;
     static final double GYRO_KI                         = 0.0;
     static final double GYRO_KD                         = 0.002;
     static final double GYRO_TOLERANCE                  = 1.0;
-
-//    static final double SMALL_TURN_THRESHOLD            = 15.0;
-//    static final double GYRO_SMALL_TURN_KP              = 0.03;
-//    static final double GYRO_SMALL_TURN_KI              = 0.0;
-//    static final double GYRO_SMALL_TURN_KD              = 0.001;
 
     static final double PIDDRIVE_STALL_TIMEOUT          = 0.25;     //in msec.
 
@@ -125,7 +120,7 @@ class RobotInfo
     static final double ELEVATOR_KD                     = 0.0;
     static final double ELEVATOR_TOLERANCE              = 0.5;
     static final double ELEVATOR_MIN_HEIGHT             = 0.0;
-    static final double ELEVATOR_MAX_HEIGHT             = 19.0;
+    static final double ELEVATOR_MAX_HEIGHT             = 20.0;
     static final double ELEVATOR_MID_HEIGHT             = 7.0; // from 5.0in -> 7.0in
     static final double ELEVATOR_CAL_POWER              = 0.3;
     static final double ELEVATOR_SENSOR_SCALE           = 37.7166156982671;     //sensor max height in inches

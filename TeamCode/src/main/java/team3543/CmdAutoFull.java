@@ -217,6 +217,10 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_OFF_PLATFORM:
+                    if (robot.sonarArray != null)
+                    {
+                        robot.sonarArray.startRanging(true);
+                    }
                     robot.encoderYPidCtrl.setOutputRange(-0.5, 0.5);
                     targetX = 0.0;
                     targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -22.0 : 25.0;
@@ -227,9 +231,16 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_TO_WALL:
-                    targetY = 16.0;
-
-                    robot.rangeDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
+                    if (robot.rangeDrive != null)
+                    {
+                        targetY = 12.0;
+                        robot.rangeDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
+                    }
+                    else
+                    {
+                        targetY = 16.0;
+                        robot.pidDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
+                    }
                     sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     break;
 
@@ -347,6 +358,10 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case SET_DOWN_GLYPH:
+                    if (robot.sonarArray != null)
+                    {
+                        robot.sonarArray.stopRanging();
+                    }
                     // lower the elevator
                     robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MIN_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.RELEASE_GLYPH);

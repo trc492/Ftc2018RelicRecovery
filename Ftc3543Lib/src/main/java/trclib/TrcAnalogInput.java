@@ -45,6 +45,7 @@ public abstract class TrcAnalogInput extends TrcSensor<TrcAnalogInput.DataType>
     public enum DataType
     {
         INPUT_DATA,
+        NORMALIZED_DATA,
         INTEGRATED_DATA,
         DOUBLE_INTEGRATED_DATA
     }   //enum DataType
@@ -230,6 +231,27 @@ public abstract class TrcAnalogInput extends TrcSensor<TrcAnalogInput.DataType>
 
         return data;
     }   //getData
+
+    /**
+     * This method returns the processed and normalized sensor data of the specified index.
+     *
+     * @param index specifies the data index.
+     * @return processed normalized data.
+     */
+    public TrcSensor.SensorData<Double> getNormalizedData(int index)
+    {
+        final String funcName = "getNormalizedData";
+        TrcSensor.SensorData<Double> data = getProcessedData(index, DataType.NORMALIZED_DATA);;
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API, "index=%d", index);
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API,
+                    "=(timestamp=%.3f,value=%f)", data.timestamp, data.value);
+        }
+
+        return data;
+    }   //getNormalizedData
 
     /**
      * This method returns the integrated sensor data of the specified index.
