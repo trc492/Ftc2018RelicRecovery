@@ -114,7 +114,9 @@ public class FtcAuto extends FtcOpMode
         switch (strategy)
         {
             case FULL_AUTO:
-                autoCommand = new CmdAutoFull(robot, alliance, delay, startPos, jewelChoice, cryptoChoice);
+                autoCommand = new CmdAutoFull(
+                        robot, alliance, delay, startPos, jewelChoice == DoJewel.YES,
+                        cryptoChoice == DoCrypto.YES);
                 break;
 
             case DISTANCE_DRIVE:

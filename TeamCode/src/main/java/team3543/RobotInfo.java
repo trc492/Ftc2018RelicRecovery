@@ -95,6 +95,15 @@ class RobotInfo
     static final double RANGE_KD                        = 0.0;
     static final double RANGE_TOLERANCE                 = 1.0;
 
+    static final double SONAR_X_KP                      = 0.0125;   //TODO: need tuning
+    static final double SONAR_X_KI                      = 0.0;
+    static final double SONAR_X_KD                      = 0.0;
+    static final double SONAR_X_TOLERANCE               = 1.0;
+
+    static final double SONAR_Y_KP                      = 0.0125;   //TODO: need tuning
+    static final double SONAR_Y_KI                      = 0.0;
+    static final double SONAR_Y_KD                      = 0.0;
+    static final double SONAR_Y_TOLERANCE               = 1.0;
     //
     // GlyphGrabber subsystem.
     //

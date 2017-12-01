@@ -54,7 +54,9 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         VISION_TEST,
         VISION_DRIVE,
         RANGE_DRIVE,
-        SONAR_DRIVE
+        LEFT_SONAR_DRIVE,
+        FRONT_SONAR_DRIVE,
+        RIGHT_SONAR_DRIVE
     }   //enum Test
 
     private enum State
@@ -78,8 +80,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
     private double driveDistance = 0.0;
     private double turnDegrees = 0.0;
     private double rangeDistance = 0.0;
-    private double sonarXDistance = 0.0;
-    private double sonarYDistance = 0.0;
+    private double sonarDistance = 0.0;
 
     private CmdTimedDrive timedDriveCommand = null;
     private CmdPidDrive pidDriveCommand = null;
@@ -144,10 +145,14 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 }
                 break;
 
-            case SONAR_DRIVE:
+            case LEFT_SONAR_DRIVE:
+            case FRONT_SONAR_DRIVE:
+            case RIGHT_SONAR_DRIVE:
                 if (Robot.USE_MAXBOTIX_SONAR_SENSOR)
                 {
-                    sonarDriveCommand = new CmdSonarDrive(robot, sonarXDistance, sonarYDistance);
+                    int sonarIndex = test == Test.LEFT_SONAR_DRIVE? Robot.LEFT_SONAR_INDEX:
+                                     test == Test.FRONT_SONAR_DRIVE? Robot.FRONT_SONAR_INDEX: Robot.RIGHT_SONAR_INDEX;
+                    sonarDriveCommand = new CmdSonarDrive(robot, sonarDistance, sonarIndex);
                 }
                 break;
         }
@@ -321,10 +326,13 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 }
                 break;
 
-            case SONAR_DRIVE:
+            case LEFT_SONAR_DRIVE:
+            case FRONT_SONAR_DRIVE:
+            case RIGHT_SONAR_DRIVE:
                 if (sonarDriveCommand != null)
                 {
-                    dashboard.displayPrintf(9, "leftDist=%.1f,frontDist=%.1f,heading=%.1f",
+                    robot.useRightSonarForX = test == Test.RIGHT_SONAR_DRIVE;
+                    dashboard.displayPrintf(9, "sonarXDist=%.1f,sonarYDist=%.1f,heading=%.1f",
                             robot.getInput(robot.sonarXPidCtrl),
                             robot.getInput(robot.sonarYPidCtrl),
                             robot.getInput(robot.gyroPidCtrl));
@@ -365,17 +373,9 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         FtcValueMenu rangeDistanceMenu = new FtcValueMenu(
                 "Range distance:", testMenu, robot, 0.5, 12.0, 0.5, 6.0,
                 " %.0f in");
-        FtcValueMenu sonarXDistanceMenu = new FtcValueMenu(
-                "Sonar X distance:", testMenu, robot, 6.0, 24.0, 1.0, 12.0,
+        FtcValueMenu sonarDistanceMenu = new FtcValueMenu(
+                "Sonar distance:", testMenu, robot, 6.0, 24.0, 1.0, 12.0,
                 " %.0f in");
-        FtcValueMenu sonarYDistanceMenu = new FtcValueMenu(
-                "Sonar Y distance:", testMenu, robot, 6.0, 24.0, 1.0, 12.0,
-                " %.0f in");
-
-        //
-        // Set children of value menus.
-        //
-        sonarXDistanceMenu.setChildMenu(sonarYDistanceMenu);
 
         //
         // Populate menus.
@@ -390,7 +390,9 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         testMenu.addChoice("Vision test", Test.VISION_TEST, false);
         testMenu.addChoice("Vision drive", Test.VISION_DRIVE, false);
         testMenu.addChoice("Range drive", Test.RANGE_DRIVE, false, rangeDistanceMenu);
-        testMenu.addChoice("Sonar drive", Test.RANGE_DRIVE, false, sonarXDistanceMenu);
+        testMenu.addChoice("Left Sonar drive", Test.LEFT_SONAR_DRIVE, false, sonarDistanceMenu);
+        testMenu.addChoice("Front Sonar drive", Test.FRONT_SONAR_DRIVE, false, sonarDistanceMenu);
+        testMenu.addChoice("Right Sonar drive", Test.RIGHT_SONAR_DRIVE, false, sonarDistanceMenu);
         //
         // Traverse menus.
         //
@@ -403,8 +405,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         driveDistance = driveDistanceMenu.getCurrentValue();
         turnDegrees = turnDegreesMenu.getCurrentValue();
         rangeDistance = rangeDistanceMenu.getCurrentValue();
-        sonarXDistance = sonarXDistanceMenu.getCurrentValue();
-        sonarYDistance = sonarYDistanceMenu.getCurrentValue();
+        sonarDistance = sonarDistanceMenu.getCurrentValue();
         //
         // Show choices.
         //
@@ -433,8 +434,9 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
         }
 
-        dashboard.displayPrintf(5, LABEL_WIDTH, "Sonar: ", "left=%.3f,front=%.3f",
-                robot.leftSonar.getData(0).value, robot.frontSonar.getData(0).value);
+        dashboard.displayPrintf(5, LABEL_WIDTH, "Sonar: ", "left=%.3f,front=%.3f,right=%.3f",
+                robot.leftSonar.getData(0).value, robot.frontSonar.getData(0).value,
+                robot.rightSonar.getData(0).value);
 
         dashboard.displayPrintf(
                 6, LABEL_WIDTH, "Color: ", "Jewel=%s[%.0f/%.2f/%.2f],Crypto=%s[%.0f/%.2f/%.2f]",

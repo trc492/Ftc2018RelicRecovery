@@ -53,6 +53,30 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final double BLUE_FAR_CENTER_COL_OFFSET_IN = 13.5;
     private static final double BLUE_FAR_RIGHT_COL_OFFSET_IN = 21.0;
 
+    private static final double SONAR_RED_NEAR_LEFT_COL_OFFSET_IN = 88.0;
+    private static final double SONAR_RED_NEAR_CENTER_COL_OFFSET_IN =
+            SONAR_RED_NEAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_RED_NEAR_RIGHT_COL_OFFSET_IN =
+            SONAR_RED_NEAR_CENTER_COL_OFFSET_IN + 7.5;
+
+    private static final double SONAR_RED_FAR_LEFT_COL_OFFSET_IN = 40.0;
+    private static final double SONAR_RED_FAR_CENTER_COL_OFFSET_IN =
+            SONAR_RED_FAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_RED_FAR_RIGHT_COL_OFFSET_IN =
+            SONAR_RED_FAR_CENTER_COL_OFFSET_IN + 7.5;
+
+    private static final double SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN = 21.0;
+    private static final double SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN =
+            SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_BLUE_NEAR_RIGHT_COL_OFFSET_IN =
+            SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN + 7.5;
+
+    private static final double SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN = 40.0;
+    private static final double SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN =
+            SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_BLUE_FAR_RIGHT_COL_OFFSET_IN =
+            SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
+
     private enum State
     {
         DEPLOY_JEWEL_ARM,
@@ -78,8 +102,8 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private FtcAuto.Alliance alliance;
     private double delay;
     private FtcAuto.StartPos startPos;
-    private FtcAuto.DoJewel doJewel;
-    private FtcAuto.DoCrypto doCrypto;
+    private boolean doJewel;
+    private boolean doCrypto;
     private TrcEvent event;
     private TrcTimer timer;
     private TrcStateMachine<State> sm;
@@ -90,11 +114,11 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 
     CmdAutoFull(
             Robot robot, FtcAuto.Alliance alliance, double delay, FtcAuto.StartPos startPos,
-            FtcAuto.DoJewel doJewel, FtcAuto.DoCrypto doCrypto)
+            boolean doJewel, boolean doCrypto)
     {
         robot.tracer.traceInfo(
                 moduleName, "alliance=%s, delay=%.0f, startPos=%s, doJewel=%s, doCrypto=%s",
-                alliance, delay, startPos, doJewel,doCrypto);
+                alliance, delay, startPos, doJewel, doCrypto);
         this.robot = robot;
         this.alliance = alliance;
         this.delay = delay;
@@ -105,7 +129,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
         event = new TrcEvent(moduleName);
         timer = new TrcTimer(moduleName);
         sm = new TrcStateMachine<>(moduleName);
-        sm.start(doJewel == FtcAuto.DoJewel.YES? State.DEPLOY_JEWEL_ARM: State.DO_DELAY);
+        sm.start(doJewel? State.DEPLOY_JEWEL_ARM: State.DO_DELAY);
     }   //CmdAutoFull
 
     //
@@ -131,9 +155,12 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                 case DEPLOY_JEWEL_ARM:
                     if (robot.jewelColorTrigger != null)
                     {
+                        // Activate text to speech to tell us what color of the jewel was found.
                         robot.jewelColorTrigger.setEnabled(true);
                     }
-
+                    //
+                    // Lower jewel arm and wait for it to be done.
+                    //
                     retryCount = 0;
                     robot.jewelArm.setExtended(true);
                     timer.set(0.5, event);
@@ -141,6 +168,9 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case WHACK_JEWEL:
+                    //
+                    // Determine crypto column using Vuforia.
+                    //
                     vuMark = robot.vuforiaVision.getVuMark();
                     robot.tracer.traceInfo(state.toString(), "VuMark: %s", vuMark.toString());
                     if (robot.textToSpeech != null)
@@ -160,12 +190,18 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                             robot.getObjectHsvValue(robot.jewelColorSensor));
                     if (jewelColor == Robot.ObjectColor.NO && retryCount < 10)
                     {
+                        //
+                        // Failed to determine jewel color, try again up to 10 times.
+                        //
                         retryCount++;
                         break;
                     }
 
                     if (robot.jewelColorTrigger != null)
                     {
+                        //
+                        // Done with jewel color sensor, disable it.
+                        //
                         robot.jewelColorTrigger.setEnabled(false);
                     }
 
@@ -183,12 +219,19 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case MOVE_JEWEL_ARM_UP:
+                    //
+                    // Done whacking jewel, bring jewel arm back up.
+                    //
                     robot.jewelArm.setExtended(false);
                     timer.set(0.3, event);
                     sm.waitForSingleEvent(event, State.RESET_JEWEL_ARM);
                     break;
 
                 case RESET_JEWEL_ARM:
+                    //
+                    // Return jewel arm back to neutral position only after jewel arm is up. This is to prevent
+                    // accidental whacking the other jewel while bringing it back up.
+                    //
                     robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
                     timer.set(0.3, event);
                     sm.waitForSingleEvent(event, State.DO_DELAY);
@@ -211,12 +254,18 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case GRAB_LIFT_GLYPH:
+                    //
+                    // Grab the glyph block in front of us and lift it off the platform.
+                    //
                     robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_CLOSE);
                     robot.glyphElevator.setPosition(RobotInfo.ELEVATOR_MID_HEIGHT, event, 2.0);
                     sm.waitForSingleEvent(event, State.DRIVE_OFF_PLATFORM);
                     break;
 
                 case DRIVE_OFF_PLATFORM:
+                    //
+                    // Carefully drive off the platform with only half power.
+                    //
                     if (robot.sonarArray != null)
                     {
                         robot.sonarArray.startRanging(true);
@@ -231,13 +280,27 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_TO_WALL:
-                    if (robot.rangeDrive != null)
+                    if (robot.sonarArray != null)
                     {
+                        //
+                        // Drive forward to the wall using sonar array.
+                        //
+                        targetY = 12.0;
+                        robot.sonarYPidDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
+                    }
+                    else if (robot.rangeDrive != null)
+                    {
+                        //
+                        // Drive forward to the wall using Modern Robotics Range sensor.
+                        //
                         targetY = 12.0;
                         robot.rangeDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
                     }
                     else
                     {
+                        //
+                        // Drive forward to the wall using encoders.
+                        //
                         targetY = 16.0;
                         robot.pidDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
                     }
@@ -245,6 +308,9 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case TURN_TO_CRYPTOBOX:
+                    //
+                    // Turn towards the crypto box if necessary.
+                    //
                     robot.encoderYPidCtrl.setOutputRange(-1.0, 1.0);
                     targetX = 0.0;
                     targetY = 0.0;
@@ -257,92 +323,195 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case ALIGN_CRYPTOBOX:
+                    //
+                    // Crab sideways to the correct crypto box column according to the VuMark.
+                    //
                     if (robot.cryptoColorTrigger != null)
                     {
+                        //
+                        // Using color sensor to count the crypto column bars.
+                        //
                         robot.redCryptoBarCount = 0;
                         robot.blueCryptoBarCount = 0;
                         robot.cryptoColorTrigger.setEnabled(true);
                     }
 
-                    if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                    targetY = 0.0;
+                    if (!doCrypto)
                     {
-                        if (startPos == FtcAuto.StartPos.NEAR)
+                        //
+                        // In case vision is malfunctioning, we are not doing crypto box using vision, so just crab
+                        // to the parking zone and stop. While doing this, might as well drop the glyph to wherever
+                        // we landed hoping to score something.
+                        //
+                        targetX = 12.0;
+                        robot.pidDrive.setTarget(
+                                targetX, targetY, robot.targetHeading, false, event, 2.0);
+                    }
+                    else if (robot.sonarArray != null)
+                    {
+                        //
+                        // Use the sonar array to guide us to the correct crypto column.
+                        //
+                        if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                         {
-                            if (vuMark == RelicRecoveryVuMark.LEFT)
+                            robot.useRightSonarForX = true;
+                            if (startPos == FtcAuto.StartPos.NEAR)
                             {
-                                targetX = RED_NEAR_LEFT_COL_OFFSET_IN;
-                            }
-                            else if (vuMark == RelicRecoveryVuMark.RIGHT)
-                            {
-                                targetX = RED_NEAR_RIGHT_COL_OFFSET_IN;
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = SONAR_RED_NEAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = SONAR_RED_NEAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = SONAR_RED_NEAR_CENTER_COL_OFFSET_IN;
+                                }
                             }
                             else
                             {
-                                targetX = RED_NEAR_CENTER_COL_OFFSET_IN;
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = SONAR_RED_FAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = SONAR_RED_FAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = SONAR_RED_FAR_CENTER_COL_OFFSET_IN;
+                                }
                             }
                         }
                         else
                         {
-                            if (vuMark == RelicRecoveryVuMark.LEFT)
+                            robot.useRightSonarForX = false;
+                            if (startPos == FtcAuto.StartPos.NEAR)
                             {
-                                targetX = RED_FAR_LEFT_COL_OFFSET_IN;
-                            }
-                            else if (vuMark == RelicRecoveryVuMark.RIGHT)
-                            {
-                                targetX = RED_FAR_RIGHT_COL_OFFSET_IN;
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = SONAR_BLUE_NEAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN;
+                                }
                             }
                             else
                             {
-                                targetX = RED_FAR_CENTER_COL_OFFSET_IN;
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = SONAR_BLUE_FAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN;
+                                }
                             }
                         }
+                        robot.sonarXPidDrive.setTarget(
+                                targetX, targetY, robot.targetHeading, false, event, 2.0);
                     }
                     else
                     {
-                        if (startPos == FtcAuto.StartPos.NEAR)
+                        //
+                        // Using encoder dead reckoning to guide us to the correct crypto column.
+                        //
+                        if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                         {
-                            if (vuMark == RelicRecoveryVuMark.LEFT)
+                            if (startPos == FtcAuto.StartPos.NEAR)
                             {
-                                targetX = BLUE_NEAR_LEFT_COL_OFFSET_IN;
-                            }
-                            else if (vuMark == RelicRecoveryVuMark.RIGHT)
-                            {
-                                targetX = BLUE_NEAR_RIGHT_COL_OFFSET_IN;
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = RED_NEAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = RED_NEAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = RED_NEAR_CENTER_COL_OFFSET_IN;
+                                }
                             }
                             else
                             {
-                                targetX = BLUE_NEAR_CENTER_COL_OFFSET_IN;
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = RED_FAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = RED_FAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = RED_FAR_CENTER_COL_OFFSET_IN;
+                                }
                             }
                         }
                         else
                         {
-                            if (vuMark == RelicRecoveryVuMark.LEFT)
+                            if (startPos == FtcAuto.StartPos.NEAR)
                             {
-                                targetX = BLUE_FAR_LEFT_COL_OFFSET_IN;
-                            }
-                            else if (vuMark == RelicRecoveryVuMark.RIGHT)
-                            {
-                                targetX = BLUE_FAR_RIGHT_COL_OFFSET_IN;
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = BLUE_NEAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = BLUE_NEAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = BLUE_NEAR_CENTER_COL_OFFSET_IN;
+                                }
                             }
                             else
                             {
-                                targetX = BLUE_FAR_CENTER_COL_OFFSET_IN;
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = BLUE_FAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = BLUE_FAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = BLUE_FAR_CENTER_COL_OFFSET_IN;
+                                }
                             }
                         }
+                        robot.pidDrive.setTarget(
+                                targetX, targetY, robot.targetHeading, false, event, 2.0);
                     }
-                    targetY = 0.0;
-
-                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
                     sm.waitForSingleEvent(event, State.MOVE_FORWARD);
                     break;
 
                 case MOVE_FORWARD:
                     if (robot.cryptoColorTrigger != null)
                     {
+                        //
+                        // We are done with crypto box navigation, turn of crypto color sensor.
+                        //
                         robot.cryptoColorTrigger.setEnabled(false);
                     }
-
-                    // Move forward
+                    //
+                    // Move forward a little to push the glyph block into the crypto column.
+                    //
                     targetX = 0.0;
                     if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                     {
@@ -354,12 +523,15 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     }
 
                     robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 1.0);
-                    sm.waitForSingleEvent(event, doCrypto == FtcAuto.DoCrypto.NO? State.DONE: State.SET_DOWN_GLYPH);
+                    sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);
                     break;
 
                 case SET_DOWN_GLYPH:
                     if (robot.sonarArray != null)
                     {
+                        //
+                        // We are done with crypto navigation, turn off sonar array.
+                        //
                         robot.sonarArray.stopRanging();
                     }
                     // lower the elevator
@@ -374,6 +546,9 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case BACK_OFF:
+                    //
+                    // Back off a little to make sure we are not touching the glyph block.
+                    //
                     targetX = 0.0;
                     targetY = -4.5;
 
@@ -383,8 +558,6 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 
                 case DONE:
                 default:
-                    // open the glyphgrabber servos
-                    robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
                     //
                     // We are done.
                     //
@@ -395,11 +568,14 @@ class CmdAutoFull implements TrcRobot.RobotCommand
             robot.traceStateInfo(elapsedTime, state.toString(), targetX, targetY, robot.targetHeading);
         }
 
-        if (robot.pidDrive.isActive() && (debugXPid || debugYPid || debugTurnPid))
+        if (robot.pidDrive.isActive() || robot.sonarXPidDrive.isActive() || robot.sonarYPidDrive.isActive())
         {
             robot.tracer.traceInfo("Battery", "Voltage=%5.2fV (%5.2fV)",
                     robot.battery.getVoltage(), robot.battery.getLowestVoltage());
+        }
 
+        if (robot.pidDrive.isActive())
+        {
             if (debugXPid && targetX != 0.0)
             {
                 robot.encoderXPidCtrl.printPidInfo(robot.tracer);
@@ -408,6 +584,30 @@ class CmdAutoFull implements TrcRobot.RobotCommand
             if (debugYPid && targetY != 0.0)
             {
                 robot.encoderYPidCtrl.printPidInfo(robot.tracer);
+            }
+
+            if (debugTurnPid)
+            {
+                robot.gyroPidCtrl.printPidInfo(robot.tracer);
+            }
+        }
+        else if (robot.sonarXPidDrive.isActive())
+        {
+            if (debugXPid)
+            {
+                robot.sonarXPidCtrl.printPidInfo(robot.tracer);
+            }
+
+            if (debugTurnPid)
+            {
+                robot.gyroPidCtrl.printPidInfo(robot.tracer);
+            }
+        }
+        else if (robot.sonarYPidDrive.isActive())
+        {
+            if (debugYPid)
+            {
+                robot.sonarYPidCtrl.printPidInfo(robot.tracer);
             }
 
             if (debugTurnPid)

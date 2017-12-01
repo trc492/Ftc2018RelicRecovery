@@ -40,16 +40,16 @@ class CmdSonarDrive implements TrcRobot.RobotCommand
     private static final String moduleName = "CmdSonarDrive";
 
     private Robot robot;
-    private double sonarXDistance;
-    private double sonarYDistance;
+    private double sonarDistance;
+    private int sonarIndex;
     private TrcEvent event;
     private TrcStateMachine<State> sm;
 
-    CmdSonarDrive(Robot robot, double sonarXDistance, double sonarYDistance)
+    CmdSonarDrive(Robot robot, double sonarDistance, int sonarIndex)
     {
         this.robot = robot;
-        this.sonarXDistance = sonarXDistance;
-        this.sonarYDistance = sonarYDistance;
+        this.sonarDistance = sonarDistance;
+        this.sonarIndex = sonarIndex;
         event = new TrcEvent(moduleName);
         sm = new TrcStateMachine<>(moduleName);
         sm.start(State.DO_SONAR_DRIVE);
@@ -67,7 +67,8 @@ class CmdSonarDrive implements TrcRobot.RobotCommand
         // Print debug info.
         //
         State state = sm.getState();
-        robot.dashboard.displayPrintf(1, "State: %s", state != null ? sm.getState().toString() : "Disabled");
+        robot.dashboard.displayPrintf(
+                1, "State: %s", state != null ? sm.getState().toString() : "Disabled");
 
         if (sm.isReady())
         {
@@ -76,7 +77,21 @@ class CmdSonarDrive implements TrcRobot.RobotCommand
             switch (state)
             {
                 case DO_SONAR_DRIVE:
-                    robot.sonarDrive.setTarget(sonarXDistance, sonarYDistance, 0.0, false, event);
+                    if (sonarIndex == Robot.LEFT_SONAR_INDEX)
+                    {
+                        robot.useRightSonarForX = false;
+                        robot.sonarXPidDrive.setTarget(sonarDistance, 0.0, 0.0, false, event);
+                    }
+                    else if (sonarIndex == Robot.RIGHT_SONAR_INDEX)
+                    {
+                        robot.useRightSonarForX = true;
+                        robot.sonarXPidDrive.setTarget(sonarDistance, 0.0, 0.0, false, event);
+                    }
+                    else
+                    {
+                        robot.useRightSonarForX = false;
+                        robot.sonarYPidDrive.setTarget(0.0, sonarDistance, 0.0, false, event);
+                    }
                     sm.waitForSingleEvent(event, State.DONE);
                     break;
 
@@ -90,7 +105,7 @@ class CmdSonarDrive implements TrcRobot.RobotCommand
             }
         }
 
-        if (robot.sonarDrive.isActive() && (debugSonarXPid || debugSonarYPid))
+        if (robot.sonarXPidDrive.isActive() || robot.sonarYPidDrive.isActive())
         {
             robot.tracer.traceInfo("Battery", "Voltage=%5.2fV (%5.2fV)",
                     robot.battery.getVoltage(), robot.battery.getLowestVoltage());

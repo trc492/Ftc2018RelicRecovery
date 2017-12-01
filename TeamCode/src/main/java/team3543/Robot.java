@@ -61,6 +61,10 @@ public class Robot implements
     static final boolean USE_MRRANGE_SENSOR = false;
     static final boolean USE_MAXBOTIX_SONAR_SENSOR = true;
 
+    static final int LEFT_SONAR_INDEX = 0;
+    static final int FRONT_SONAR_INDEX = 1;
+    static final int RIGHT_SONAR_INDEX = 2;
+
     private static final String moduleName = "Robot";
 
     enum ObjectColor
@@ -102,8 +106,11 @@ public class Robot implements
     FtcMRRangeSensor rangeSensor = null;
     FtcAnalogInput leftSonar = null;
     FtcAnalogInput frontSonar = null;
+    FtcAnalogInput rightSonar = null;
+    FtcAnalogInput[] sonarSensors = new FtcAnalogInput[3];
     FtcDigitalOutput sonarRX = null;
     TrcMaxbotixSonarArray sonarArray = null;
+    boolean useRightSonarForX = false;
 
     //
     // Vision subsystems.
@@ -133,9 +140,11 @@ public class Robot implements
 
     TrcPidController sonarXPidCtrl = null;
     TrcPidController sonarYPidCtrl = null;
-    TrcPidDrive sonarDrive = null;
-    double prevSonarLeftDistance = 0.0;
-    double prevSonarFrontDistance = 0.0;
+    TrcPidDrive sonarXPidDrive = null;
+    TrcPidDrive sonarYPidDrive = null;
+    double prevLeftSonarDistance = 0.0;
+    double prevFrontSonarDistance = 0.0;
+    double prevRightSonarDistance = 0.0;
 
     //
     // Other subsystems.
@@ -202,9 +211,13 @@ public class Robot implements
             leftSonar.setScale(RobotInfo.SONAR_INCHES_PER_VOLT);
             frontSonar = new FtcAnalogInput("frontSonar");
             frontSonar.setScale(RobotInfo.SONAR_INCHES_PER_VOLT);
+            rightSonar = new FtcAnalogInput("rightSonar");
+            rightSonar.setScale(RobotInfo.SONAR_INCHES_PER_VOLT);
+            sonarSensors[LEFT_SONAR_INDEX] = leftSonar;
+            sonarSensors[FRONT_SONAR_INDEX] = frontSonar;
+            sonarSensors[RIGHT_SONAR_INDEX] = rightSonar;
             sonarRX = new FtcDigitalOutput("sonarRX");
-            sonarArray = new TrcMaxbotixSonarArray(
-                    "sonarArray", new FtcAnalogInput[] {leftSonar, frontSonar}, sonarRX);
+            sonarArray = new TrcMaxbotixSonarArray("sonarArray", sonarSensors, sonarRX);
         }
 
         //
@@ -302,7 +315,31 @@ public class Robot implements
 
         if (USE_MAXBOTIX_SONAR_SENSOR)
         {
-            //TODO: create sonarPidDrive.
+            sonarXPidCtrl = new TrcPidController(
+                    "sonarXPidCtrl",
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.SONAR_X_KP, RobotInfo.SONAR_X_KI, RobotInfo.SONAR_X_KD),
+                    RobotInfo.SONAR_X_TOLERANCE, this);
+            sonarXPidCtrl.setAbsoluteSetPoint(true);
+            sonarXPidCtrl.setInverted(true);
+
+            sonarYPidCtrl = new TrcPidController(
+                    "sonarYPidCtrl",
+                    new TrcPidController.PidCoefficients(
+                            RobotInfo.SONAR_Y_KP, RobotInfo.SONAR_Y_KI, RobotInfo.SONAR_Y_KD),
+                    RobotInfo.SONAR_Y_TOLERANCE, this);
+            sonarYPidCtrl.setAbsoluteSetPoint(true);
+            sonarYPidCtrl.setInverted(true);
+
+            sonarXPidDrive = new TrcPidDrive(
+                    "sonarXPidDrive", driveBase, sonarXPidCtrl, encoderYPidCtrl, gyroPidCtrl);
+            sonarXPidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
+            sonarXPidDrive.setBeep(androidTone);
+
+            sonarYPidDrive = new TrcPidDrive(
+                    "sonarYPidDrive", driveBase, encoderXPidCtrl, sonarYPidCtrl, gyroPidCtrl);
+            sonarYPidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
+            sonarYPidDrive.setBeep(androidTone);
         }
 
         //
@@ -515,37 +552,51 @@ public class Robot implements
         }
         else if (pidCtrl == sonarXPidCtrl)
         {
-            //
-            // Read left sonar value.
-            //
-            input = sonarArray.getDistance(0).value;
-            //
-            // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
-            // value instead.
-            //
-            if (prevSonarLeftDistance != 0.0 &&
-                Math.abs(input - prevSonarLeftDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
+            if (useRightSonarForX)
             {
-                input = prevSonarLeftDistance;
+                input = sonarArray.getDistance(RIGHT_SONAR_INDEX).value;
+                //
+                // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
+                // value instead.
+                //
+                if (prevRightSonarDistance != 0.0 &&
+                    Math.abs(input - prevRightSonarDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
+                {
+                    input = prevRightSonarDistance;
+                }
+                prevRightSonarDistance = input;
             }
-            prevSonarLeftDistance = input;
+            else
+            {
+                input = sonarArray.getDistance(LEFT_SONAR_INDEX).value;
+                //
+                // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
+                // value instead.
+                //
+                if (prevLeftSonarDistance != 0.0 &&
+                    Math.abs(input - prevLeftSonarDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
+                {
+                    input = prevLeftSonarDistance;
+                }
+                prevLeftSonarDistance = input;
+            }
         }
         else if (pidCtrl == sonarYPidCtrl)
         {
             //
             // Read front sonar value.
             //
-            input = sonarArray.getDistance(1).value;
+            input = sonarArray.getDistance(FRONT_SONAR_INDEX).value;
             //
             // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
             // value instead.
             //
-            if (prevSonarFrontDistance != 0.0 &&
-                Math.abs(input - prevSonarFrontDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
+            if (prevFrontSonarDistance != 0.0 &&
+                Math.abs(input - prevFrontSonarDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
             {
-                input = prevSonarFrontDistance;
+                input = prevFrontSonarDistance;
             }
-            prevSonarFrontDistance = input;
+            prevFrontSonarDistance = input;
         }
 
         return input;
