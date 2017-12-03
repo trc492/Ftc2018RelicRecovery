@@ -37,41 +37,41 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final boolean debugYPid = true;
     private static final boolean debugTurnPid = true;
 
-    private static final double RED_NEAR_LEFT_COL_OFFSET_IN = -11.5;
-    private static final double RED_NEAR_CENTER_COL_OFFSET_IN = -4.0;
-    private static final double RED_NEAR_RIGHT_COL_OFFSET_IN = 3.5;
+    private static final double RED_NEAR_CENTER_COL_OFFSET_IN = -19.0;
+    private static final double RED_NEAR_LEFT_COL_OFFSET_IN = RED_NEAR_CENTER_COL_OFFSET_IN - 7.5;
+    private static final double RED_NEAR_RIGHT_COL_OFFSET_IN = RED_NEAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double RED_FAR_LEFT_COL_OFFSET_IN = -18.0;
-    private static final double RED_FAR_CENTER_COL_OFFSET_IN = -10.5;
-    private static final double RED_FAR_RIGHT_COL_OFFSET_IN = -3.0;
+    private static final double RED_FAR_CENTER_COL_OFFSET_IN = -11.5;
+    private static final double RED_FAR_LEFT_COL_OFFSET_IN = RED_FAR_CENTER_COL_OFFSET_IN - 7.5;
+    private static final double RED_FAR_RIGHT_COL_OFFSET_IN = RED_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double BLUE_NEAR_LEFT_COL_OFFSET_IN = 11.5;
     private static final double BLUE_NEAR_CENTER_COL_OFFSET_IN = 16.0;
-    private static final double BLUE_NEAR_RIGHT_COL_OFFSET_IN = 23.5;
+    private static final double BLUE_NEAR_LEFT_COL_OFFSET_IN = BLUE_NEAR_CENTER_COL_OFFSET_IN - 7.5;
+    private static final double BLUE_NEAR_RIGHT_COL_OFFSET_IN = BLUE_NEAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double BLUE_FAR_LEFT_COL_OFFSET_IN = 6.0;
     private static final double BLUE_FAR_CENTER_COL_OFFSET_IN = 13.5;
-    private static final double BLUE_FAR_RIGHT_COL_OFFSET_IN = 21.0;
+    private static final double BLUE_FAR_LEFT_COL_OFFSET_IN = BLUE_FAR_CENTER_COL_OFFSET_IN - 7.5;
+    private static final double BLUE_FAR_RIGHT_COL_OFFSET_IN = BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double SONAR_RED_NEAR_LEFT_COL_OFFSET_IN = 88.0;
+    private static final double SONAR_RED_NEAR_LEFT_COL_OFFSET_IN = 35.5;
     private static final double SONAR_RED_NEAR_CENTER_COL_OFFSET_IN =
             SONAR_RED_NEAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double SONAR_RED_NEAR_RIGHT_COL_OFFSET_IN =
             SONAR_RED_NEAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double SONAR_RED_FAR_LEFT_COL_OFFSET_IN = 40.0;
+    private static final double SONAR_RED_FAR_LEFT_COL_OFFSET_IN = 24.5;
     private static final double SONAR_RED_FAR_CENTER_COL_OFFSET_IN =
             SONAR_RED_FAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double SONAR_RED_FAR_RIGHT_COL_OFFSET_IN =
             SONAR_RED_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN = 21.0;
+    private static final double SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN = 17.5;
     private static final double SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN =
             SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double SONAR_BLUE_NEAR_RIGHT_COL_OFFSET_IN =
             SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN = 40.0;
+    private static final double SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN = 14.0;
     private static final double SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN =
             SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double SONAR_BLUE_FAR_RIGHT_COL_OFFSET_IN =
@@ -92,6 +92,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
         MOVE_FORWARD,
         SET_DOWN_GLYPH,
         RELEASE_GLYPH,
+        PUSH_FORWARD,
         BACK_OFF,
         DONE
     }   //enum State
@@ -263,19 +264,24 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_OFF_PLATFORM:
-                    //
-                    // Carefully drive off the platform with only half power.
-                    //
-                    if (robot.sonarArray != null)
-                    {
-                        robot.sonarArray.startRanging(true);
-                    }
-                    robot.encoderYPidCtrl.setOutputRange(-0.5, 0.5);
-                    targetX = 0.0;
-                    targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -22.0 : 25.0;
-                    robot.targetHeading = 0.0;
-
-                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
+//                    //
+//                    // Carefully drive off the platform with only half power.
+//                    //
+//                    if (robot.sonarArray != null)
+//                    {
+//                        robot.sonarArray.startRanging(true);
+//                    }
+//                    robot.encoderYPidCtrl.setOutputRange(-0.5, 0.5);
+//                    targetX = 0.0;
+//                    targetY = alliance == FtcAuto.Alliance.RED_ALLIANCE ? -20.0 : 25.0;
+//                    robot.targetHeading = 0.0;
+//
+//                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
+//                    sm.waitForSingleEvent(event, State.DRIVE_TO_WALL);
+                    robot.driveBase.mecanumDrive_Cartesian(
+                            0.0, alliance == FtcAuto.Alliance.RED_ALLIANCE? -0.5: 0.5,
+                            0.0, false, 0.0);
+                    timer.set(0.7, event);
                     sm.waitForSingleEvent(event, State.DRIVE_TO_WALL);
                     break;
 
@@ -285,8 +291,9 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         //
                         // Drive forward to the wall using sonar array.
                         //
-                        targetY = 12.0;
+                        targetY = 14.5;
                         robot.sonarYPidDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
+                        sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     }
                     else if (robot.rangeDrive != null)
                     {
@@ -295,16 +302,13 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         //
                         targetY = 12.0;
                         robot.rangeDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
+                        sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     }
                     else
                     {
-                        //
-                        // Drive forward to the wall using encoders.
-                        //
-                        targetY = 16.0;
-                        robot.pidDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
+                        robot.driveBase.stop();
+                        sm.setState(State.TURN_TO_CRYPTOBOX);
                     }
-                    sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     break;
 
                 case TURN_TO_CRYPTOBOX:
@@ -421,6 +425,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                                 }
                             }
                         }
+                        robot.sonarXPidCtrl.setInverted(robot.useRightSonarForX);
                         robot.sonarXPidDrive.setTarget(
                                 targetX, targetY, robot.targetHeading, false, event, 2.0);
                     }
@@ -498,7 +503,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         robot.pidDrive.setTarget(
                                 targetX, targetY, robot.targetHeading, false, event, 2.0);
                     }
-                    sm.waitForSingleEvent(event, State.MOVE_FORWARD);
+                    sm.waitForSingleEvent(event, State.SET_DOWN_GLYPH);//State.MOVE_FORWARD);
                     break;
 
                 case MOVE_FORWARD:
@@ -542,6 +547,24 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                 case RELEASE_GLYPH:
                     robot.glyphGrabber.setPosition(RobotInfo.GLYPH_GRABBER_OPEN);
                     timer.set(0.5, event);
+                    sm.waitForSingleEvent(event, State.PUSH_FORWARD);//State.BACK_OFF);
+                    break;
+
+                case PUSH_FORWARD:
+                    //
+                    // Move forward a little to push the glyph block into the crypto column.
+                    //
+                    targetX = 0.0;
+                    if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                    {
+                        targetY = 15.0;
+                    }
+                    else
+                    {
+                        targetY = 16.0;
+                    }
+
+                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
                     sm.waitForSingleEvent(event, State.BACK_OFF);
                     break;
 
@@ -550,7 +573,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     // Back off a little to make sure we are not touching the glyph block.
                     //
                     targetX = 0.0;
-                    targetY = -4.5;
+                    targetY = -6.5;
 
                     robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 1.0);
                     sm.waitForSingleEvent(event, State.DONE);
@@ -568,7 +591,9 @@ class CmdAutoFull implements TrcRobot.RobotCommand
             robot.traceStateInfo(elapsedTime, state.toString(), targetX, targetY, robot.targetHeading);
         }
 
-        if (robot.pidDrive.isActive() || robot.sonarXPidDrive.isActive() || robot.sonarYPidDrive.isActive())
+        if (robot.pidDrive.isActive() ||
+            robot.sonarXPidDrive != null && robot.sonarXPidDrive.isActive() ||
+            robot.sonarYPidDrive != null && robot.sonarYPidDrive.isActive())
         {
             robot.tracer.traceInfo("Battery", "Voltage=%5.2fV (%5.2fV)",
                     robot.battery.getVoltage(), robot.battery.getLowestVoltage());
@@ -576,12 +601,12 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 
         if (robot.pidDrive.isActive())
         {
-            if (debugXPid && targetX != 0.0)
+            if (debugXPid)
             {
                 robot.encoderXPidCtrl.printPidInfo(robot.tracer);
             }
 
-            if (debugYPid && targetY != 0.0)
+            if (debugYPid)
             {
                 robot.encoderYPidCtrl.printPidInfo(robot.tracer);
             }
@@ -591,7 +616,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                 robot.gyroPidCtrl.printPidInfo(robot.tracer);
             }
         }
-        else if (robot.sonarXPidDrive.isActive())
+        else if (robot.sonarXPidDrive != null && robot.sonarXPidDrive.isActive())
         {
             if (debugXPid)
             {
@@ -603,7 +628,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                 robot.gyroPidCtrl.printPidInfo(robot.tracer);
             }
         }
-        else if (robot.sonarYPidDrive.isActive())
+        else if (robot.sonarYPidDrive != null && robot.sonarYPidDrive.isActive())
         {
             if (debugYPid)
             {

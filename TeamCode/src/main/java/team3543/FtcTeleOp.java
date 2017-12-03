@@ -203,39 +203,15 @@ public class FtcTeleOp extends FtcOpMode implements TrcGameController.ButtonHand
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_UP:
-                    if (pressed)
-                    {
-                        robot.jewelArm.setExtended(false);
-                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_DOWN:
-                    if (pressed)
-                    {
-                        robot.jewelArm.setExtended(true);
-                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_LEFT:
-                    if (pressed)
-                    {
-                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
-                    }
-                    else
-                    {
-                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
-                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_RIGHT:
-                    if (pressed)
-                    {
-                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
-                    }
-                    else
-                    {
-                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
-                    }
                     break;
 
                 case FtcGamepad.GAMEPAD_BACK:

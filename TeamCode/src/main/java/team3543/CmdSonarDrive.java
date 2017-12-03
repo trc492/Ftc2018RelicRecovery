@@ -80,11 +80,13 @@ class CmdSonarDrive implements TrcRobot.RobotCommand
                     if (sonarIndex == Robot.LEFT_SONAR_INDEX)
                     {
                         robot.useRightSonarForX = false;
+                        robot.sonarXPidCtrl.setInverted(robot.useRightSonarForX);
                         robot.sonarXPidDrive.setTarget(sonarDistance, 0.0, 0.0, false, event);
                     }
                     else if (sonarIndex == Robot.RIGHT_SONAR_INDEX)
                     {
                         robot.useRightSonarForX = true;
+                        robot.sonarXPidCtrl.setInverted(robot.useRightSonarForX);
                         robot.sonarXPidDrive.setTarget(sonarDistance, 0.0, 0.0, false, event);
                     }
                     else

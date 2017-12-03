@@ -59,7 +59,7 @@ public class Robot implements
     static final boolean USE_ANALOG_TRIGGERS = true;
     static final boolean USE_DOG_LEASH = true;
     static final boolean USE_MRRANGE_SENSOR = false;
-    static final boolean USE_MAXBOTIX_SONAR_SENSOR = true;
+    static final boolean USE_MAXBOTIX_SONAR_SENSOR = false;
 
     static final int LEFT_SONAR_INDEX = 0;
     static final int FRONT_SONAR_INDEX = 1;
@@ -284,7 +284,7 @@ public class Robot implements
 
         pidDrive = new TrcPidDrive("pidDrive", driveBase, encoderXPidCtrl, encoderYPidCtrl, gyroPidCtrl);
         pidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
-        pidDrive.setStuckWheelHandler(this, RobotInfo.PIDDRIVE_STALL_TIMEOUT);
+//        pidDrive.setStuckWheelHandler(this, RobotInfo.PIDDRIVE_STALL_TIMEOUT);
         pidDrive.setBeep(androidTone);
 
         visionPidCtrl = new TrcPidController(
@@ -380,6 +380,7 @@ public class Robot implements
         //
         // Since the IMU gyro is giving us cardinal heading, we need to enable its cardinal to cartesian converter.
         //
+        gyro.resetZIntegrator();
         gyro.setEnabled(true);
 
         if (vuforiaVision != null)
@@ -427,7 +428,7 @@ public class Robot implements
     {
         tracer.traceInfo(
                 moduleName,
-                "[%5.3f] %17s: xPos=%6.2f/%6.2f,yPos=%6.2f/%6.2f,heading=%6.1f/%6.1f,volt=%5.2fV(%5.2fV)",
+                "========== [%5.3f] %17s: xPos=%6.2f/%6.2f,yPos=%6.2f/%6.2f,heading=%6.1f/%6.1f,volt=%5.2fV(%5.2fV)",
                 elapsedTime, stateName,
                 driveBase.getXPosition(), xDistance, driveBase.getYPosition(), yDistance,
                 driveBase.getHeading(), heading,
@@ -555,30 +556,30 @@ public class Robot implements
             if (useRightSonarForX)
             {
                 input = sonarArray.getDistance(RIGHT_SONAR_INDEX).value;
-                //
-                // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
-                // value instead.
-                //
-                if (prevRightSonarDistance != 0.0 &&
-                    Math.abs(input - prevRightSonarDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
-                {
-                    input = prevRightSonarDistance;
-                }
-                prevRightSonarDistance = input;
+//                //
+//                // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
+//                // value instead.
+//                //
+//                if (prevRightSonarDistance != 0.0 &&
+//                    Math.abs(input - prevRightSonarDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
+//                {
+//                    input = prevRightSonarDistance;
+//                }
+//                prevRightSonarDistance = input;
             }
             else
             {
                 input = sonarArray.getDistance(LEFT_SONAR_INDEX).value;
-                //
-                // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
-                // value instead.
-                //
-                if (prevLeftSonarDistance != 0.0 &&
-                    Math.abs(input - prevLeftSonarDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
-                {
-                    input = prevLeftSonarDistance;
-                }
-                prevLeftSonarDistance = input;
+//                //
+//                // If the value jumped more than THRESHOLD, it is a spurious reading. Discard it and use the previous
+//                // value instead.
+//                //
+//                if (prevLeftSonarDistance != 0.0 &&
+//                    Math.abs(input - prevLeftSonarDistance) > RobotInfo.SONAR_ERROR_THRESHOLD)
+//                {
+//                    input = prevLeftSonarDistance;
+//                }
+//                prevLeftSonarDistance = input;
             }
         }
         else if (pidCtrl == sonarYPidCtrl)

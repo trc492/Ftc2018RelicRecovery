@@ -24,7 +24,6 @@ SOFTWARE.
     <LynxUsbDevice name="Expansion Hub Portal 0" serialNumber="DQ1NV38L" parentModuleAddress="2">
         <LynxModule name="Expansion Hub 2" port="2">
             <NeveRest40Gearmotor name="leftRearWheel" port="0" />
-            <NeveRest40Gearmotor name="rightRearWheel" port="1" />
             <NeveRest40Gearmotor name="leftFrontWheel" port="2" />
             <Servo name="glyphLeftServo" port="0" />
             <Servo name="glyphRightServo" port="1" />
@@ -32,17 +31,17 @@ SOFTWARE.
             <Servo name="jewelArmHorizontalServo" port="3" />
             <Servo name="relicGrabber" port="4" />
             <Servo name="extenderServo" port="5" />
-            <AnalogInput name="dogLeash" port="0" />
-            <AnalogInput name="leftSonar" port="2" />
-            <AnalogInput name="frontSonar" port="3" />
-            <DigitalDevice name="extenderLowerLimit" port="0" />
-            <DigitalDevice name="extenderUpperLimit" port="1" />
-            <DigitalDevice name="elbowLowerLimit" port="2" />
-            <DigitalDevice name="elbowUpperLimit" port="3" />
-            <DigitalDevice name="elevatorLowerLimit" port="4" />
-            <DigitalDevice name="sonarRX" port="6" />
+            <AnalogInput name="leftSonar" port="0" />
+            <AnalogInput name="frontSonar" port="1" />
+            <AnalogInput name="rightSonar" port="2" />
+            <DigitalDevice name="sonarRX" port="0" />
+            <DigitalDevice name="extenderLowerLimit" port="2" />
+            <DigitalDevice name="extenderUpperLimit" port="3" />
+            <DigitalDevice name="elbowLowerLimit" port="4" />
+            <DigitalDevice name="elbowUpperLimit" port="5" />
+            <DigitalDevice name="elevatorLowerLimit" port="6" />
             <LynxEmbeddedIMU name="imu2" port="0" bus="0" />
-            <LynxColorSensor name="jewelColorRangeSensor" port="0" bus="2" />
+            <LynxColorSensor name="jewelColorRangeSensor" port="0" bus="1" />
             <!--
             <ModernRoboticsI2cRangeSensor name="mrRangeSensor" port="0" bus="3"/>
             <LynxColorSensor name="cryptoColorRangeSensor" port="0" bus="3" />
@@ -51,7 +50,9 @@ SOFTWARE.
         <LynxModule name="Expansion Hub 3" port="3">
             <NeveRest40Gearmotor name="elevatorMotor" port="0" />
             <NeveRest60Gearmotor name="relicArmElbow" port="1" />
+            <NeveRest40Gearmotor name="rightRearWheel" port="2" />
             <NeveRest40Gearmotor name="rightFrontWheel" port="3" />
+            <AnalogInput name="dogLeash" port="0" />
             <LynxEmbeddedIMU name="imu3" port="0" bus="0" />
         </LynxModule>
     </LynxUsbDevice>

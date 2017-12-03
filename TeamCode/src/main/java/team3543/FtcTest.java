@@ -434,9 +434,10 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
         }
 
-        dashboard.displayPrintf(5, LABEL_WIDTH, "Sonar: ", "left=%.3f,front=%.3f,right=%.3f",
-                robot.leftSonar.getData(0).value, robot.frontSonar.getData(0).value,
-                robot.rightSonar.getData(0).value);
+        dashboard.displayPrintf(5, LABEL_WIDTH, "Sonar: ", "L=%.3f,F=%.3f,R=%.3f",
+                robot.sonarArray.getDistance(robot.LEFT_SONAR_INDEX).value,
+                robot.sonarArray.getDistance(robot.FRONT_SONAR_INDEX).value,
+                robot.sonarArray.getDistance(robot.RIGHT_SONAR_INDEX).value);
 
         dashboard.displayPrintf(
                 6, LABEL_WIDTH, "Color: ", "Jewel=%s[%.0f/%.2f/%.2f],Crypto=%s[%.0f/%.2f/%.2f]",
@@ -651,6 +652,51 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     break;
 
                 case FtcGamepad.GAMEPAD_DPAD_RIGHT:
+                    break;
+            }
+        }
+        else if (gamepad == operatorGamepad)
+        {
+            switch (button)
+            {
+                case FtcGamepad.GAMEPAD_DPAD_UP:
+                    if (pressed)
+                    {
+                        robot.jewelArm.setExtended(false);
+                    }
+                    processed = true;
+                    break;
+
+                case FtcGamepad.GAMEPAD_DPAD_DOWN:
+                    if (pressed)
+                    {
+                        robot.jewelArm.setExtended(true);
+                    }
+                    processed = true;
+                    break;
+
+                case FtcGamepad.GAMEPAD_DPAD_LEFT:
+                    if (pressed)
+                    {
+                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_BACKWARD);
+                    }
+                    else
+                    {
+                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+                    }
+                    processed = true;
+                    break;
+
+                case FtcGamepad.GAMEPAD_DPAD_RIGHT:
+                    if (pressed)
+                    {
+                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_FORWARD);
+                    }
+                    else
+                    {
+                        robot.jewelArm.setSweepPosition(RobotInfo.JEWEL_ARM_NEUTRAL);
+                    }
+                    processed = true;
                     break;
             }
         }

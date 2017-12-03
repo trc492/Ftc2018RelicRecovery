@@ -143,8 +143,9 @@ public class TrcPidActuator extends TrcPidMotor
      * Note that if position range is not set, PID control will be disabled.
      *
      * @param power specifies the power to run the actuator.
+     * @param hold specifies true to hold position when power is zero, false otherwise.
      */
-    public void setPower(double power)
+    public void setPower(double power, boolean hold)
     {
         final String funcName = "setPower";
 
@@ -159,13 +160,25 @@ public class TrcPidActuator extends TrcPidMotor
         }
         else
         {
-            setPowerWithinPosRange(power, minPos, maxPos, true);
+            setPowerWithinPosRange(power, minPos, maxPos, hold);
         }
 
         if (debugEnabled)
         {
             dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API);
         }
+    }   //setPower
+
+    /**
+     * This method runs the actuator with the specified power. It will hold the current position even if power is zero.
+     * Note that if position range is not set, PID control will be disabled.
+     *
+     * @param power specifies the power to run the actuator.
+     */
+    @Override
+    public void setPower(double power)
+    {
+        setPower(power, false);
     }   //setPower
 
 }   //class TrcPidActuator
