@@ -54,28 +54,20 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final double BLUE_FAR_RIGHT_COL_OFFSET_IN = BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
     private static final double SONAR_RED_NEAR_LEFT_COL_OFFSET_IN = 35.5;
-    private static final double SONAR_RED_NEAR_CENTER_COL_OFFSET_IN =
-            SONAR_RED_NEAR_LEFT_COL_OFFSET_IN + 7.5;
-    private static final double SONAR_RED_NEAR_RIGHT_COL_OFFSET_IN =
-            SONAR_RED_NEAR_CENTER_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_RED_NEAR_CENTER_COL_OFFSET_IN = SONAR_RED_NEAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_RED_NEAR_RIGHT_COL_OFFSET_IN = SONAR_RED_NEAR_CENTER_COL_OFFSET_IN + 7.5;
 
     private static final double SONAR_RED_FAR_LEFT_COL_OFFSET_IN = 24.5;
-    private static final double SONAR_RED_FAR_CENTER_COL_OFFSET_IN =
-            SONAR_RED_FAR_LEFT_COL_OFFSET_IN + 7.5;
-    private static final double SONAR_RED_FAR_RIGHT_COL_OFFSET_IN =
-            SONAR_RED_FAR_CENTER_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_RED_FAR_CENTER_COL_OFFSET_IN = SONAR_RED_FAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_RED_FAR_RIGHT_COL_OFFSET_IN = SONAR_RED_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
     private static final double SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN = 17.5;
-    private static final double SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN =
-            SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN + 7.5;
-    private static final double SONAR_BLUE_NEAR_RIGHT_COL_OFFSET_IN =
-            SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN = SONAR_BLUE_NEAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_BLUE_NEAR_RIGHT_COL_OFFSET_IN = SONAR_BLUE_NEAR_CENTER_COL_OFFSET_IN + 7.5;
 
     private static final double SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN = 14.0;
-    private static final double SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN =
-            SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN + 7.5;
-    private static final double SONAR_BLUE_FAR_RIGHT_COL_OFFSET_IN =
-            SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN = SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double SONAR_BLUE_FAR_RIGHT_COL_OFFSET_IN = SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
     private enum State
     {
@@ -278,6 +270,10 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 //
 //                    robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 2.0);
 //                    sm.waitForSingleEvent(event, State.DRIVE_TO_WALL);
+                    //
+                    // Drive off the platform by timed drive. The encoders may not be reliable driving off the
+                    // slippery platform.
+                    //
                     robot.driveBase.mecanumDrive_Cartesian(
                             0.0, alliance == FtcAuto.Alliance.RED_ALLIANCE? -0.5: 0.5,
                             0.0, false, 0.0);
@@ -306,6 +302,9 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     }
                     else
                     {
+                        //
+                        // We drove off the platform by timed drive, so we need to stop the robot.
+                        //
                         robot.driveBase.stop();
                         sm.setState(State.TURN_TO_CRYPTOBOX);
                     }
@@ -510,7 +509,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     if (robot.cryptoColorTrigger != null)
                     {
                         //
-                        // We are done with crypto box navigation, turn of crypto color sensor.
+                        // We are done with crypto box navigation, turn off crypto color sensor.
                         //
                         robot.cryptoColorTrigger.setEnabled(false);
                     }
