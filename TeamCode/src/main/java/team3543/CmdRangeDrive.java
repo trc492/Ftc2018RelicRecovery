@@ -94,8 +94,10 @@ class CmdRangeDrive implements TrcRobot.RobotCommand
 
             if (debugRangePid)
             {
-                robot.rangePidCtrl.printPidInfo(robot.tracer);
+                robot.rangePidCtrl.printPidInfo(robot.tracer, elapsedTime);
+                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
                 robot.rangePidCtrl.displayPidInfo(10);
+                robot.gyroPidCtrl.displayPidInfo(12);
             }
         }
 

@@ -430,7 +430,7 @@ public class Robot implements
     {
         tracer.traceInfo(
                 moduleName,
-                "========== [%5.3f] %s: xPos=%6.2f/%6.2f,yPos=%6.2f/%6.2f,heading=%6.1f/%6.1f,volt=%5.2fV(%5.2fV)",
+                "[%5.3f] >>>>> %s: xPos=%6.2f/%6.2f,yPos=%6.2f/%6.2f,heading=%6.1f/%6.1f,volt=%5.2fV(%5.2fV)",
                 elapsedTime, stateName,
                 driveBase.getXPosition(), xDistance, driveBase.getYPosition(), yDistance,
                 driveBase.getHeading(), heading,
@@ -507,17 +507,20 @@ public class Robot implements
     @Override
     public double getInput(TrcPidController pidCtrl)
     {
+        final String funcName = "getInput";
         double input = 0.0;
 
         if (pidCtrl == encoderXPidCtrl)
         {
             input = driveBase.getXPosition();
-                if (prevXDistance != null && Math.abs(input - prevXDistance) >= 5.0)
-                {
-                    xOffset += input - prevXDistance;
-                }
-                input -= xOffset;
-                prevXDistance = input;
+            if (prevXDistance != null && Math.abs(input - prevXDistance) >= 5.0)
+            {
+                tracer.traceWarn(funcName, "Detected invalid X position (prev=%.3f, curr=%.3f).",
+                        prevXDistance, input);
+                xOffset += input - prevXDistance;
+            }
+            prevXDistance = input;
+            input -= xOffset;
         }
         else if (pidCtrl == encoderYPidCtrl)
         {

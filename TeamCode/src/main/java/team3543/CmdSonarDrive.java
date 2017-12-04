@@ -30,6 +30,7 @@ class CmdSonarDrive implements TrcRobot.RobotCommand
 {
     private static final boolean debugSonarXPid = true;
     private static final boolean debugSonarYPid = true;
+    private static final boolean debugTurnPid = true;
 
     private enum State
     {
@@ -114,14 +115,20 @@ class CmdSonarDrive implements TrcRobot.RobotCommand
 
             if (debugSonarXPid)
             {
-                robot.sonarXPidCtrl.printPidInfo(robot.tracer);
+                robot.sonarXPidCtrl.printPidInfo(robot.tracer, elapsedTime);
                 robot.sonarXPidCtrl.displayPidInfo(10);
             }
 
             if (debugSonarYPid)
             {
-                robot.sonarYPidCtrl.printPidInfo(robot.tracer);
+                robot.sonarYPidCtrl.printPidInfo(robot.tracer, elapsedTime);
                 robot.sonarYPidCtrl.displayPidInfo(12);
+            }
+
+            if (debugTurnPid)
+            {
+                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
+                robot.gyroPidCtrl.displayPidInfo(14);
             }
         }
 

@@ -603,41 +603,41 @@ class CmdAutoFull implements TrcRobot.RobotCommand
         {
             if (debugXPid)
             {
-                robot.encoderXPidCtrl.printPidInfo(robot.tracer);
+                robot.encoderXPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
 
             if (debugYPid)
             {
-                robot.encoderYPidCtrl.printPidInfo(robot.tracer);
+                robot.encoderYPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
 
             if (debugTurnPid)
             {
-                robot.gyroPidCtrl.printPidInfo(robot.tracer);
+                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
         }
         else if (robot.sonarXPidDrive != null && robot.sonarXPidDrive.isActive())
         {
             if (debugXPid)
             {
-                robot.sonarXPidCtrl.printPidInfo(robot.tracer);
+                robot.sonarXPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
 
             if (debugTurnPid)
             {
-                robot.gyroPidCtrl.printPidInfo(robot.tracer);
+                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
         }
         else if (robot.sonarYPidDrive != null && robot.sonarYPidDrive.isActive())
         {
             if (debugYPid)
             {
-                robot.sonarYPidCtrl.printPidInfo(robot.tracer);
+                robot.sonarYPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
 
             if (debugTurnPid)
             {
-                robot.gyroPidCtrl.printPidInfo(robot.tracer);
+                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
         }
 

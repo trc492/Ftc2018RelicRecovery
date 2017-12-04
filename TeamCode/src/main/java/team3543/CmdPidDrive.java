@@ -29,9 +29,9 @@ import trclib.TrcTimer;
 
 class CmdPidDrive implements TrcRobot.RobotCommand
 {
-    private static final boolean debugXPid = false;
-    private static final boolean debugYPid = false;
-    private static final boolean debugTurnPid = false;
+    private static final boolean debugXPid = true;
+    private static final boolean debugYPid = true;
+    private static final boolean debugTurnPid = true;
 
     private enum State
     {
@@ -124,19 +124,19 @@ class CmdPidDrive implements TrcRobot.RobotCommand
             robot.tracer.traceInfo("Battery", "Voltage=%5.2fV (%5.2fV)",
                                    robot.battery.getVoltage(), robot.battery.getLowestVoltage());
 
-            if (debugXPid && xDistance != 0.0)
+            if (debugXPid)
             {
-                robot.encoderXPidCtrl.printPidInfo(robot.tracer);
+                robot.encoderXPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
 
-            if (debugYPid && yDistance != 0.0)
+            if (debugYPid)
             {
-                robot.encoderYPidCtrl.printPidInfo(robot.tracer);
+                robot.encoderYPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
 
             if (debugTurnPid)
             {
-                robot.gyroPidCtrl.printPidInfo(robot.tracer);
+                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
         }
 

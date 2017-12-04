@@ -93,8 +93,10 @@ class CmdVisionDrive implements TrcRobot.RobotCommand
 
             if (debugVisionPid)
             {
-                robot.visionPidCtrl.printPidInfo(robot.tracer);
+                robot.visionPidCtrl.printPidInfo(robot.tracer, elapsedTime);
+                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
                 robot.visionPidCtrl.displayPidInfo(10);
+                robot.gyroPidCtrl.displayPidInfo(12);
             }
         }
 

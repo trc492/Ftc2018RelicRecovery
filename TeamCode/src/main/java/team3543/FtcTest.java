@@ -274,21 +274,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 robot.encoderYPidCtrl.displayPidInfo(12);
                 robot.gyroPidCtrl.displayPidInfo(14);
 
-                if (!pidDriveCommand.cmdPeriodic(elapsedTime))
-                {
-                    if (test == Test.X_DISTANCE_DRIVE)
-                    {
-                        robot.encoderXPidCtrl.printPidInfo(robot.tracer);
-                    }
-                    else if (test == Test.Y_DISTANCE_DRIVE)
-                    {
-                        robot.encoderYPidCtrl.printPidInfo(robot.tracer);
-                    }
-                    else if (test == Test.GYRO_TURN)
-                    {
-                        robot.gyroPidCtrl.printPidInfo(robot.tracer);
-                    }
-                }
+                pidDriveCommand.cmdPeriodic(elapsedTime);
                 break;
 
             case VISION_DRIVE:
@@ -298,11 +284,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 robot.visionPidCtrl.displayPidInfo(10);
                 robot.gyroPidCtrl.displayPidInfo(12);
 
-                if (!visionDriveCommand.cmdPeriodic(elapsedTime))
-                {
-                    robot.visionPidCtrl.printPidInfo(robot.tracer);
-                    robot.gyroPidCtrl.printPidInfo(robot.tracer);
-                }
+                visionDriveCommand.cmdPeriodic(elapsedTime);
                 break;
 
             case RANGE_DRIVE:
@@ -314,11 +296,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     robot.rangePidCtrl.displayPidInfo(10);
                     robot.gyroPidCtrl.displayPidInfo(12);
 
-                    if (!rangeDriveCommand.cmdPeriodic(elapsedTime))
-                    {
-                        robot.rangePidCtrl.printPidInfo(robot.tracer);
-                        robot.gyroPidCtrl.printPidInfo(robot.tracer);
-                    }
+                    rangeDriveCommand.cmdPeriodic(elapsedTime);
                 }
                 else
                 {
@@ -340,12 +318,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     robot.sonarYPidCtrl.displayPidInfo(12);
                     robot.gyroPidCtrl.displayPidInfo(14);
 
-                    if (!sonarDriveCommand.cmdPeriodic(elapsedTime))
-                    {
-                        robot.sonarXPidCtrl.printPidInfo(robot.tracer);
-                        robot.sonarYPidCtrl.printPidInfo(robot.tracer);
-                        robot.gyroPidCtrl.printPidInfo(robot.tracer);
-                    }
+                    sonarDriveCommand.cmdPeriodic(elapsedTime);
                 }
                 else
                 {
