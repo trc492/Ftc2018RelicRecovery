@@ -26,11 +26,8 @@ SOFTWARE.
             <NeveRest40Gearmotor name="leftRearWheel" port="0" />
             <NeveRest40Gearmotor name="leftFrontWheel" port="2" />
             <Servo name="glyphLeftServo" port="0" />
-            <Servo name="glyphRightServo" port="1" />
-            <Servo name="jewelArmVerticalServo" port="2" />
-            <Servo name="jewelArmHorizontalServo" port="3" />
-            <Servo name="relicGrabber" port="4" />
-            <Servo name="extenderServo" port="5" />
+            <Servo name="glyphRightServo" port="2" />
+            <Servo name="jewelArmHorizontalServo" port="4" />
             <AnalogInput name="leftSonar" port="0" />
             <AnalogInput name="frontSonar" port="1" />
             <AnalogInput name="rightSonar" port="2" />
@@ -52,6 +49,9 @@ SOFTWARE.
             <NeveRest60Gearmotor name="relicArmElbow" port="1" />
             <NeveRest40Gearmotor name="rightRearWheel" port="2" />
             <NeveRest40Gearmotor name="rightFrontWheel" port="3" />
+            <Servo name="relicGrabber" port="0" />
+            <Servo name="extenderServo" port="2" />
+            <Servo name="jewelArmVerticalServo" port="4" />
             <AnalogInput name="dogLeash" port="0" />
             <LynxEmbeddedIMU name="imu3" port="0" bus="0" />
         </LynxModule>

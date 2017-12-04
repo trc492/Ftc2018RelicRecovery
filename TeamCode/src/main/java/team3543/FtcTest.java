@@ -434,10 +434,13 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
         }
 
-        dashboard.displayPrintf(5, LABEL_WIDTH, "Sonar: ", "L=%.3f,F=%.3f,R=%.3f",
-                robot.sonarArray.getDistance(robot.LEFT_SONAR_INDEX).value,
-                robot.sonarArray.getDistance(robot.FRONT_SONAR_INDEX).value,
-                robot.sonarArray.getDistance(robot.RIGHT_SONAR_INDEX).value);
+        if (robot.USE_MAXBOTIX_SONAR_SENSOR)
+        {
+            dashboard.displayPrintf(5, LABEL_WIDTH, "Sonar: ", "L=%.3f,F=%.3f,R=%.3f",
+                    robot.sonarArray.getDistance(robot.LEFT_SONAR_INDEX).value,
+                    robot.sonarArray.getDistance(robot.FRONT_SONAR_INDEX).value,
+                    robot.sonarArray.getDistance(robot.RIGHT_SONAR_INDEX).value);
+        }
 
         dashboard.displayPrintf(
                 6, LABEL_WIDTH, "Color: ", "Jewel=%s[%.0f/%.2f/%.2f],Crypto=%s[%.0f/%.2f/%.2f]",

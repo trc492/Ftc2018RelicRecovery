@@ -145,6 +145,8 @@ public class Robot implements
     double prevLeftSonarDistance = 0.0;
     double prevFrontSonarDistance = 0.0;
     double prevRightSonarDistance = 0.0;
+    Double prevXDistance = null;
+    double xOffset = 0.0;
 
     //
     // Other subsystems.
@@ -428,7 +430,7 @@ public class Robot implements
     {
         tracer.traceInfo(
                 moduleName,
-                "========== [%5.3f] %17s: xPos=%6.2f/%6.2f,yPos=%6.2f/%6.2f,heading=%6.1f/%6.1f,volt=%5.2fV(%5.2fV)",
+                "========== [%5.3f] %s: xPos=%6.2f/%6.2f,yPos=%6.2f/%6.2f,heading=%6.1f/%6.1f,volt=%5.2fV(%5.2fV)",
                 elapsedTime, stateName,
                 driveBase.getXPosition(), xDistance, driveBase.getYPosition(), yDistance,
                 driveBase.getHeading(), heading,
@@ -510,6 +512,12 @@ public class Robot implements
         if (pidCtrl == encoderXPidCtrl)
         {
             input = driveBase.getXPosition();
+                if (prevXDistance != null && Math.abs(input - prevXDistance) >= 5.0)
+                {
+                    xOffset += input - prevXDistance;
+                }
+                input -= xOffset;
+                prevXDistance = input;
         }
         else if (pidCtrl == encoderYPidCtrl)
         {
