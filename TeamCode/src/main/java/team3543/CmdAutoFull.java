@@ -36,6 +36,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final boolean debugXPid = true;
     private static final boolean debugYPid = true;
     private static final boolean debugTurnPid = true;
+    private static final boolean debugSonarSensor = true;
 
     private static final double RED_NEAR_CENTER_COL_OFFSET_IN = -19.0;
     private static final double RED_NEAR_LEFT_COL_OFFSET_IN = RED_NEAR_CENTER_COL_OFFSET_IN - 7.5;
@@ -259,7 +260,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 //                    //
 //                    // Carefully drive off the platform with only half power.
 //                    //
-//                    if (robot.sonarArray != null)
+//                    if (robot.USE_SONAR_DRIVE && robot.sonarArray != null)
 //                    {
 //                        robot.sonarArray.startRanging(true);
 //                    }
@@ -282,7 +283,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case DRIVE_TO_WALL:
-                    if (robot.sonarArray != null)
+                    if (robot.sonarYPidDrive != null)
                     {
                         //
                         // Drive forward to the wall using sonar array.
@@ -351,7 +352,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         robot.pidDrive.setTarget(
                                 targetX, targetY, robot.targetHeading, false, event, 2.0);
                     }
-                    else if (robot.sonarArray != null)
+                    else if (robot.sonarXPidDrive != null)
                     {
                         //
                         // Use the sonar array to guide us to the correct crypto column.
@@ -531,7 +532,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     break;
 
                 case SET_DOWN_GLYPH:
-                    if (robot.sonarArray != null)
+                    if (robot.USE_SONAR_DRIVE && robot.sonarArray != null)
                     {
                         //
                         // We are done with crypto navigation, turn off sonar array.
@@ -600,6 +601,12 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 
         if (robot.pidDrive.isActive())
         {
+            robot.tracer.traceInfo(">>> Raw Encoder <<<",
+                    "lf=%.0f, rf=%.0f, lr=%.0f, rr=%.0f",
+                    robot.leftFrontWheel.getPosition(),
+                    robot.rightFrontWheel.getPosition(),
+                    robot.leftRearWheel.getPosition(),
+                    robot.rightRearWheel.getPosition());
             if (debugXPid)
             {
                 robot.encoderXPidCtrl.printPidInfo(robot.tracer, elapsedTime);
@@ -638,6 +645,14 @@ class CmdAutoFull implements TrcRobot.RobotCommand
             {
                 robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
+        }
+
+        if (debugSonarSensor && robot.sonarArray != null)
+        {
+            robot.tracer.traceInfo("+++ Sonar Sensors +++", "Left=%.1f, Front=%.1f, Right=%.1f",
+                    robot.sonarArray.getDistance(robot.LEFT_SONAR_INDEX).value,
+                    robot.sonarArray.getDistance(robot.FRONT_SONAR_INDEX).value,
+                    robot.sonarArray.getDistance(robot.RIGHT_SONAR_INDEX).value);
         }
 
         return done;

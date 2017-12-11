@@ -56,10 +56,11 @@ public class Robot implements
     static final boolean USE_GRIPVISION = false;
     static final boolean USE_JEWEL_COLOR_SENSOR = true;
     static final boolean USE_CRYPTO_COLOR_SENSOR = false;
-    static final boolean USE_ANALOG_TRIGGERS = true;
+    static final boolean USE_ANALOG_TRIGGERS = false;
     static final boolean USE_DOG_LEASH = true;
     static final boolean USE_MRRANGE_SENSOR = false;
     static final boolean USE_MAXBOTIX_SONAR_SENSOR = false;
+    static final boolean USE_SONAR_DRIVE = false;
 
     static final int LEFT_SONAR_INDEX = 0;
     static final int FRONT_SONAR_INDEX = 1;
@@ -229,7 +230,7 @@ public class Robot implements
         {
             int cameraViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
                     "cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
-            vuforiaVision = new VuforiaVision(this, cameraViewId);
+            vuforiaVision = new VuforiaVision(this, -1);//cameraViewId);
 
             if (USE_GRIPVISION)
             {
@@ -315,7 +316,7 @@ public class Robot implements
             rangeDrive.setBeep(androidTone);
         }
 
-        if (USE_MAXBOTIX_SONAR_SENSOR)
+        if (USE_MAXBOTIX_SONAR_SENSOR && USE_SONAR_DRIVE)
         {
             sonarXPidCtrl = new TrcPidController(
                     "sonarXPidCtrl",

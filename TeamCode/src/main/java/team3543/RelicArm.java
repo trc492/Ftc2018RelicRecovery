@@ -82,6 +82,11 @@ public class RelicArm implements TrcPidController.PidInput  //, TrcPidMotor.Powe
         grabber.setInverted(true);
     }   //RelicArm
 
+    public double getElbowPower()
+    {
+        return elbowMotor.getPower();
+    }   //getElbowPower
+
     //
     // Implements TrcPidController.PidInput.
     //

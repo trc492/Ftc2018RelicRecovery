@@ -113,14 +113,20 @@ public class FtcTeleOp extends FtcOpMode implements TrcGameController.ButtonHand
                                         x, y, rot, Boolean.toString(invertedDrive));
                 break;
         }
-        dashboard.displayPrintf(2, "xPos=%.2f,yPos=%.2f,heading=%.2f",
-                                robot.driveBase.getXPosition(), robot.driveBase.getYPosition(),
-                                robot.driveBase.getHeading());
 
-        robot.relicArm.elbow.setPower(operatorGamepad.getLeftStickY(true));
-        robot.relicArm.extender.setPower(
-                operatorGamepad.getRightTrigger(true) - operatorGamepad.getLeftTrigger(true));
-        robot.glyphElevator.setPower(operatorGamepad.getRightStickY(true));
+        double glyphElevatorPower = operatorGamepad.getRightStickY(true);
+        double relicElbowPower = operatorGamepad.getLeftStickY(true);
+        double relicExtenderPower =
+                operatorGamepad.getRightTrigger(true) - operatorGamepad.getLeftTrigger(true);
+
+        robot.glyphElevator.setPower(glyphElevatorPower);
+        robot.relicArm.elbow.setPower(relicElbowPower);
+        robot.relicArm.extender.setPower(relicExtenderPower);
+
+        dashboard.displayPrintf(2, "xPos=%.2f,yPos=%.2f,heading=%.2f",
+                robot.driveBase.getXPosition(),
+                robot.driveBase.getYPosition(),
+                robot.driveBase.getHeading());
     }   //runPeriodic
 
 

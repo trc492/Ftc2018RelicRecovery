@@ -116,7 +116,7 @@ class RobotInfo
     // JewelBar subsystem.
     //
     static final double JEWEL_ARM_RETRACTED             = 0.1;
-    static final double JEWEL_ARM_EXTENDED              = 0.7;
+    static final double JEWEL_ARM_EXTENDED              = 0.75;
     static final double JEWEL_ARM_NEUTRAL               = 0.5;
     static final double JEWEL_ARM_FORWARD               = 0.0;
     static final double JEWEL_ARM_BACKWARD              = 1.0;
@@ -132,7 +132,7 @@ class RobotInfo
     static final double ELEVATOR_MAX_HEIGHT             = 21.0;
     static final double ELEVATOR_MID_HEIGHT             = 7.0;
     static final double ELEVATOR_CAL_POWER              = 0.3;
-    static final double ELEVATOR_SENSOR_ZERO_OFFSET     = -0.468;
+    static final double ELEVATOR_SENSOR_ZERO_OFFSET     = -0.472;
     static final double ELEVATOR_SENSOR_SCALE           = 10.89863367540838;
 
     //

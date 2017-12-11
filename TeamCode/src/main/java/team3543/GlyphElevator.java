@@ -36,6 +36,7 @@ public class GlyphElevator implements TrcPidController.PidInput
     private FtcDcMotor elevatorMotor;
     public TrcPidController elevatorPidCtrl;
     private TrcPidActuator elevator;
+    private double elevatorPower = 0.0;
 
     /**
      * Constructor: Create an instance of the object.
@@ -91,12 +92,18 @@ public class GlyphElevator implements TrcPidController.PidInput
         }
 
         elevator.setPower(power);
+        elevatorPower = power;
     }   //setPower
 
     public double getPosition()
     {
         return elevator.getPosition();
     }   //getPosition
+
+    public double getPower()
+    {
+        return elevatorPower;
+    }   //getPower
 
     public void setPosition(double pos, TrcEvent event, double timeout)
     {

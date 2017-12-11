@@ -363,9 +363,12 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         testMenu.addChoice("Vision test", Test.VISION_TEST, false);
         testMenu.addChoice("Vision drive", Test.VISION_DRIVE, false);
         testMenu.addChoice("Range drive", Test.RANGE_DRIVE, false, rangeDistanceMenu);
-        testMenu.addChoice("Left Sonar drive", Test.LEFT_SONAR_DRIVE, false, sonarDistanceMenu);
-        testMenu.addChoice("Front Sonar drive", Test.FRONT_SONAR_DRIVE, false, sonarDistanceMenu);
-        testMenu.addChoice("Right Sonar drive", Test.RIGHT_SONAR_DRIVE, false, sonarDistanceMenu);
+        if (robot.USE_SONAR_DRIVE)
+        {
+            testMenu.addChoice("Left Sonar drive", Test.LEFT_SONAR_DRIVE, false, sonarDistanceMenu);
+            testMenu.addChoice("Front Sonar drive", Test.FRONT_SONAR_DRIVE, false, sonarDistanceMenu);
+            testMenu.addChoice("Right Sonar drive", Test.RIGHT_SONAR_DRIVE, false, sonarDistanceMenu);
+        }
         //
         // Traverse menus.
         //
@@ -407,7 +410,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                     robot.gyro.getZRotationRate().value, robot.gyro.getZHeading().value);
         }
 
-        if (robot.USE_MAXBOTIX_SONAR_SENSOR)
+        if (robot.sonarArray != null)
         {
             dashboard.displayPrintf(5, LABEL_WIDTH, "Sonar: ", "L=%.3f,F=%.3f,R=%.3f",
                     robot.sonarArray.getDistance(robot.LEFT_SONAR_INDEX).value,
@@ -423,17 +426,27 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 robot.getObjectHsvSaturation(robot.cryptoColorSensor),
                 robot.getObjectHsvValue(robot.cryptoColorSensor));
 
-        dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pos=%.3f,low=%s",
-                robot.glyphElevator.getPosition(), robot.glyphElevator.elevatorLowerLimitSwitch.isActive());
+        dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pwr=%.2f,Pos=%.3f,low=%s",
+                robot.glyphElevator.getPower(),
+                robot.glyphElevator.getPosition(),
+                robot.glyphElevator.elevatorLowerLimitSwitch.isActive());
         robot.glyphElevator.elevatorPidCtrl.displayPidInfo(10);
 
-        dashboard.displayPrintf(12, LABEL_WIDTH, "RelicElbow: ", "Pos=%.1f,low=%s,high=%s",
+        dashboard.displayPrintf(12, LABEL_WIDTH, "RelicArm: ",
+                "Elbow:Pwr=%.2f,Pos=%.1f,low=%s,high=%s,Extender:Pwr=%.2f,low=%s,high=%s",
+                robot.relicArm.getElbowPower(),
                 robot.relicArm.elbow.getPosition(),
-                robot.relicArm.elbowLowerLimitSwitch.isActive(), robot.relicArm.elbowUpperLimitSwitch.isActive());
+                robot.relicArm.elbowLowerLimitSwitch.isActive(),
+                robot.relicArm.elbowUpperLimitSwitch.isActive(),
+                robot.relicArm.extender.getPower(),
+                robot.relicArm.extenderLowerLimitSwitch.isActive(),
+                robot.relicArm.extenderUpperLimitSwitch.isActive());
         robot.relicArm.elbowPidCtrl.displayPidInfo(13);
 
-        dashboard.displayPrintf(15, LABEL_WIDTH, "Extender: ", "low=%s,high=%s",
-                robot.relicArm.extenderLowerLimitSwitch.isActive(), robot.relicArm.extenderUpperLimitSwitch.isActive());
+        dashboard.displayPrintf(15, LABEL_WIDTH, "Extender: ", "pwr=%.2f,low=%s,high=%s",
+                robot.relicArm.extender.getPower(),
+                robot.relicArm.extenderLowerLimitSwitch.isActive(),
+                robot.relicArm.extenderUpperLimitSwitch.isActive());
     }   //doSensorsTest
 
     private void doVisionTest()
