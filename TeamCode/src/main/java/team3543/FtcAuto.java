@@ -159,6 +159,7 @@ public class FtcAuto extends FtcOpMode
     {
         robot.stopMode(TrcRobot.RunMode.AUTO_MODE);
         robot.battery.setEnabled(false);
+        printPerformanceMetrics(robot.tracer);
 
         if (USE_TRACELOG)
         {

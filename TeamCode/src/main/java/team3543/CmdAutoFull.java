@@ -70,6 +70,22 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final double SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN = SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double SONAR_BLUE_FAR_RIGHT_COL_OFFSET_IN = SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
+    private static final double RANGE_RED_NEAR_LEFT_COL_OFFSET_IN = 35.5;
+    private static final double RANGE_RED_NEAR_CENTER_COL_OFFSET_IN = RANGE_RED_NEAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double RANGE_RED_NEAR_RIGHT_COL_OFFSET_IN = RANGE_RED_NEAR_CENTER_COL_OFFSET_IN + 7.5;
+
+    private static final double RANGE_RED_FAR_LEFT_COL_OFFSET_IN = 24.5;
+    private static final double RANGE_RED_FAR_CENTER_COL_OFFSET_IN = RANGE_RED_FAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double RANGE_RED_FAR_RIGHT_COL_OFFSET_IN = RANGE_RED_FAR_CENTER_COL_OFFSET_IN + 7.5;
+
+    private static final double RANGE_BLUE_NEAR_LEFT_COL_OFFSET_IN = 17.5;
+    private static final double RANGE_BLUE_NEAR_CENTER_COL_OFFSET_IN = RANGE_BLUE_NEAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double RANGE_BLUE_NEAR_RIGHT_COL_OFFSET_IN = RANGE_BLUE_NEAR_CENTER_COL_OFFSET_IN + 7.5;
+
+    private static final double RANGE_BLUE_FAR_LEFT_COL_OFFSET_IN = 14.0;
+    private static final double RANGE_BLUE_FAR_CENTER_COL_OFFSET_IN = RANGE_BLUE_FAR_LEFT_COL_OFFSET_IN + 7.5;
+    private static final double RANGE_BLUE_FAR_RIGHT_COL_OFFSET_IN = RANGE_BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
+
     private enum State
     {
         DEPLOY_JEWEL_ARM,
@@ -292,15 +308,6 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         robot.sonarYPidDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
                         sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
                     }
-                    else if (robot.rangeDrive != null)
-                    {
-                        //
-                        // Drive forward to the wall using Modern Robotics Range sensor.
-                        //
-                        targetY = 12.0;
-                        robot.rangeDrive.setTarget(targetY, robot.targetHeading, false, event, 2.0);
-                        sm.waitForSingleEvent(event, State.TURN_TO_CRYPTOBOX);
-                    }
                     else
                     {
                         //
@@ -359,7 +366,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         //
                         if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                         {
-                            robot.useRightSonarForX = true;
+                            robot.useRightSensorForX = true;
                             if (startPos == FtcAuto.StartPos.NEAR)
                             {
                                 if (vuMark == RelicRecoveryVuMark.LEFT)
@@ -393,7 +400,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         }
                         else
                         {
-                            robot.useRightSonarForX = false;
+                            robot.useRightSensorForX = false;
                             if (startPos == FtcAuto.StartPos.NEAR)
                             {
                                 if (vuMark == RelicRecoveryVuMark.LEFT)
@@ -425,8 +432,85 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                                 }
                             }
                         }
-                        robot.sonarXPidCtrl.setInverted(robot.useRightSonarForX);
+                        robot.sonarXPidCtrl.setInverted(robot.useRightSensorForX);
                         robot.sonarXPidDrive.setTarget(
+                                targetX, targetY, robot.targetHeading, false, event, 2.0);
+                    }
+                    else if (robot.rangeXPidDrive != null)
+                    {
+                        //
+                        // Use the Modern Robotics Range sensors to guide us to the correct crypto column.
+                        //
+                        if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                        {
+                            robot.useRightSensorForX = true;
+                            if (startPos == FtcAuto.StartPos.NEAR)
+                            {
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = RANGE_RED_NEAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = RANGE_RED_NEAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = RANGE_RED_NEAR_CENTER_COL_OFFSET_IN;
+                                }
+                            }
+                            else
+                            {
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = RANGE_RED_FAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = RANGE_RED_FAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = RANGE_RED_FAR_CENTER_COL_OFFSET_IN;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            robot.useRightSensorForX = false;
+                            if (startPos == FtcAuto.StartPos.NEAR)
+                            {
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = RANGE_BLUE_NEAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = RANGE_BLUE_NEAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = RANGE_BLUE_NEAR_CENTER_COL_OFFSET_IN;
+                                }
+                            }
+                            else
+                            {
+                                if (vuMark == RelicRecoveryVuMark.LEFT)
+                                {
+                                    targetX = RANGE_BLUE_FAR_LEFT_COL_OFFSET_IN;
+                                }
+                                else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                                {
+                                    targetX = RANGE_BLUE_FAR_RIGHT_COL_OFFSET_IN;
+                                }
+                                else
+                                {
+                                    targetX = RANGE_BLUE_FAR_CENTER_COL_OFFSET_IN;
+                                }
+                            }
+                        }
+                        robot.rangeXPidCtrl.setInverted(robot.useRightSensorForX);
+                        robot.rangeXPidDrive.setTarget(
                                 targetX, targetY, robot.targetHeading, false, event, 2.0);
                     }
                     else

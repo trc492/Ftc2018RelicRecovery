@@ -90,10 +90,10 @@ class RobotInfo
     static final double VISION_KD                       = 0.0;
     static final double VISION_TOLERANCE                = 1.0;
 
-    static final double RANGE_KP                        = 0.0125;
-    static final double RANGE_KI                        = 0.0;
-    static final double RANGE_KD                        = 0.0;
-    static final double RANGE_TOLERANCE                 = 1.0;
+    static final double RANGE_X_KP                      = 0.0125;
+    static final double RANGE_X_KI                      = 0.0;
+    static final double RANGE_X_KD                      = 0.0;
+    static final double RANGE_X_TOLERANCE               = 1.0;
 
     static final double SONAR_X_KP                      = 0.045;
     static final double SONAR_X_KI                      = 0.0;

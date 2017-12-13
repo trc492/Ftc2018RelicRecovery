@@ -59,6 +59,7 @@ public class Robot implements
     static final boolean USE_ANALOG_TRIGGERS = false;
     static final boolean USE_DOG_LEASH = true;
     static final boolean USE_MRRANGE_SENSOR = false;
+    static final boolean USE_RANGE_DRIVE = false;
     static final boolean USE_MAXBOTIX_SONAR_SENSOR = false;
     static final boolean USE_SONAR_DRIVE = false;
 
@@ -104,14 +105,15 @@ public class Robot implements
     int redCryptoBarCount = 0;
     int blueCryptoBarCount = 0;
 
-    FtcMRRangeSensor rangeSensor = null;
+    FtcMRRangeSensor leftRangeSensor = null;
+    FtcMRRangeSensor rightRangeSensor = null;
     FtcAnalogInput leftSonar = null;
     FtcAnalogInput frontSonar = null;
     FtcAnalogInput rightSonar = null;
     FtcAnalogInput[] sonarSensors = new FtcAnalogInput[3];
     FtcDigitalOutput sonarRX = null;
     TrcMaxbotixSonarArray sonarArray = null;
-    boolean useRightSonarForX = false;
+    boolean useRightSensorForX = false;
 
     //
     // Vision subsystems.
@@ -136,8 +138,8 @@ public class Robot implements
     TrcPidController visionPidCtrl = null;
     TrcPidDrive visionDrive = null;
 
-    TrcPidController rangePidCtrl = null;
-    TrcPidDrive rangeDrive = null;
+    TrcPidController rangeXPidCtrl = null;
+    TrcPidDrive rangeXPidDrive = null;
 
     TrcPidController sonarXPidCtrl = null;
     TrcPidController sonarYPidCtrl = null;
@@ -205,7 +207,8 @@ public class Robot implements
 
         if (USE_MRRANGE_SENSOR)
         {
-            rangeSensor = new FtcMRRangeSensor("mrRangeSensor");
+            leftRangeSensor = new FtcMRRangeSensor("leftRangeSensor");
+            rightRangeSensor = new FtcMRRangeSensor("rightRangeSensor");
         }
 
         if (USE_MAXBOTIX_SONAR_SENSOR)
@@ -301,19 +304,20 @@ public class Robot implements
         visionDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
         visionDrive.setBeep(androidTone);
 
-        if (USE_MRRANGE_SENSOR)
+        if (USE_MRRANGE_SENSOR && USE_RANGE_DRIVE)
         {
-            rangePidCtrl = new TrcPidController(
-                    "rangePidCtrl",
+            rangeXPidCtrl = new TrcPidController(
+                    "rangeXPidCtrl",
                     new TrcPidController.PidCoefficients(
-                            RobotInfo.RANGE_KP, RobotInfo.RANGE_KI, RobotInfo.RANGE_KD),
-                    RobotInfo.RANGE_TOLERANCE, this);
-            rangePidCtrl.setAbsoluteSetPoint(true);
-            rangePidCtrl.setInverted(true);
+                            RobotInfo.RANGE_X_KP, RobotInfo.RANGE_X_KI, RobotInfo.RANGE_X_KD),
+                    RobotInfo.RANGE_X_TOLERANCE, this);
+            rangeXPidCtrl.setAbsoluteSetPoint(true);
+            rangeXPidCtrl.setInverted(true);
 
-            rangeDrive = new TrcPidDrive("rangeDrive", driveBase, null, rangePidCtrl, gyroPidCtrl);
-            rangeDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
-            rangeDrive.setBeep(androidTone);
+            rangeXPidDrive = new TrcPidDrive(
+                    "rangeXDrive", driveBase, null, rangeXPidCtrl, gyroPidCtrl);
+            rangeXPidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
+            rangeXPidDrive.setBeep(androidTone);
         }
 
         if (USE_MAXBOTIX_SONAR_SENSOR && USE_SONAR_DRIVE)
@@ -559,13 +563,20 @@ public class Robot implements
                 }
             }
         }
-        else if (pidCtrl == rangePidCtrl)
+        else if (pidCtrl == rangeXPidCtrl)
         {
-            input = rangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
+            if (useRightSensorForX)
+            {
+                input = rightRangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
+            }
+            else
+            {
+                input = leftRangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
+            }
         }
         else if (pidCtrl == sonarXPidCtrl)
         {
-            if (useRightSonarForX)
+            if (useRightSensorForX)
             {
                 input = sonarArray.getDistance(RIGHT_SONAR_INDEX).value;
 //                //

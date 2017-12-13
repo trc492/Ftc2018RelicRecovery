@@ -85,6 +85,7 @@ public class FtcTeleOp extends FtcOpMode implements TrcGameController.ButtonHand
     public void stopMode()
     {
         robot.stopMode(TrcRobot.RunMode.TELEOP_MODE);
+        printPerformanceMetrics(robot.tracer);
     }   //stopMode
 
     @Override

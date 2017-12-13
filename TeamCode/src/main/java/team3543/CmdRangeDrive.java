@@ -40,13 +40,15 @@ class CmdRangeDrive implements TrcRobot.RobotCommand
 
     private Robot robot;
     private double rangeDistance;
+    private boolean useRightSensor;
     private TrcEvent event;
     private TrcStateMachine<State> sm;
 
-    CmdRangeDrive(Robot robot, double rangeDistance)
+    CmdRangeDrive(Robot robot, double rangeDistance, boolean useRightSensor)
     {
         this.robot = robot;
         this.rangeDistance = rangeDistance;
+        this.useRightSensor = useRightSensor;
         event = new TrcEvent(moduleName);
         sm = new TrcStateMachine<>(moduleName);
         sm.start(State.DO_RANGE_DRIVE);
@@ -64,7 +66,8 @@ class CmdRangeDrive implements TrcRobot.RobotCommand
         // Print debug info.
         //
         State state = sm.getState();
-        robot.dashboard.displayPrintf(1, "State: %s", state != null ? sm.getState().toString() : "Disabled");
+        robot.dashboard.displayPrintf(
+                1, "State: %s", state != null ? sm.getState().toString() : "Disabled");
 
         if (sm.isReady())
         {
@@ -73,7 +76,9 @@ class CmdRangeDrive implements TrcRobot.RobotCommand
             switch (state)
             {
                 case DO_RANGE_DRIVE:
-                    robot.rangeDrive.setTarget(rangeDistance, 0.0, false, event);
+                    robot.useRightSensorForX = useRightSensor;
+                    robot.rangeXPidCtrl.setInverted(robot.useRightSensorForX);
+                    robot.rangeXPidDrive.setTarget(rangeDistance, 0.0, 0.0, false, event);
                     sm.waitForSingleEvent(event, State.DONE);
                     break;
 
@@ -87,16 +92,16 @@ class CmdRangeDrive implements TrcRobot.RobotCommand
             }
         }
 
-        if (robot.rangeDrive.isActive() && debugRangePid)
+        if (robot.rangeXPidDrive.isActive() && debugRangePid)
         {
             robot.tracer.traceInfo("Battery", "Voltage=%5.2fV (%5.2fV)",
                     robot.battery.getVoltage(), robot.battery.getLowestVoltage());
 
             if (debugRangePid)
             {
-                robot.rangePidCtrl.printPidInfo(robot.tracer, elapsedTime);
+                robot.rangeXPidCtrl.printPidInfo(robot.tracer, elapsedTime);
                 robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
-                robot.rangePidCtrl.displayPidInfo(10);
+                robot.rangeXPidCtrl.displayPidInfo(10);
                 robot.gyroPidCtrl.displayPidInfo(12);
             }
         }
