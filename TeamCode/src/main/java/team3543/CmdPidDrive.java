@@ -23,6 +23,7 @@
 package team3543;
 
 import trclib.TrcEvent;
+import trclib.TrcPidDrive;
 import trclib.TrcRobot;
 import trclib.TrcStateMachine;
 import trclib.TrcTimer;
@@ -43,6 +44,7 @@ class CmdPidDrive implements TrcRobot.RobotCommand
     private static final String moduleName = "CmdPidDrive";
 
     private Robot robot;
+    private TrcPidDrive pidDrive;
     private double delay;
     private double xDistance;
     private double yDistance;
@@ -51,9 +53,10 @@ class CmdPidDrive implements TrcRobot.RobotCommand
     private TrcTimer timer;
     private TrcStateMachine<State> sm;
 
-    CmdPidDrive(Robot robot, double delay, double xDistance, double yDistance, double heading)
+    CmdPidDrive(Robot robot, TrcPidDrive pidDrive, double delay, double xDistance, double yDistance, double heading)
     {
         this.robot = robot;
+        this.pidDrive = pidDrive;
         this.delay = delay;
         this.xDistance = xDistance;
         this.yDistance = yDistance;
@@ -103,7 +106,7 @@ class CmdPidDrive implements TrcRobot.RobotCommand
                     //
                     // Drive the set distance and heading.
                     //
-                    robot.pidDrive.setTarget(xDistance, yDistance, heading, false, event);
+                    pidDrive.setTarget(xDistance, yDistance, heading, false, event);
                     sm.waitForSingleEvent(event, State.DONE);
                     break;
 
@@ -119,24 +122,24 @@ class CmdPidDrive implements TrcRobot.RobotCommand
             robot.traceStateInfo(elapsedTime, state.toString(), xDistance, yDistance, heading);
         }
 
-        if (robot.pidDrive.isActive() && (debugXPid || debugYPid || debugTurnPid))
+        if (pidDrive.isActive() && (debugXPid || debugYPid || debugTurnPid))
         {
             robot.tracer.traceInfo("Battery", "Voltage=%5.2fV (%5.2fV)",
                                    robot.battery.getVoltage(), robot.battery.getLowestVoltage());
 
             if (debugXPid)
             {
-                robot.encoderXPidCtrl.printPidInfo(robot.tracer, elapsedTime);
+                pidDrive.getXPidCtrl().printPidInfo(robot.tracer, elapsedTime);
             }
 
             if (debugYPid)
             {
-                robot.encoderYPidCtrl.printPidInfo(robot.tracer, elapsedTime);
+                pidDrive.getYPidCtrl().printPidInfo(robot.tracer, elapsedTime);
             }
 
             if (debugTurnPid)
             {
-                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
+                pidDrive.getTurnPidCtrl().printPidInfo(robot.tracer, elapsedTime);
             }
         }
 

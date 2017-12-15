@@ -87,8 +87,8 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
     private CmdTimedDrive timedDriveCommand = null;
     private CmdPidDrive pidDriveCommand = null;
     private CmdVisionDrive visionDriveCommand = null;
-    private CmdRangeDrive rangeDriveCommand = null;
-    private CmdSonarDrive sonarDriveCommand = null;
+    private CmdPidDrive rangeDriveCommand = null;
+    private CmdPidDrive sonarDriveCommand = null;
 
     private int motorIndex = 0;
 
@@ -117,23 +117,28 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         switch (test)
         {
             case X_TIMED_DRIVE:
-                timedDriveCommand = new CmdTimedDrive(robot, 0.0, driveTime, 1.0, 0.0, 0.0);
+                timedDriveCommand = new CmdTimedDrive(
+                        robot, 0.0, driveTime, 1.0, 0.0, 0.0);
                 break;
 
             case Y_TIMED_DRIVE:
-                timedDriveCommand = new CmdTimedDrive(robot, 0.0, driveTime, 0.0, 0.2, 0.0);
+                timedDriveCommand = new CmdTimedDrive(
+                        robot, 0.0, driveTime, 0.0, 0.2, 0.0);
                 break;
 
             case X_DISTANCE_DRIVE:
-                pidDriveCommand = new CmdPidDrive(robot, 0.0, driveDistance*12.0, 0.0, 0.0);
+                pidDriveCommand = new CmdPidDrive(
+                        robot, robot.pidDrive, 0.0, driveDistance*12.0, 0.0, 0.0);
                 break;
 
             case Y_DISTANCE_DRIVE:
-                pidDriveCommand = new CmdPidDrive(robot, 0.0, 0.0, driveDistance*12.0, 0.0);
+                pidDriveCommand = new CmdPidDrive(
+                        robot, robot.pidDrive, 0.0, 0.0, driveDistance*12.0, 0.0);
                 break;
 
             case GYRO_TURN:
-                pidDriveCommand = new CmdPidDrive(robot, 0.0, 0.0, 0.0, turnDegrees);
+                pidDriveCommand = new CmdPidDrive(
+                        robot, robot.pidDrive, 0.0, 0.0, 0.0, turnDegrees);
                 break;
 
             case VISION_DRIVE:
@@ -144,19 +149,29 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
             case RIGHT_RANGE_DRIVE:
                 if (Robot.USE_MRRANGE_SENSOR)
                 {
-                    rangeDriveCommand = new CmdRangeDrive(
-                            robot, rangeDistance, test == Test.RIGHT_RANGE_DRIVE);
+                    robot.useRightSensorForX = test == Test.RIGHT_RANGE_DRIVE;
+                    robot.rangeXPidCtrl.setInverted(robot.useRightSensorForX);
+                    rangeDriveCommand = new CmdPidDrive(
+                            robot, robot.rangeXPidDrive, 0.0, rangeDistance, 0.0, 0.0);
                 }
                 break;
 
             case LEFT_SONAR_DRIVE:
-            case FRONT_SONAR_DRIVE:
             case RIGHT_SONAR_DRIVE:
                 if (Robot.USE_MAXBOTIX_SONAR_SENSOR)
                 {
-                    int sonarIndex = test == Test.LEFT_SONAR_DRIVE? Robot.LEFT_SONAR_INDEX:
-                                     test == Test.FRONT_SONAR_DRIVE? Robot.FRONT_SONAR_INDEX: Robot.RIGHT_SONAR_INDEX;
-                    sonarDriveCommand = new CmdSonarDrive(robot, sonarDistance, sonarIndex);
+                    robot.useRightSensorForX = test == Test.RIGHT_SONAR_DRIVE;
+                    robot.sonarXPidCtrl.setInverted(robot.useRightSensorForX);
+                    sonarDriveCommand = new CmdPidDrive(
+                            robot, robot.sonarXPidDrive, 0.0, sonarDistance, 0.0, 0.0);
+                }
+                break;
+
+            case FRONT_SONAR_DRIVE:
+                if (Robot.USE_MAXBOTIX_SONAR_SENSOR)
+                {
+                    sonarDriveCommand = new CmdPidDrive(
+                            robot, robot.sonarYPidDrive, 0.0, 0.0, sonarDistance, 0.0);
                 }
                 break;
         }
@@ -297,7 +312,6 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
             case RIGHT_RANGE_DRIVE:
                 if (rangeDriveCommand != null)
                 {
-                    robot.useRightSensorForX = test == Test.RIGHT_RANGE_DRIVE;
                     dashboard.displayPrintf(9, "rangeXDist=%.1f,heading=%.1f",
                             robot.getInput(robot.rangeXPidCtrl), robot.getInput(robot.gyroPidCtrl));
                     robot.rangeXPidCtrl.displayPidInfo(10);
@@ -316,7 +330,6 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
             case RIGHT_SONAR_DRIVE:
                 if (sonarDriveCommand != null)
                 {
-                    robot.useRightSensorForX = test == Test.RIGHT_SONAR_DRIVE;
                     dashboard.displayPrintf(9, "sonarXDist=%.1f,sonarYDist=%.1f,heading=%.1f",
                             robot.getInput(robot.sonarXPidCtrl),
                             robot.getInput(robot.sonarYPidCtrl),
@@ -351,10 +364,10 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 "Turn degrees:", testMenu, robot, -360.0, 360.0, 5.0, 45.0,
                 " %.0f deg");
         FtcValueMenu rangeDistanceMenu = new FtcValueMenu(
-                "Range distance:", testMenu, robot, 0.5, 12.0, 0.5, 6.0,
+                "Range distance:", testMenu, robot, 1.0, 50.0, 1.0, 12.0,
                 " %.0f in");
         FtcValueMenu sonarDistanceMenu = new FtcValueMenu(
-                "Sonar distance:", testMenu, robot, 6.0, 24.0, 1.0, 12.0,
+                "Sonar distance:", testMenu, robot, 6.0, 50.0, 1.0, 12.0,
                 " %.0f in");
 
         //

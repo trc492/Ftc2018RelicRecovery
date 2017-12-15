@@ -129,6 +129,63 @@ public class TrcPidDrive implements TrcTaskMgr.Task
     }   //toString
 
     /**
+     * This method returns the X PID controller if any.
+     *
+     * @return X PID controller.
+     */
+    public TrcPidController getXPidCtrl()
+    {
+        final String funcName = "getXPidCtrl";
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API);
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API, "=%s",
+                    xPidCtrl != null? xPidCtrl.toString(): "null");
+        }
+
+        return xPidCtrl;
+    }   //getXPidCtrl
+
+    /**
+     * This method returns the Y PID controller if any.
+     *
+     * @return Y PID controller.
+     */
+    public TrcPidController getYPidCtrl()
+    {
+        final String funcName = "getYPidCtrl";
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API);
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API, "=%s",
+                    yPidCtrl != null? yPidCtrl.toString(): "null");
+        }
+
+        return yPidCtrl;
+    }   //getYPidCtrl
+
+    /**
+     * This method returns the Turn PID controller if any.
+     *
+     * @return Turn PID controller.
+     */
+    public TrcPidController getTurnPidCtrl()
+    {
+        final String funcName = "getTurnPidCtrl";
+
+        if (debugEnabled)
+        {
+            dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API);
+            dbgTrace.traceExit(funcName, TrcDbgTrace.TraceLevel.API, "=%s",
+                    turnPidCtrl != null? turnPidCtrl.toString(): "null");
+        }
+
+        return turnPidCtrl;
+    }   //getTurnPidCtrl
+
+    /**
      * This method sets a stuck wheel handler to enable stuck wheel detection.
      *
      * @param stuckWheelHandler specifies the stuck wheel handler.

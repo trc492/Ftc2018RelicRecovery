@@ -120,7 +120,8 @@ public class FtcAuto extends FtcOpMode
                 break;
 
             case DISTANCE_DRIVE:
-                autoCommand = new CmdPidDrive(robot, delay, 0.0, driveDistance*12.0, 0.0);
+                autoCommand = new CmdPidDrive(
+                        robot, robot.pidDrive, delay, 0.0, driveDistance*12.0, 0.0);
                 break;
 
             case TIMED_DRIVE:
