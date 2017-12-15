@@ -78,7 +78,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final double RANGE_RED_FAR_CENTER_COL_OFFSET_IN = RANGE_RED_FAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double RANGE_RED_FAR_RIGHT_COL_OFFSET_IN = RANGE_RED_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double RANGE_BLUE_NEAR_LEFT_COL_OFFSET_IN = 17.5;
+    private static final double RANGE_BLUE_NEAR_LEFT_COL_OFFSET_IN = 18.5;
     private static final double RANGE_BLUE_NEAR_CENTER_COL_OFFSET_IN = RANGE_BLUE_NEAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double RANGE_BLUE_NEAR_RIGHT_COL_OFFSET_IN = RANGE_BLUE_NEAR_CENTER_COL_OFFSET_IN + 7.5;
 
@@ -364,6 +364,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         //
                         // Use the sonar array to guide us to the correct crypto column.
                         //
+                        robot.tracer.traceInfo("AutoFull", "Aligning with Maxbotix sonar sensors.");
                         if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                         {
                             robot.useRightSensorForX = true;
@@ -441,6 +442,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         //
                         // Use the Modern Robotics Range sensors to guide us to the correct crypto column.
                         //
+                        robot.tracer.traceInfo("AutoFull", "Aligning with MR Range sensors.");
                         if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                         {
                             robot.useRightSensorForX = true;
@@ -723,6 +725,23 @@ class CmdAutoFull implements TrcRobot.RobotCommand
             if (debugYPid)
             {
                 robot.sonarYPidCtrl.printPidInfo(robot.tracer, elapsedTime);
+            }
+
+            if (debugTurnPid)
+            {
+                robot.gyroPidCtrl.printPidInfo(robot.tracer, elapsedTime);
+            }
+        }
+        else if (robot.rangeXPidDrive != null && robot.rangeXPidDrive.isActive())
+        {
+            if (debugXPid)
+            {
+                robot.rangeXPidCtrl.printPidInfo(robot.tracer, elapsedTime);
+            }
+
+            if (debugYPid)
+            {
+                robot.encoderYPidCtrl.printPidInfo(robot.tracer, elapsedTime);
             }
 
             if (debugTurnPid)

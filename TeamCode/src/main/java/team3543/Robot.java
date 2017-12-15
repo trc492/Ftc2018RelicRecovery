@@ -58,8 +58,8 @@ public class Robot implements
     static final boolean USE_CRYPTO_COLOR_SENSOR = false;
     static final boolean USE_ANALOG_TRIGGERS = false;
     static final boolean USE_DOG_LEASH = true;
-    static final boolean USE_MRRANGE_SENSOR = false;
-    static final boolean USE_RANGE_DRIVE = false;
+    static final boolean USE_MRRANGE_SENSOR = true;
+    static final boolean USE_RANGE_DRIVE = true;
     static final boolean USE_MAXBOTIX_SONAR_SENSOR = false;
     static final boolean USE_SONAR_DRIVE = false;
 
@@ -208,7 +208,7 @@ public class Robot implements
         if (USE_MRRANGE_SENSOR)
         {
             leftRangeSensor = new FtcMRRangeSensor("leftRangeSensor");
-            rightRangeSensor = new FtcMRRangeSensor("rightRangeSensor");
+            rightRangeSensor = new FtcMRRangeSensor("leftRangeSensor");
         }
 
         if (USE_MAXBOTIX_SONAR_SENSOR)
@@ -315,7 +315,7 @@ public class Robot implements
             rangeXPidCtrl.setInverted(true);
 
             rangeXPidDrive = new TrcPidDrive(
-                    "rangeXDrive", driveBase, null, rangeXPidCtrl, gyroPidCtrl);
+                    "rangeXDrive", driveBase, rangeXPidCtrl, encoderYPidCtrl, gyroPidCtrl);
             rangeXPidDrive.setStallTimeout(RobotInfo.PIDDRIVE_STALL_TIMEOUT);
             rangeXPidDrive.setBeep(androidTone);
         }
