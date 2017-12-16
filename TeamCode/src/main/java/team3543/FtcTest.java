@@ -470,8 +470,8 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
                 robot.relicArm.elbowUpperLimitSwitch.isActive());
         robot.relicArm.elbowPidCtrl.displayPidInfo(13);
 
-        dashboard.displayPrintf(15, LABEL_WIDTH, "Extender: ", "pwr=%.2f,low=%s,high=%s",
-                operatorGamepad.getLeftTrigger(true), operatorGamepad.getRightTrigger(true),
+        dashboard.displayPrintf(15, LABEL_WIDTH, "Extender: ",
+                "pwr=%.2f,low=%s,high=%s",
                 robot.relicArm.extender.getPower(),
                 robot.relicArm.extenderLowerLimitSwitch.isActive(),
                 robot.relicArm.extenderUpperLimitSwitch.isActive());

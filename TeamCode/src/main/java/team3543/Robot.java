@@ -208,7 +208,7 @@ public class Robot implements
         if (USE_MRRANGE_SENSOR)
         {
             leftRangeSensor = new FtcMRRangeSensor("leftRangeSensor");
-            rightRangeSensor = new FtcMRRangeSensor("leftRangeSensor");
+            rightRangeSensor = new FtcMRRangeSensor("rightRangeSensor");
         }
 
         if (USE_MAXBOTIX_SONAR_SENSOR)

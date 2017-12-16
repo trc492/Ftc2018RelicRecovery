@@ -58,7 +58,7 @@ public class RelicArm implements TrcPidController.PidInput  //, TrcPidMotor.Powe
         extenderLowerLimitSwitch = new FtcDigitalInput("extenderLowerLimit");
         extenderUpperLimitSwitch = new FtcDigitalInput("extenderUpperLimit");
         extenderServo = new FtcServo("extenderServo");
-        extenderServo.setInverted(true);
+        extenderServo.setInverted(false);
         extender = new TrcEnhancedServo(
                 "extender", extenderServo, extenderLowerLimitSwitch, extenderUpperLimitSwitch);
 

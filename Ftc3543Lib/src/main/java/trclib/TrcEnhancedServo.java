@@ -328,8 +328,8 @@ public class TrcEnhancedServo implements TrcTaskMgr.Task
         power = TrcUtil.clipRange(power, -1.0, 1.0);
         if (continuousServo)
         {
-            if (lowerLimitSwitch != null && lowerLimitSwitch.isActive() ||
-                upperLimitSwitch != null && upperLimitSwitch.isActive())
+            if (lowerLimitSwitch != null && lowerLimitSwitch.isActive() && power < 0.0 ||
+                upperLimitSwitch != null && upperLimitSwitch.isActive() && power > 0.0)
             {
                 //
                 // One of the limit switches is hit, so stop!
