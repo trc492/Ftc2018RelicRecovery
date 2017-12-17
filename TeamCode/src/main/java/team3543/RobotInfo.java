@@ -39,16 +39,6 @@ class RobotInfo
     static final double RED2_HIGH_THRESHOLD             = 359.0;
 
     //
-    // Maxbotix ultrasonic sensor.
-    //
-    // According to the sensor spec, the sensor reports Vcc/512 volts per inch.
-    // For some reason unknown to us, we are a factor of 2 off. So the reading seems to be correct if we use 1024
-    // instead of 512.
-    //
-    static final double SONAR_INCHES_PER_VOLT           = (1024.0/3.3);
-    static final double SONAR_ERROR_THRESHOLD           = 50.0; // value should not jump 50 inches in one timeslice.
-
-    //
     // DriveBase subsystem.
     //
     static final DcMotor.RunMode DRIVE_MOTOR_MODE       = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
@@ -90,10 +80,21 @@ class RobotInfo
     static final double VISION_KD                       = 0.0;
     static final double VISION_TOLERANCE                = 1.0;
 
+    static final double RANGE_ERROR_THRESHOLD           = 50.0; // value should not jump 50 inches in one timeslice.
     static final double RANGE_X_KP                      = 0.12;
     static final double RANGE_X_KI                      = 0.0;
     static final double RANGE_X_KD                      = 0.012;
     static final double RANGE_X_TOLERANCE               = 0.5;
+
+    //
+    // Maxbotix ultrasonic sensor.
+    //
+    // According to the sensor spec, the sensor reports Vcc/512 volts per inch.
+    // For some reason unknown to us, we are a factor of 2 off. So the reading seems to be correct if we use 1024
+    // instead of 512.
+    //
+    static final double SONAR_INCHES_PER_VOLT           = (1024.0/3.3);
+    static final double SONAR_ERROR_THRESHOLD           = 50.0; // value should not jump 50 inches in one timeslice.
 
     static final double SONAR_X_KP                      = 0.045;
     static final double SONAR_X_KI                      = 0.0;

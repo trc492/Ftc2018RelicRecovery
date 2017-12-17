@@ -141,6 +141,8 @@ public class Robot implements
 
     TrcPidController rangeXPidCtrl = null;
     TrcPidDrive rangeXPidDrive = null;
+    Double prevLeftRangeDistance = null;
+    Double prevRightRangeDistance = null;
 
     TrcPidController sonarXPidCtrl = null;
     TrcPidController sonarYPidCtrl = null;
@@ -508,8 +510,29 @@ public class Robot implements
 
     public double getRangeDistance(FtcMRRangeSensor rangeSensor)
     {
-        return rangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
-    }
+        double distance = rangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
+
+        if (useRightSensorForX)
+        {
+            if (prevRightRangeDistance != null &&
+                    Math.abs(distance - prevRightRangeDistance) > RobotInfo.RANGE_ERROR_THRESHOLD)
+            {
+                distance = prevRightRangeDistance;
+            }
+            prevRightRangeDistance = distance;
+        }
+        else
+        {
+            if (prevLeftRangeDistance != null &&
+                Math.abs(distance - prevLeftRangeDistance) > RobotInfo.RANGE_ERROR_THRESHOLD)
+            {
+                distance = prevLeftRangeDistance;
+            }
+            prevLeftRangeDistance = distance;
+        }
+
+        return distance;
+    }   //getRangeDistance
 
     //
     // Implements TrcPidController.PidInput
@@ -571,14 +594,7 @@ public class Robot implements
         }
         else if (pidCtrl == rangeXPidCtrl)
         {
-            if (useRightSensorForX)
-            {
-                input = rightRangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
-            }
-            else
-            {
-                input = leftRangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
-            }
+            input = getRangeDistance(useRightSensorForX? rightRangeSensor: leftRangeSensor);
         }
         else if (pidCtrl == sonarXPidCtrl)
         {

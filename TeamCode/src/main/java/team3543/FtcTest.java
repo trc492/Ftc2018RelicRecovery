@@ -444,8 +444,7 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         else if (robot.USE_MRRANGE_SENSOR)
         {
             dashboard.displayPrintf(5, LABEL_WIDTH, "MRRange: ", "L=%.1f,R=%.1f",
-                    robot.leftRangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value,
-                    robot.rightRangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value);
+                    robot.getRangeDistance(robot.leftRangeSensor), robot.getRangeDistance(robot.rightRangeSensor));
         }
 
         dashboard.displayPrintf(
