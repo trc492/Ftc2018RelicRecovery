@@ -81,11 +81,6 @@ public class VuforiaVision
             if (pose != null)
             {
                 targetPos = pose.getTranslation();
-                robot.dashboard.displayPrintf(9, "%s: x=%6.2f,y=%6.2f,z=%6.2f",
-                                              vuMark.toString(),
-                                              targetPos.get(0)/RobotInfo.MM_PER_INCH,
-                                              targetPos.get(1)/RobotInfo.MM_PER_INCH,
-                                              -targetPos.get(2)/RobotInfo.MM_PER_INCH);
                 robot.tracer.traceInfo("TargetPos", "%s: x=%6.2f, y=%6.2f, z=%6.2f",
                                        vuMark.toString(),
                                        targetPos.get(0)/RobotInfo.MM_PER_INCH,
@@ -110,9 +105,6 @@ public class VuforiaVision
             {
                 targetAngle = Orientation.getOrientation(
                         pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-                robot.dashboard.displayPrintf(10, "%s: xRot=%6.2f,yRot=%6.2f,zRot=%6.2f",
-                        vuMark.toString(),
-                        targetAngle.firstAngle, targetAngle.secondAngle, targetAngle.thirdAngle);
                 robot.tracer.traceInfo("TargetRot", "%s: xRot=%6.2f, yRot=%6.2f, zRot=%6.2f",
                         vuMark.toString(),
                         targetAngle.firstAngle, targetAngle.secondAngle, targetAngle.thirdAngle);

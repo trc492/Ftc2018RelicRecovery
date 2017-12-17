@@ -69,6 +69,7 @@ public class Robot implements
 
     private static final String moduleName = "Robot";
 
+
     enum ObjectColor
     {
         NO,
@@ -504,6 +505,11 @@ public class Robot implements
 
         return value;
     }   //getObjectHsvValue
+
+    public double getRangeDistance(FtcMRRangeSensor rangeSensor)
+    {
+        return rangeSensor.getProcessedData(0, FtcMRRangeSensor.DataType.DISTANCE_INCH).value;
+    }
 
     //
     // Implements TrcPidController.PidInput

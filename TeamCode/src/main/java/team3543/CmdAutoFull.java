@@ -70,19 +70,19 @@ class CmdAutoFull implements TrcRobot.RobotCommand
     private static final double SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN = SONAR_BLUE_FAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double SONAR_BLUE_FAR_RIGHT_COL_OFFSET_IN = SONAR_BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double RANGE_RED_NEAR_LEFT_COL_OFFSET_IN = 35.5;
-    private static final double RANGE_RED_NEAR_CENTER_COL_OFFSET_IN = RANGE_RED_NEAR_LEFT_COL_OFFSET_IN + 7.5;
-    private static final double RANGE_RED_NEAR_RIGHT_COL_OFFSET_IN = RANGE_RED_NEAR_CENTER_COL_OFFSET_IN + 7.5;
+    private static final double RANGE_RED_NEAR_LEFT_COL_OFFSET_IN = 32.5;
+    private static final double RANGE_RED_NEAR_CENTER_COL_OFFSET_IN = RANGE_RED_NEAR_LEFT_COL_OFFSET_IN - 7.5;
+    private static final double RANGE_RED_NEAR_RIGHT_COL_OFFSET_IN = RANGE_RED_NEAR_CENTER_COL_OFFSET_IN - 7.5;
 
-    private static final double RANGE_RED_FAR_LEFT_COL_OFFSET_IN = 24.5;
-    private static final double RANGE_RED_FAR_CENTER_COL_OFFSET_IN = RANGE_RED_FAR_LEFT_COL_OFFSET_IN + 7.5;
-    private static final double RANGE_RED_FAR_RIGHT_COL_OFFSET_IN = RANGE_RED_FAR_CENTER_COL_OFFSET_IN + 7.5;
+    private static final double RANGE_RED_FAR_LEFT_COL_OFFSET_IN = 53.5;
+    private static final double RANGE_RED_FAR_CENTER_COL_OFFSET_IN = RANGE_RED_FAR_LEFT_COL_OFFSET_IN - 7.5;
+    private static final double RANGE_RED_FAR_RIGHT_COL_OFFSET_IN = RANGE_RED_FAR_CENTER_COL_OFFSET_IN - 7.5;
 
     private static final double RANGE_BLUE_NEAR_LEFT_COL_OFFSET_IN = 18.5;
     private static final double RANGE_BLUE_NEAR_CENTER_COL_OFFSET_IN = RANGE_BLUE_NEAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double RANGE_BLUE_NEAR_RIGHT_COL_OFFSET_IN = RANGE_BLUE_NEAR_CENTER_COL_OFFSET_IN + 7.5;
 
-    private static final double RANGE_BLUE_FAR_LEFT_COL_OFFSET_IN = 14.0;
+    private static final double RANGE_BLUE_FAR_LEFT_COL_OFFSET_IN = 39.0;
     private static final double RANGE_BLUE_FAR_CENTER_COL_OFFSET_IN = RANGE_BLUE_FAR_LEFT_COL_OFFSET_IN + 7.5;
     private static final double RANGE_BLUE_FAR_RIGHT_COL_OFFSET_IN = RANGE_BLUE_FAR_CENTER_COL_OFFSET_IN + 7.5;
 
@@ -97,6 +97,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
         DRIVE_OFF_PLATFORM,
         DRIVE_TO_WALL,
         TURN_TO_CRYPTOBOX,
+        BACK_UP_A_LITTLE,
         ALIGN_CRYPTOBOX,
         MOVE_FORWARD,
         SET_DOWN_GLYPH,
@@ -330,10 +331,24 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                             alliance == FtcAuto.Alliance.RED_ALLIANCE && startPos == FtcAuto.StartPos.NEAR ? 180.0 : 0.0;
 
                     robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 3.0);
+                    sm.waitForSingleEvent(
+                            event,
+                            (alliance == FtcAuto.Alliance.RED_ALLIANCE && startPos == FtcAuto.StartPos.NEAR) ?
+                                State.BACK_UP_A_LITTLE : State.ALIGN_CRYPTOBOX);
+                    break;
+
+                case BACK_UP_A_LITTLE:
+                    robot.driveBase.mecanumDrive_Cartesian(0.0, -0.3, 0.0, false, 0.0);
+                    timer.set(0.3, event);
                     sm.waitForSingleEvent(event, State.ALIGN_CRYPTOBOX);
                     break;
 
                 case ALIGN_CRYPTOBOX:
+                    //
+                    // When entering from BACK_UP_A_LITTLE, stop the timed drive before sending new motor commands.
+                    //
+                    robot.driveBase.stop();
+
                     //
                     // Crab sideways to the correct crypto box column according to the VuMark.
                     //
@@ -364,7 +379,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         //
                         // Use the sonar array to guide us to the correct crypto column.
                         //
-                        robot.tracer.traceInfo("AutoFull", "Aligning with Maxbotix sonar sensors.");
+                        robot.tracer.traceInfo(moduleName, "Aligning with Maxbotix sonar sensors.");
                         if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                         {
                             robot.useRightSensorForX = true;
@@ -442,7 +457,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                         //
                         // Use the Modern Robotics Range sensors to guide us to the correct crypto column.
                         //
-                        robot.tracer.traceInfo("AutoFull", "Aligning with MR Range sensors.");
+                        robot.tracer.traceInfo(moduleName, "Aligning with MR Range sensors.");
                         if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
                         {
                             robot.useRightSensorForX = true;
@@ -511,9 +526,26 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                                 }
                             }
                         }
-                        robot.rangeXPidCtrl.setInverted(robot.useRightSensorForX);
-                        robot.rangeXPidDrive.setTarget(
-                                targetX, targetY, robot.targetHeading, false, event, 2.0);
+
+                        final double distanceToWall = robot.getRangeDistance(
+                                robot.useRightSensorForX? robot.rightRangeSensor: robot.leftRangeSensor);
+
+                        double adjustmentInches = targetX - distanceToWall;
+                        if (alliance == FtcAuto.Alliance.RED_ALLIANCE)
+                        {
+                            // Since we measure from the opposite wall when on the RED alliance,
+                            // invert the adjustment sign to cause the robot to drive the correct direction.
+                            adjustmentInches *= -1;
+                        }
+
+                        robot.tracer.traceInfo(
+                                moduleName, "Dist. to wall: %.2f, Target inches: %.2f, Adj. inches: %.2f",
+                                distanceToWall,
+                                targetX,
+                                adjustmentInches);
+
+                        robot.pidDrive.setTarget(
+                                adjustmentInches, targetY, robot.targetHeading, false, event, 2.0);
                     }
                     else
                     {
@@ -659,7 +691,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
                     // Back off a little to make sure we are not touching the glyph block.
                     //
                     targetX = 0.0;
-                    targetY = -6.5;
+                    targetY = -7.5;
 
                     robot.pidDrive.setTarget(targetX, targetY, robot.targetHeading, false, event, 1.0);
                     sm.waitForSingleEvent(event, State.DONE);
@@ -687,7 +719,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 
         if (robot.pidDrive.isActive())
         {
-            robot.tracer.traceInfo(">>> Raw Encoder <<<",
+            robot.tracer.traceInfo("Raw Encoder",
                     "lf=%.0f, rf=%.0f, lr=%.0f, rr=%.0f",
                     robot.leftFrontWheel.getPosition(),
                     robot.rightFrontWheel.getPosition(),
@@ -752,7 +784,7 @@ class CmdAutoFull implements TrcRobot.RobotCommand
 
         if (debugSonarSensor && robot.sonarArray != null)
         {
-            robot.tracer.traceInfo("+++ Sonar Sensors +++", "Left=%.1f, Front=%.1f, Right=%.1f",
+            robot.tracer.traceInfo("Sonar Sensors", "Left=%.1f, Front=%.1f, Right=%.1f",
                     robot.sonarArray.getDistance(robot.LEFT_SONAR_INDEX).value,
                     robot.sonarArray.getDistance(robot.FRONT_SONAR_INDEX).value,
                     robot.sonarArray.getDistance(robot.RIGHT_SONAR_INDEX).value);

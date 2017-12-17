@@ -132,8 +132,8 @@ class RobotInfo
     static final double ELEVATOR_MAX_HEIGHT             = 21.0;
     static final double ELEVATOR_MID_HEIGHT             = 7.0;
     static final double ELEVATOR_CAL_POWER              = 0.3;
-    static final double ELEVATOR_SENSOR_ZERO_OFFSET     = -0.472;
-    static final double ELEVATOR_SENSOR_SCALE           = 10.89863367540838;
+    static final double ELEVATOR_SENSOR_ZERO_OFFSET     = -0.529;
+    static final double ELEVATOR_SENSOR_SCALE           = 11.18586208869386;
 
     //
     // RelicArm subsystem.

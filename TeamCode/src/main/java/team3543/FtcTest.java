@@ -449,12 +449,9 @@ public class FtcTest extends FtcTeleOp implements TrcGameController.ButtonHandle
         }
 
         dashboard.displayPrintf(
-                6, LABEL_WIDTH, "Color: ", "Jewel=%s[%.0f/%.2f/%.2f],Crypto=%s[%.0f/%.2f/%.2f]",
+                6, LABEL_WIDTH, "Color: ", "Jewel=%s[%.0f/%.2f/%.2f]",
                 robot.getObjectColor(robot.jewelColorSensor), robot.getObjectHsvHue(robot.jewelColorSensor),
-                robot.getObjectHsvSaturation(robot.jewelColorSensor), robot.getObjectHsvValue(robot.jewelColorSensor),
-                robot.getObjectColor(robot.cryptoColorSensor), robot.getObjectHsvHue(robot.cryptoColorSensor),
-                robot.getObjectHsvSaturation(robot.cryptoColorSensor),
-                robot.getObjectHsvValue(robot.cryptoColorSensor));
+                robot.getObjectHsvSaturation(robot.jewelColorSensor), robot.getObjectHsvValue(robot.jewelColorSensor));
 
         dashboard.displayPrintf(9, LABEL_WIDTH, "Elevator: ", "Pwr=%.2f,Pos=%.3f,low=%s",
                 robot.glyphElevator.getPower(),
