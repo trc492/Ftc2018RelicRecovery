@@ -1,0 +1,21 @@
+Auto.FtcAuto_Info: Sun Dec 03 00:15:13 PST 2017: ***** Starting autonomous *****
+Auto.Robot_Info: ***** [0.077] *****  DEPLOY_JEWEL_ARM: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=13.45V(13.42V)
+Auto.WHACK_JEWEL_Info: VuMark: UNKNOWN
+Auto.WHACK_JEWEL_Info: 0: Color=RED, HSV=[8.823530/0.539683/0.494118]
+Auto.Robot_Info: ***** [0.646] *****       WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=13.43V(13.41V)
+Auto.Robot_Info: ***** [1.304] ***** MOVE_JEWEL_ARM_UP: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=13.43V(13.38V)
+Auto.Robot_Info: ***** [1.694] *****   RESET_JEWEL_ARM: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=13.42V(13.38V)
+Auto.DO_DELAY_Info: Delay=0
+Auto.Robot_Info: ***** [2.134] *****          DO_DELAY: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=13.45V(13.38V)
+Auto.Robot_Info: ***** [2.227] *****   GRAB_LIFT_GLYPH: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=13.42V(13.38V)
+Auto.Robot_Info: ***** [4.433] ***** DRIVE_OFF_PLATFORM: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.73V(12.90V)
+Auto.Robot_Info: ***** [6.037] *****     DRIVE_TO_WALL: xPos=  2.30/  0.00,yPos= 42.23/  0.00,heading=   0.1/   0.0,volt=13.19V(12.72V)
+Auto.Robot_Info: ***** [6.200] ***** TURN_TO_CRYPTOBOX: xPos= 12.93/  0.00,yPos= 33.49/  0.00,heading=   0.2/ 180.0,volt=13.33V(12.72V)
+Auto.Battery_Info: Voltage=13.31V (12.72V)
+Auto.printPidInfo_Info: encoderXPidCtrl: Target=  12.9, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+Auto.printPidInfo_Info: encoderYPidCtrl: Target=  33.5, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+Auto.printPidInfo_Info: gyroPidCtrl: Target= 180.0, Input=   0.0, Error= 179.8, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-0.500/0.500)
+Auto.Battery_Info: Voltage= 0.00V ( 0.00V)
+Auto.printPidInfo_Info: encoderXPidCtrl: Target=  12.9, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+Auto.printPidInfo_Info: encoderYPidCtrl: Target=  33.5, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+Auto.printPidInfo_Info: gyroPidCtrl: Target= 180.0, Input=   0.2, Error= 179.8, PIDTerms= 3.237/ 0.000/ 0.000/ 0.000, Output= 0.500(-0.500/0.500)
