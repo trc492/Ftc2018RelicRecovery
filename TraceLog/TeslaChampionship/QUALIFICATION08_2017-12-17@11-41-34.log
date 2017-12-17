@@ -1,0 +1,331 @@
+TeleOp.FtcAuto_Info: Sun Dec 17 11:41:34 PST 2017: ***** Starting autonomous *****
+TeleOp.Robot_Info: [0.070] >>>>> DEPLOY_JEWEL_ARM: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=  -0.0/   0.0,volt=12.78V(12.79V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 0: Color=NO, HSV=[354.814819/0.570423/0.556863]
+TeleOp.Robot_Info: [0.676] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=  -0.0/   0.0,volt=12.74V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 1: Color=NO, HSV=[354.000000/0.567376/0.552941]
+TeleOp.Robot_Info: [0.830] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.74V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 2: Color=NO, HSV=[354.074066/0.566434/0.560784]
+TeleOp.Robot_Info: [0.956] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=  -0.0/   0.0,volt=12.78V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 3: Color=NO, HSV=[356.153839/0.553191/0.552941]
+TeleOp.Robot_Info: [1.074] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.78V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 4: Color=NO, HSV=[356.153839/0.553191/0.552941]
+TeleOp.Robot_Info: [1.167] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.78V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 5: Color=NO, HSV=[356.250000/0.559441/0.560784]
+TeleOp.Robot_Info: [1.293] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.76V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 6: Color=NO, HSV=[356.250000/0.559441/0.560784]
+TeleOp.Robot_Info: [1.436] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=  -0.0/   0.0,volt=12.74V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 7: Color=NO, HSV=[356.103882/0.550000/0.549020]
+TeleOp.Robot_Info: [1.535] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.76V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 8: Color=NO, HSV=[356.103882/0.550000/0.549020]
+TeleOp.Robot_Info: [1.628] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.74V(12.76V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 9: Color=NO, HSV=[356.103882/0.550000/0.549020]
+TeleOp.Robot_Info: [1.734] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.75V(12.75V)
+TeleOp.WHACK_JEWEL_Info: VuMark: CENTER
+TeleOp.WHACK_JEWEL_Info: 10: Color=NO, HSV=[356.103882/0.550000/0.549020]
+TeleOp.Robot_Info: [1.871] >>>>> WHACK_JEWEL: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.76V(12.75V)
+TeleOp.Robot_Info: [2.450] >>>>> MOVE_JEWEL_ARM_UP: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=   0.0/   0.0,volt=12.76V(12.75V)
+TeleOp.Robot_Info: [2.826] >>>>> RESET_JEWEL_ARM: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=  -0.0/   0.0,volt=12.75V(12.72V)
+TeleOp.DO_DELAY_Info: Delay=0
+TeleOp.Robot_Info: [3.170] >>>>> DO_DELAY: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=  -0.1/   0.0,volt=12.79V(12.72V)
+TeleOp.Robot_Info: [3.269] >>>>> GRAB_LIFT_GLYPH: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=  -0.1/   0.0,volt=12.77V(12.72V)
+TeleOp.Robot_Info: [5.464] >>>>> DRIVE_OFF_PLATFORM: xPos=  0.00/  0.00,yPos=  0.00/  0.00,heading=  -0.1/   0.0,volt=12.05V(12.41V)
+TeleOp.Robot_Info: [6.202] >>>>> DRIVE_TO_WALL: xPos= -3.62/  0.00,yPos=-10.97/  0.00,heading=  -3.2/   0.0,volt=12.69V(12.16V)
+TeleOp.Robot_Info: [6.352] >>>>> TURN_TO_CRYPTOBOX: xPos= -4.60/  0.00,yPos=-13.97/  0.00,heading=  -3.3/ 180.0,volt=12.71V(12.16V)
+TeleOp.Battery_Info: Voltage=12.72V (12.16V)
+TeleOp.Raw Encoder_Info: lf=-1139, rf=-1065, lr=0, rr=-1292
+TeleOp.printPidInfo_Info: [6.352] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.352] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.352] gyroPidCtrl: Target= 180.0, Input=   0.0, Error= 183.3, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.12V (12.12V)
+TeleOp.Raw Encoder_Info: lf=-1066, rf=-1160, lr=0, rr=-1393
+TeleOp.printPidInfo_Info: [6.560] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.560] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.560] gyroPidCtrl: Target= 180.0, Input=  -3.3, Error= 183.3, PIDTerms= 3.299/ 0.000/ 0.000/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.20V (12.12V)
+TeleOp.Raw Encoder_Info: lf=-888, rf=-1281, lr=8, rr=-1539
+TeleOp.printPidInfo_Info: [6.677] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.677] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.677] gyroPidCtrl: Target= 180.0, Input=  -1.3, Error= 181.3, PIDTerms= 3.264/ 0.000/-0.027/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.16V (12.12V)
+TeleOp.Raw Encoder_Info: lf=-791, rf=-1382, lr=8, rr=-1642
+TeleOp.printPidInfo_Info: [6.837] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.837] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.837] gyroPidCtrl: Target= 180.0, Input=   0.7, Error= 179.3, PIDTerms= 3.228/ 0.000/-0.026/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.05V (12.06V)
+TeleOp.Raw Encoder_Info: lf=-760, rf=-1482, lr=8, rr=-1785
+TeleOp.printPidInfo_Info: [6.926] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.926] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [6.926] gyroPidCtrl: Target= 180.0, Input=  10.1, Error= 169.9, PIDTerms= 3.058/ 0.000/-0.207/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.12V (12.06V)
+TeleOp.Raw Encoder_Info: lf=-716, rf=-1604, lr=8, rr=-1960
+TeleOp.printPidInfo_Info: [7.051] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.051] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.051] gyroPidCtrl: Target= 180.0, Input=  18.9, Error= 161.1, PIDTerms= 2.899/ 0.000/-0.138/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.23V (12.06V)
+TeleOp.Raw Encoder_Info: lf=-607, rf=-1750, lr=8, rr=-2138
+TeleOp.printPidInfo_Info: [7.191] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.191] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.191] gyroPidCtrl: Target= 180.0, Input=  25.0, Error= 155.0, PIDTerms= 2.790/ 0.000/-0.088/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.24V (12.06V)
+TeleOp.Raw Encoder_Info: lf=-379, rf=-1941, lr=8, rr=-2320
+TeleOp.printPidInfo_Info: [7.326] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.326] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.326] gyroPidCtrl: Target= 180.0, Input=  31.3, Error= 148.7, PIDTerms= 2.677/ 0.000/-0.092/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.20V (12.06V)
+TeleOp.Raw Encoder_Info: lf=-233, rf=-2113, lr=8, rr=-2488
+TeleOp.printPidInfo_Info: [7.466] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.466] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.466] gyroPidCtrl: Target= 180.0, Input=  38.4, Error= 141.6, PIDTerms= 2.548/ 0.000/-0.103/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.22V (12.06V)
+TeleOp.Raw Encoder_Info: lf=-85, rf=-2276, lr=8, rr=-2632
+TeleOp.printPidInfo_Info: [7.598] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.598] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.598] gyroPidCtrl: Target= 180.0, Input=  50.2, Error= 129.8, PIDTerms= 2.336/ 0.000/-0.177/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.24V (12.06V)
+TeleOp.Raw Encoder_Info: lf=66, rf=-2434, lr=8, rr=-2779
+TeleOp.printPidInfo_Info: [7.717] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.717] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.717] gyroPidCtrl: Target= 180.0, Input=  59.6, Error= 120.4, PIDTerms= 2.167/ 0.000/-0.161/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.26V (12.06V)
+TeleOp.Raw Encoder_Info: lf=231, rf=-2603, lr=8, rr=-2919
+TeleOp.printPidInfo_Info: [7.831] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.831] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.831] gyroPidCtrl: Target= 180.0, Input=  70.6, Error= 109.4, PIDTerms= 1.969/ 0.000/-0.188/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.27V (12.06V)
+TeleOp.Raw Encoder_Info: lf=442, rf=-2800, lr=8, rr=-3080
+TeleOp.printPidInfo_Info: [7.963] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.963] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [7.963] gyroPidCtrl: Target= 180.0, Input=  79.7, Error= 100.3, PIDTerms= 1.805/ 0.000/-0.138/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.26V (12.06V)
+TeleOp.Raw Encoder_Info: lf=671, rf=-3018, lr=8, rr=-3251
+TeleOp.printPidInfo_Info: [8.117] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.117] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.117] gyroPidCtrl: Target= 180.0, Input=  92.0, Error=  88.0, PIDTerms= 1.584/ 0.000/-0.162/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.28V (12.06V)
+TeleOp.Raw Encoder_Info: lf=845, rf=-3180, lr=8, rr=-3372
+TeleOp.printPidInfo_Info: [8.253] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.253] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.253] gyroPidCtrl: Target= 180.0, Input= 105.4, Error=  74.6, PIDTerms= 1.343/ 0.000/-0.195/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.29V (12.06V)
+TeleOp.Raw Encoder_Info: lf=1048, rf=-3362, lr=8, rr=-3526
+TeleOp.printPidInfo_Info: [8.364] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.364] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.364] gyroPidCtrl: Target= 180.0, Input= 119.3, Error=  60.7, PIDTerms= 1.093/ 0.000/-0.255/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.23V (12.06V)
+TeleOp.Raw Encoder_Info: lf=1250, rf=-3542, lr=8, rr=-3673
+TeleOp.printPidInfo_Info: [8.508] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.508] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.508] gyroPidCtrl: Target= 180.0, Input= 130.3, Error=  49.7, PIDTerms= 0.895/ 0.000/-0.154/ 0.000, Output= 0.500(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.26V (12.06V)
+TeleOp.Raw Encoder_Info: lf=1525, rf=-178, lr=8, rr=-3873
+TeleOp.printPidInfo_Info: [8.695] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.695] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.695] gyroPidCtrl: Target= 180.0, Input= 142.7, Error=  37.3, PIDTerms= 0.672/ 0.000/-0.187/ 0.000, Output= 0.484(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.46V (12.06V)
+TeleOp.Raw Encoder_Info: lf=1727, rf=-351, lr=8, rr=-4025
+TeleOp.printPidInfo_Info: [8.858] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.858] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [8.858] gyroPidCtrl: Target= 180.0, Input= 155.8, Error=  24.2, PIDTerms= 0.435/ 0.000/-0.140/ 0.000, Output= 0.295(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.65V (12.06V)
+TeleOp.Raw Encoder_Info: lf=1760, rf=-383, lr=8, rr=-4025
+TeleOp.printPidInfo_Info: [9.020] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [9.020] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [9.020] gyroPidCtrl: Target= 180.0, Input= 174.4, Error=   5.6, PIDTerms= 0.101/ 0.000/-0.219/ 0.000, Output=-0.119(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.46V (12.06V)
+TeleOp.Raw Encoder_Info: lf=1699, rf=-325, lr=8, rr=-3975
+TeleOp.printPidInfo_Info: [9.236] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [9.236] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [9.236] gyroPidCtrl: Target= 180.0, Input= 187.5, Error=  -7.5, PIDTerms=-0.135/ 0.000/-0.146/ 0.000, Output=-0.282(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.33V (12.06V)
+TeleOp.Raw Encoder_Info: lf=1605, rf=-230, lr=8, rr=-3893
+TeleOp.printPidInfo_Info: [9.400] encoderXPidCtrl: Target=  -4.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [9.400] encoderYPidCtrl: Target= -14.0, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [9.400] gyroPidCtrl: Target= 180.0, Input= 196.4, Error= -16.4, PIDTerms=-0.295/ 0.000/-0.092/ 0.000, Output=-0.386(-0.500/0.500)
+TeleOp.Robot_Info: [9.542] >>>>> BACK_UP_A_LITTLE: xPos= -7.58/  0.00,yPos=-10.21/  0.00,heading= 188.9/ 180.0,volt=12.55V(12.06V)
+TeleOp.CmdAutoFull_Info: Aligning with MR Range sensors.
+TeleOp.CmdAutoFull_Info: Dist. to wall: 9.45, Target inches: 25.00, Adj. inches: -15.55
+TeleOp.Robot_Info: [9.906] >>>>> ALIGN_CRYPTOBOX: xPos= -8.04/ 25.00,yPos=-11.60/  0.00,heading= 179.5/ 180.0,volt=12.72V(12.06V)
+TeleOp.Battery_Info: Voltage=12.72V (12.06V)
+TeleOp.Raw Encoder_Info: lf=1347, rf=-368, lr=8, rr=-4055
+TeleOp.printPidInfo_Info: [9.906] encoderXPidCtrl: Target= -23.6, Input=   0.0, Error= -15.6, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [9.906] encoderYPidCtrl: Target= -11.6, Input=   0.0, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/ 0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [9.906] gyroPidCtrl: Target= 180.0, Input= 193.9, Error=   0.5, PIDTerms=-0.250/ 0.000/ 0.036/ 0.000, Output= 0.000(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=11.18V (11.25V)
+TeleOp.Raw Encoder_Info: lf=1105, rf=-219, lr=8, rr=-4217
+TeleOp.printPidInfo_Info: [10.152] encoderXPidCtrl: Target= -23.6, Input=  -8.0, Error= -15.6, PIDTerms=-2.333/ 0.000/ 0.000/-0.000, Output=-1.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.152] encoderYPidCtrl: Target= -11.6, Input= -11.6, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/-0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.152] gyroPidCtrl: Target= 180.0, Input= 179.5, Error=   0.5, PIDTerms= 0.009/ 0.000/ 0.000/ 0.000, Output= 0.009(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=11.19V (11.19V)
+TeleOp.Raw Encoder_Info: lf=758, rf=35, lr=6, rr=-4497
+TeleOp.printPidInfo_Info: [10.310] encoderXPidCtrl: Target= -23.6, Input=  -8.7, Error= -14.9, PIDTerms=-2.231/ 0.000/ 0.073/-0.000, Output=-1.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.310] encoderYPidCtrl: Target= -11.6, Input= -13.0, Error=   1.4, PIDTerms= 0.028/ 0.000/ 0.022/-0.000, Output= 0.049(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.310] gyroPidCtrl: Target= 180.0, Input= 179.4, Error=   0.6, PIDTerms= 0.011/ 0.000/ 0.002/ 0.000, Output= 0.014(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=11.34V (11.19V)
+TeleOp.Raw Encoder_Info: lf=495, rf=240, lr=6, rr=-4679
+TeleOp.printPidInfo_Info: [10.504] encoderXPidCtrl: Target= -23.6, Input= -11.7, Error= -11.9, PIDTerms=-1.789/ 0.000/ 0.221/-0.000, Output=-1.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.504] encoderYPidCtrl: Target= -11.6, Input= -14.5, Error=   2.9, PIDTerms= 0.057/ 0.000/ 0.016/-0.000, Output= 0.074(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.504] gyroPidCtrl: Target= 180.0, Input= 180.1, Error=  -0.1, PIDTerms=-0.003/ 0.000/-0.008/ 0.000, Output=-0.010(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=11.70V (11.19V)
+TeleOp.Raw Encoder_Info: lf=233, rf=568, lr=6, rr=-4844
+TeleOp.printPidInfo_Info: [10.694] encoderXPidCtrl: Target= -23.6, Input= -14.4, Error=  -9.2, PIDTerms=-1.386/ 0.000/ 0.213/-0.000, Output=-1.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.694] encoderYPidCtrl: Target= -11.6, Input= -15.9, Error=   4.3, PIDTerms= 0.087/ 0.000/ 0.017/-0.000, Output= 0.104(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.694] gyroPidCtrl: Target= 180.0, Input= 185.9, Error=  -5.9, PIDTerms=-0.107/ 0.000/-0.061/ 0.000, Output=-0.168(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.00V (11.19V)
+TeleOp.Raw Encoder_Info: lf=30, rf=845, lr=6, rr=-4969
+TeleOp.printPidInfo_Info: [10.828] encoderXPidCtrl: Target= -23.6, Input= -17.4, Error=  -6.2, PIDTerms=-0.927/ 0.000/ 0.322/-0.000, Output=-0.605(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.828] encoderYPidCtrl: Target= -11.6, Input= -16.6, Error=   5.0, PIDTerms= 0.100/ 0.000/ 0.010/-0.000, Output= 0.110(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.828] gyroPidCtrl: Target= 180.0, Input= 183.6, Error=  -3.6, PIDTerms=-0.065/ 0.000/ 0.033/ 0.000, Output=-0.032(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.28V (11.19V)
+TeleOp.Raw Encoder_Info: lf=-97, rf=1055, lr=6, rr=-5079
+TeleOp.printPidInfo_Info: [10.974] encoderXPidCtrl: Target= -23.6, Input= -19.6, Error=  -4.0, PIDTerms=-0.605/ 0.000/ 0.204/-0.000, Output=-0.402(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.974] encoderYPidCtrl: Target= -11.6, Input= -16.8, Error=   5.2, PIDTerms= 0.104/ 0.000/ 0.003/-0.000, Output= 0.108(-1.000/1.000)
+TeleOp.printPidInfo_Info: [10.974] gyroPidCtrl: Target= 180.0, Input= 179.2, Error=   0.8, PIDTerms= 0.014/ 0.000/ 0.055/ 0.000, Output= 0.070(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.54V (11.19V)
+TeleOp.Raw Encoder_Info: lf=-94, rf=1137, lr=6, rr=-5137
+TeleOp.printPidInfo_Info: [11.139] encoderXPidCtrl: Target= -23.6, Input= -21.4, Error=  -2.2, PIDTerms=-0.329/ 0.000/ 0.184/-0.000, Output=-0.145(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.139] encoderYPidCtrl: Target= -11.6, Input= -17.0, Error=   5.4, PIDTerms= 0.108/ 0.000/ 0.003/-0.000, Output= 0.111(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.139] gyroPidCtrl: Target= 180.0, Input= 176.0, Error=   4.0, PIDTerms= 0.072/ 0.000/ 0.043/ 0.000, Output= 0.115(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.59V (11.19V)
+TeleOp.Raw Encoder_Info: lf=7, rf=1141, lr=6, rr=-5141
+TeleOp.printPidInfo_Info: [11.306] encoderXPidCtrl: Target= -23.6, Input= -22.6, Error=  -1.0, PIDTerms=-0.144/ 0.000/ 0.109/-0.000, Output=-0.035(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.306] encoderYPidCtrl: Target= -11.6, Input= -17.0, Error=   5.4, PIDTerms= 0.109/ 0.000/ 0.000/-0.000, Output= 0.109(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.306] gyroPidCtrl: Target= 180.0, Input= 174.2, Error=   5.8, PIDTerms= 0.104/ 0.000/ 0.021/ 0.000, Output= 0.125(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.56V (11.19V)
+TeleOp.Raw Encoder_Info: lf=34, rf=1176, lr=6, rr=-5141
+TeleOp.printPidInfo_Info: [11.463] encoderXPidCtrl: Target= -23.6, Input= -22.7, Error=  -0.9, PIDTerms=-0.130/ 0.000/ 0.008/-0.000, Output=-0.122(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.463] encoderYPidCtrl: Target= -11.6, Input= -16.8, Error=   5.2, PIDTerms= 0.105/ 0.000/-0.003/-0.000, Output= 0.102(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.463] gyroPidCtrl: Target= 180.0, Input= 175.6, Error=   4.4, PIDTerms= 0.079/ 0.000/-0.016/ 0.000, Output= 0.063(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.44V (11.19V)
+TeleOp.Raw Encoder_Info: lf=24, rf=1203, lr=6, rr=-5141
+TeleOp.printPidInfo_Info: [11.615] encoderXPidCtrl: Target= -23.6, Input= -22.4, Error=  -1.2, PIDTerms=-0.176/ 0.000/-0.032/-0.000, Output=-0.208(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.615] encoderYPidCtrl: Target= -11.6, Input= -16.4, Error=   4.9, PIDTerms= 0.097/ 0.000/-0.006/-0.000, Output= 0.091(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.615] gyroPidCtrl: Target= 180.0, Input= 178.6, Error=   1.4, PIDTerms= 0.026/ 0.000/-0.042/ 0.000, Output=-0.016(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.51V (11.19V)
+TeleOp.Raw Encoder_Info: lf=24, rf=1218, lr=6, rr=-5141
+TeleOp.printPidInfo_Info: [11.786] encoderXPidCtrl: Target= -23.6, Input= -22.5, Error=  -1.1, PIDTerms=-0.158/ 0.000/ 0.011/-0.000, Output=-0.147(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.786] encoderYPidCtrl: Target= -11.6, Input= -16.2, Error=   4.6, PIDTerms= 0.093/ 0.000/-0.003/-0.000, Output= 0.090(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.786] gyroPidCtrl: Target= 180.0, Input= 180.3, Error=  -0.3, PIDTerms=-0.005/ 0.000/-0.021/ 0.000, Output=-0.026(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.53V (11.19V)
+TeleOp.Raw Encoder_Info: lf=24, rf=1218, lr=6, rr=-5141
+TeleOp.printPidInfo_Info: [11.922] encoderXPidCtrl: Target= -23.6, Input= -22.7, Error=  -0.9, PIDTerms=-0.139/ 0.000/ 0.013/-0.000, Output=-0.127(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.922] encoderYPidCtrl: Target= -11.6, Input= -16.2, Error=   4.6, PIDTerms= 0.091/ 0.000/-0.001/-0.000, Output= 0.090(-1.000/1.000)
+TeleOp.printPidInfo_Info: [11.922] gyroPidCtrl: Target= 180.0, Input= 181.3, Error=  -1.3, PIDTerms=-0.024/ 0.000/-0.014/ 0.000, Output=-0.038(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.56V (11.19V)
+TeleOp.Raw Encoder_Info: lf=24, rf=1218, lr=6, rr=-5141
+TeleOp.printPidInfo_Info: [12.075] encoderXPidCtrl: Target= -23.6, Input= -22.7, Error=  -0.9, PIDTerms=-0.137/ 0.000/ 0.001/-0.000, Output=-0.136(-1.000/1.000)
+TeleOp.printPidInfo_Info: [12.075] encoderYPidCtrl: Target= -11.6, Input= -16.1, Error=   4.5, PIDTerms= 0.091/ 0.000/-0.000/-0.000, Output= 0.091(-1.000/1.000)
+TeleOp.printPidInfo_Info: [12.075] gyroPidCtrl: Target= 180.0, Input= 181.3, Error=  -1.3, PIDTerms=-0.024/ 0.000/-0.000/ 0.000, Output=-0.024(-0.500/0.500)
+TeleOp.Robot_Info: [12.249] >>>>> SET_DOWN_GLYPH: xPos=-22.67/ 25.00,yPos=-16.14/  0.00,heading= 181.3/ 180.0,volt=12.70V(11.19V)
+TeleOp.Robot_Info: [13.438] >>>>> RELEASE_GLYPH: xPos=-22.67/ 25.00,yPos=-16.14/  0.00,heading= 181.3/ 180.0,volt=12.70V(11.19V)
+TeleOp.Robot_Info: [13.990] >>>>> PUSH_FORWARD: xPos=-22.67/  0.00,yPos=-16.14/ 15.00,heading= 181.3/ 180.0,volt=12.71V(11.19V)
+TeleOp.Battery_Info: Voltage=12.71V (11.19V)
+TeleOp.Raw Encoder_Info: lf=26, rf=1216, lr=6, rr=-5141
+TeleOp.printPidInfo_Info: [13.990] encoderXPidCtrl: Target= -22.7, Input= -22.7, Error=   0.0, PIDTerms=-0.137/ 0.000/ 0.000/-0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [13.990] encoderYPidCtrl: Target=  -1.1, Input= -16.1, Error=  15.0, PIDTerms= 0.091/ 0.000/ 0.000/-0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [13.990] gyroPidCtrl: Target= 180.0, Input= 181.3, Error=  -1.3, PIDTerms=-0.023/ 0.000/ 0.000/ 0.000, Output= 0.000(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.42V (11.19V)
+TeleOp.Raw Encoder_Info: lf=91, rf=1232, lr=6, rr=-5071
+TeleOp.printPidInfo_Info: [14.161] encoderXPidCtrl: Target= -22.7, Input= -22.7, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/-0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.161] encoderYPidCtrl: Target=  -1.1, Input= -16.1, Error=  15.0, PIDTerms= 0.300/ 0.000/ 0.000/-0.000, Output= 0.300(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.161] gyroPidCtrl: Target= 180.0, Input= 181.3, Error=  -1.3, PIDTerms=-0.024/ 0.000/ 0.000/ 0.000, Output=-0.024(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.45V (11.19V)
+TeleOp.Raw Encoder_Info: lf=160, rf=1309, lr=6, rr=-4997
+TeleOp.printPidInfo_Info: [14.281] encoderXPidCtrl: Target= -22.7, Input= -22.6, Error=  -0.1, PIDTerms=-0.013/ 0.000/-0.009/-0.000, Output=-0.022(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.281] encoderYPidCtrl: Target=  -1.1, Input= -16.0, Error=  14.9, PIDTerms= 0.297/ 0.000/-0.002/-0.000, Output= 0.295(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.281] gyroPidCtrl: Target= 180.0, Input= 181.3, Error=  -1.3, PIDTerms=-0.024/ 0.000/-0.000/ 0.000, Output=-0.024(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.47V (11.19V)
+TeleOp.Raw Encoder_Info: lf=264, rf=1427, lr=6, rr=-4888
+TeleOp.printPidInfo_Info: [14.425] encoderXPidCtrl: Target= -22.7, Input= -22.2, Error=  -0.5, PIDTerms=-0.069/ 0.000/-0.040/-0.000, Output=-0.109(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.425] encoderYPidCtrl: Target=  -1.1, Input= -15.3, Error=  14.1, PIDTerms= 0.283/ 0.000/-0.012/-0.000, Output= 0.271(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.425] gyroPidCtrl: Target= 180.0, Input= 181.3, Error=  -1.3, PIDTerms=-0.024/ 0.000/-0.000/ 0.000, Output=-0.024(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.49V (11.19V)
+TeleOp.Raw Encoder_Info: lf=386, rf=1571, lr=6, rr=-4758
+TeleOp.printPidInfo_Info: [14.601] encoderXPidCtrl: Target= -22.7, Input= -21.9, Error=  -0.7, PIDTerms=-0.111/ 0.000/-0.025/-0.000, Output=-0.136(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.601] encoderYPidCtrl: Target=  -1.1, Input= -14.2, Error=  13.1, PIDTerms= 0.261/ 0.000/-0.014/-0.000, Output= 0.247(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.601] gyroPidCtrl: Target= 180.0, Input= 181.3, Error=  -1.3, PIDTerms=-0.023/ 0.000/ 0.001/ 0.000, Output=-0.022(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.46V (11.19V)
+TeleOp.Raw Encoder_Info: lf=451, rf=1740, lr=6, rr=-4629
+TeleOp.printPidInfo_Info: [14.758] encoderXPidCtrl: Target= -22.7, Input= -21.5, Error=  -1.2, PIDTerms=-0.173/ 0.000/-0.043/-0.000, Output=-0.216(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.758] encoderYPidCtrl: Target=  -1.1, Input= -12.5, Error=  11.4, PIDTerms= 0.228/ 0.000/-0.026/-0.000, Output= 0.202(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.758] gyroPidCtrl: Target= 180.0, Input= 181.1, Error=  -1.1, PIDTerms=-0.019/ 0.000/ 0.003/ 0.000, Output=-0.017(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.25V (11.19V)
+TeleOp.Raw Encoder_Info: lf=442, rf=1819, lr=6, rr=-4595
+TeleOp.printPidInfo_Info: [14.909] encoderXPidCtrl: Target= -22.7, Input= -21.2, Error=  -1.4, PIDTerms=-0.213/ 0.000/-0.023/-0.000, Output=-0.236(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.909] encoderYPidCtrl: Target=  -1.1, Input= -10.9, Error=   9.8, PIDTerms= 0.195/ 0.000/-0.021/-0.000, Output= 0.174(-1.000/1.000)
+TeleOp.printPidInfo_Info: [14.909] gyroPidCtrl: Target= 180.0, Input= 180.9, Error=  -0.9, PIDTerms=-0.016/ 0.000/ 0.002/ 0.000, Output=-0.014(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.29V (11.19V)
+TeleOp.Raw Encoder_Info: lf=410, rf=1835, lr=6, rr=-4595
+TeleOp.printPidInfo_Info: [15.056] encoderXPidCtrl: Target= -22.7, Input= -21.2, Error=  -1.5, PIDTerms=-0.218/ 0.000/-0.003/-0.000, Output=-0.221(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.056] encoderYPidCtrl: Target=  -1.1, Input=  -9.7, Error=   8.6, PIDTerms= 0.172/ 0.000/-0.018/-0.000, Output= 0.154(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.056] gyroPidCtrl: Target= 180.0, Input= 180.3, Error=  -0.3, PIDTerms=-0.006/ 0.000/ 0.008/ 0.000, Output= 0.002(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.37V (11.19V)
+TeleOp.Raw Encoder_Info: lf=439, rf=1836, lr=6, rr=-4595
+TeleOp.printPidInfo_Info: [15.194] encoderXPidCtrl: Target= -22.7, Input= -21.5, Error=  -1.2, PIDTerms=-0.179/ 0.000/ 0.028/-0.000, Output=-0.151(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.194] encoderYPidCtrl: Target=  -1.1, Input=  -9.7, Error=   8.5, PIDTerms= 0.170/ 0.000/-0.001/-0.000, Output= 0.169(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.194] gyroPidCtrl: Target= 180.0, Input= 177.5, Error=   2.5, PIDTerms= 0.045/ 0.000/ 0.040/ 0.000, Output= 0.084(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.35V (11.19V)
+TeleOp.Raw Encoder_Info: lf=452, rf=1836, lr=6, rr=-4595
+TeleOp.printPidInfo_Info: [15.361] encoderXPidCtrl: Target= -22.7, Input= -21.6, Error=  -1.1, PIDTerms=-0.167/ 0.000/ 0.008/-0.000, Output=-0.160(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.361] encoderYPidCtrl: Target=  -1.1, Input=  -9.7, Error=   8.6, PIDTerms= 0.171/ 0.000/ 0.001/-0.000, Output= 0.172(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.361] gyroPidCtrl: Target= 180.0, Input= 176.7, Error=   3.3, PIDTerms= 0.060/ 0.000/ 0.012/ 0.000, Output= 0.072(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.28V (11.19V)
+TeleOp.Raw Encoder_Info: lf=452, rf=1836, lr=6, rr=-4595
+TeleOp.printPidInfo_Info: [15.539] encoderXPidCtrl: Target= -22.7, Input= -21.4, Error=  -1.3, PIDTerms=-0.189/ 0.000/-0.011/-0.000, Output=-0.200(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.539] encoderYPidCtrl: Target=  -1.1, Input=  -9.5, Error=   8.4, PIDTerms= 0.168/ 0.000/-0.002/-0.000, Output= 0.166(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.539] gyroPidCtrl: Target= 180.0, Input= 176.6, Error=   3.4, PIDTerms= 0.060/ 0.000/ 0.000/ 0.000, Output= 0.061(-0.500/0.500)
+TeleOp.Robot_Info: [15.740] >>>>> BACK_OFF: xPos=-21.39/  0.00,yPos= -9.56/ -7.50,heading= 176.7/ 180.0,volt=12.66V(11.19V)
+TeleOp.Battery_Info: Voltage=12.66V (11.19V)
+TeleOp.Raw Encoder_Info: lf=451, rf=1827, lr=6, rr=-4595
+TeleOp.printPidInfo_Info: [15.740] encoderXPidCtrl: Target= -21.4, Input= -21.4, Error=   0.0, PIDTerms=-0.189/ 0.000/ 0.000/-0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.740] encoderYPidCtrl: Target= -17.1, Input=  -9.5, Error=  -7.5, PIDTerms= 0.168/ 0.000/ 0.000/-0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.740] gyroPidCtrl: Target= 180.0, Input= 176.7, Error=   3.3, PIDTerms= 0.060/ 0.000/-0.000/ 0.000, Output= 0.000(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.58V (11.19V)
+TeleOp.Raw Encoder_Info: lf=408, rf=1761, lr=6, rr=-4645
+TeleOp.printPidInfo_Info: [15.905] encoderXPidCtrl: Target= -21.4, Input= -21.4, Error=   0.0, PIDTerms= 0.000/ 0.000/ 0.000/-0.000, Output= 0.000(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.905] encoderYPidCtrl: Target= -17.1, Input=  -9.6, Error=  -7.5, PIDTerms=-0.150/ 0.000/-0.000/-0.000, Output=-0.150(-1.000/1.000)
+TeleOp.printPidInfo_Info: [15.905] gyroPidCtrl: Target= 180.0, Input= 176.7, Error=   3.3, PIDTerms= 0.059/ 0.000/ 0.000/ 0.000, Output= 0.059(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.60V (11.19V)
+TeleOp.Raw Encoder_Info: lf=375, rf=1725, lr=6, rr=-4680
+TeleOp.printPidInfo_Info: [16.063] encoderXPidCtrl: Target= -21.4, Input= -21.4, Error=  -0.0, PIDTerms=-0.002/ 0.000/-0.001/-0.000, Output=-0.003(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.063] encoderYPidCtrl: Target= -17.1, Input=  -9.7, Error=  -7.3, PIDTerms=-0.147/ 0.000/ 0.002/-0.000, Output=-0.145(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.063] gyroPidCtrl: Target= 180.0, Input= 176.8, Error=   3.2, PIDTerms= 0.058/ 0.000/-0.001/ 0.000, Output= 0.057(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.62V (11.19V)
+TeleOp.Raw Encoder_Info: lf=347, rf=1679, lr=6, rr=-4724
+TeleOp.printPidInfo_Info: [16.214] encoderXPidCtrl: Target= -21.4, Input= -21.5, Error=   0.1, PIDTerms= 0.020/ 0.000/ 0.016/-0.000, Output= 0.036(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.214] encoderYPidCtrl: Target= -17.1, Input= -10.4, Error=  -6.6, PIDTerms=-0.133/ 0.000/ 0.011/-0.000, Output=-0.121(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.214] gyroPidCtrl: Target= 180.0, Input= 176.9, Error=   3.1, PIDTerms= 0.056/ 0.000/-0.001/ 0.000, Output= 0.055(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.64V (11.19V)
+TeleOp.Raw Encoder_Info: lf=344, rf=1641, lr=6, rr=-4753
+TeleOp.printPidInfo_Info: [16.357] encoderXPidCtrl: Target= -21.4, Input= -21.6, Error=   0.3, PIDTerms= 0.038/ 0.000/ 0.010/-0.000, Output= 0.047(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.357] encoderYPidCtrl: Target= -17.1, Input= -10.9, Error=  -6.1, PIDTerms=-0.123/ 0.000/ 0.006/-0.000, Output=-0.117(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.357] gyroPidCtrl: Target= 180.0, Input= 177.3, Error=   2.7, PIDTerms= 0.049/ 0.000/-0.005/ 0.000, Output= 0.044(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.62V (11.19V)
+TeleOp.Raw Encoder_Info: lf=315, rf=1604, lr=6, rr=-4786
+TeleOp.printPidInfo_Info: [16.504] encoderXPidCtrl: Target= -21.4, Input= -21.7, Error=   0.3, PIDTerms= 0.041/ 0.000/ 0.003/-0.000, Output= 0.043(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.504] encoderYPidCtrl: Target= -17.1, Input= -11.3, Error=  -5.8, PIDTerms=-0.116/ 0.000/ 0.006/-0.000, Output=-0.110(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.504] gyroPidCtrl: Target= 180.0, Input= 177.4, Error=   2.6, PIDTerms= 0.047/ 0.000/-0.002/ 0.000, Output= 0.044(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.62V (11.19V)
+TeleOp.Raw Encoder_Info: lf=297, rf=1583, lr=6, rr=-4808
+TeleOp.printPidInfo_Info: [16.688] encoderXPidCtrl: Target= -21.4, Input= -21.7, Error=   0.3, PIDTerms= 0.044/ 0.000/ 0.002/-0.000, Output= 0.046(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.688] encoderYPidCtrl: Target= -17.1, Input= -11.6, Error=  -5.4, PIDTerms=-0.109/ 0.000/ 0.004/-0.000, Output=-0.105(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.688] gyroPidCtrl: Target= 180.0, Input= 177.5, Error=   2.5, PIDTerms= 0.045/ 0.000/-0.001/ 0.000, Output= 0.045(-0.500/0.500)
+TeleOp.Battery_Info: Voltage=12.62V (11.19V)
+TeleOp.Raw Encoder_Info: lf=280, rf=1563, lr=6, rr=-4814
+TeleOp.printPidInfo_Info: [16.819] encoderXPidCtrl: Target= -21.4, Input= -21.8, Error=   0.4, PIDTerms= 0.057/ 0.000/ 0.010/-0.000, Output= 0.067(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.819] encoderYPidCtrl: Target= -17.1, Input= -12.0, Error=  -5.1, PIDTerms=-0.102/ 0.000/ 0.006/-0.000, Output=-0.096(-1.000/1.000)
+TeleOp.printPidInfo_Info: [16.819] gyroPidCtrl: Target= 180.0, Input= 178.0, Error=   2.0, PIDTerms= 0.036/ 0.000/-0.007/ 0.000, Output= 0.029(-0.500/0.500)
+TeleOp.Robot_Info: [17.013] >>>>> DONE: xPos=-21.83/  0.00,yPos=-12.34/ -7.50,heading= 178.2/ 180.0,volt=12.70V(11.19V)
+TeleOp.FtcOpMode_Info:             Auto: Periodic=0.000004, Continuous=0.012676, SDK=0.000844
+TeleOp.TaskPerformance_Info:     TrcDriveBase: PrePeriodic=NaN, PostPeriodic=NaN, PreContinuous=0.049476, PostContinous=NaN
+TeleOp.TaskPerformance_Info:    elevatorMotor: PrePeriodic=NaN, PostPeriodic=NaN, PreContinuous=0.005452, PostContinous=NaN
+TeleOp.TaskPerformance_Info:    relicArmElbow: PrePeriodic=NaN, PostPeriodic=NaN, PreContinuous=0.005267, PostContinous=NaN

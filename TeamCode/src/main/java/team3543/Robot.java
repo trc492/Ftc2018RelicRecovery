@@ -458,7 +458,7 @@ public class Robot implements
             if (sat > 0.0 && value > 0.0)
             {
                 if (hue >= RobotInfo.RED1_LOW_THRESHOLD && hue <= RobotInfo.RED1_HIGH_THRESHOLD ||
-                    hue >= RobotInfo.RED2_LOW_THRESHOLD && hue >= RobotInfo.RED2_HIGH_THRESHOLD)
+                    hue >= RobotInfo.RED2_LOW_THRESHOLD && hue <= RobotInfo.RED2_HIGH_THRESHOLD)
                 {
                     color = ObjectColor.RED;
                 }
