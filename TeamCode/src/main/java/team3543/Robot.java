@@ -515,7 +515,7 @@ public class Robot implements
         if (useRightSensorForX)
         {
             if (prevRightRangeDistance != null &&
-                    Math.abs(distance - prevRightRangeDistance) > RobotInfo.RANGE_ERROR_THRESHOLD)
+                Math.abs(distance - prevRightRangeDistance) > RobotInfo.RANGE_ERROR_THRESHOLD)
             {
                 distance = prevRightRangeDistance;
             }
