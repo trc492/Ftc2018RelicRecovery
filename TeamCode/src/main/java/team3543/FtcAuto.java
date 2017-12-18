@@ -108,6 +108,13 @@ public class FtcAuto extends FtcOpMode
         // Choice menus.
         //
         doMenus();
+
+        if (USE_TRACELOG)
+        {
+            String filePrefix = String.format("%s%02d", matchType, matchNumber);
+            robot.tracer.openTraceLog("/sdcard/FIRST/tracelog", filePrefix);
+        }
+
         //
         // Strategies.
         //
@@ -133,14 +140,6 @@ public class FtcAuto extends FtcOpMode
                 autoCommand = null;
                 break;
         }
-
-        if (USE_TRACELOG)
-        {
-            String filePrefix = String.format("%s%02d", matchType, matchNumber);
-            robot.tracer.openTraceLog("/sdcard/FIRST/tracelog", filePrefix);
-        }
-
-        robot.tracer.traceInfo(moduleName, "%s: ***** Starting autonomous *****", new Date());
     }   //initRobot
 
     //
@@ -150,6 +149,7 @@ public class FtcAuto extends FtcOpMode
     @Override
     public void startMode()
     {
+        robot.tracer.traceInfo(moduleName, "%s: ***** Starting autonomous *****", new Date());
         robot.startMode(TrcRobot.RunMode.AUTO_MODE);
         robot.battery.setEnabled(true);
         robot.dashboard.clearDisplay();
