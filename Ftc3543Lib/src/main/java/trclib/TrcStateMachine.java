@@ -361,8 +361,8 @@ public class TrcStateMachine<T>
         if (debugEnabled)
         {
             dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API,
-                    "nextState=%s,timeout=%f,waitForAll=%s",
-                    nextState.toString(), timeout, Boolean.toString(waitForAllEvents));
+                                "nextState=%s,timeout=%f,waitForAll=%s",
+                                nextState.toString(), timeout, Boolean.toString(waitForAllEvents));
         }
 
         this.nextState = nextState;
@@ -422,8 +422,8 @@ public class TrcStateMachine<T>
         if (debugEnabled)
         {
             dbgTrace.traceEnter(funcName, TrcDbgTrace.TraceLevel.API,
-                    "event=%s,nextState=%s,timeout=%f",
-                    event.toString(), nextState.toString(), timeout);
+                                "event=%s,nextState=%s,timeout=%f",
+                                event.toString(), nextState.toString(), timeout);
         }
 
         eventList.clear();
